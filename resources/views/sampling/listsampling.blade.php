@@ -82,33 +82,60 @@
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong{{$loop->iteration}}">
                                                 Set Status
                                             </button>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong2{{$loop->iteration}}">
+                                                Set Tanggal Jadi
+                                            </button>
                                             <div class="modal fade" id="exampleModalLong{{$loop->iteration}}">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Ubah Status Sampling
-                                                <form method="post" action="{{route('statusSampling')}}" enctype='multipart/form-data'>
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{$row->id}}">
-                                                <select class="custom-select" name="status">
-                                                    <option value="1">Waiting list</option>
-                                                    <option value="2">cutting</option>
-                                                    <option value="3">sewing</option>
-                                                    <option value="4">Finishing & QC</option>
-                                                    <option value="5">Selesai</option>
-                                                </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                </form>
-                                                </div>
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Status</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Ubah Status Sampling
+                                                        <form method="post" action="{{route('statusSampling')}}" enctype='multipart/form-data'>
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$row->id}}">
+                                                        <select class="custom-select" name="status">
+                                                            <option value="1">Waiting list</option>
+                                                            <option value="2">cutting</option>
+                                                            <option value="3">sewing</option>
+                                                            <option value="4">Finishing & QC</option>
+                                                            <option value="5">Selesai</option>
+                                                        </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            <div class="modal fade" id="exampleModalLong2{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Tanggal Jadi</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Set Tanggal Jadi
+                                                        <form method="post" action="{{route('tgljadi')}}" enctype='multipart/form-data'>
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$row->id}}">
+                                                        <input type="hidden" name="jns" value="0">
+                                                        <input type="date" name="tgl_jadi">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

@@ -199,7 +199,6 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Sampling Aktif</h4>
-                        <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
                         <div class="row row-cols-1 row-cols-md-3 g-4">
                             @foreach($sampling as $row)
                             <div class="col-lg-4 col-md-6">
@@ -236,7 +235,6 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Sampling Selesai</h4>
-                        <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
                         <div class="row row-cols-1 row-cols-md-3 g-4">
                             @foreach($samplingS as $row)
                             <div class="col-lg-4 col-md-6">

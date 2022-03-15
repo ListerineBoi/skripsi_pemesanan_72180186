@@ -29,7 +29,7 @@
                                     <li>Nama : {{$dataD->name}}</li>
                                     <li>No Telp : {{$dataD->no_telp}}</li>
                                     <li>Tgl Masuk : {{$jasa->created_at}}</li>
-                                    <li>Tgl Keluar : </li>
+                                    <li>Tgl Keluar : {{$jasa->tgl_jadi}}</li>
                                 </ul>
                             </div>
                         </div>

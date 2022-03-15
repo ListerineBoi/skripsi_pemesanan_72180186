@@ -78,7 +78,6 @@
                                     <li><a href="#" aria-expanded="true">Konsul</a>
                                         <ul class="collapse">
                                             <li><a href="{{route('viewformtambahkonsul')}}">Set Konsul</a></li>
-                                            <li><a href="{{route('viewslistproduksi')}}">List Produksi</a></li>
                                             
                                         </ul>
                                     </li>
@@ -495,6 +494,7 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/metisMenu.min.js') }}"></script>
     <script src="{{ asset('js/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset('js/disablefunc.js') }}"></script>
     <script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
     
 

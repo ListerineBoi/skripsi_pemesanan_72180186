@@ -373,33 +373,33 @@ class AdminController extends Controller
     public function generateinvoicesampling($id,$jns)
     {
         if($jns==0){
-            $nota=Pembayaran::where('id',$id)->value('samp_id');
-            $jasa=Sampling::where('id',$nota)->first();
+            $nota=Pembayaran::where('id',$id)->first();
+            $jasa=Sampling::where('id',$nota->samp_id)->first();
         }else{
-            $nota=Pembayaran::where('id',$id)->value('prod_id');
-            $jasa=Produksi::where('id',$nota)->first();
+            $nota=Pembayaran::where('id',$id)->first();
+            $jasa=Produksi::where('id',$nota->prod_id)->first();
         }
         $dataD=User::where('id',$jasa->cus_id)->first();
         $invoice=DetailInvoice::where('bayar_id',$id)->get();
         $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
         
-        $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum'))->setpaper('Legal','potrait');
+        $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
         return $pdf->stream('invoice');
         
     }
     public function sendinvoice($id,$jns)
     {
-         if($jns==0){
-            $nota=Pembayaran::where('id',$id)->value('samp_id');
-            $jasa=Sampling::where('id',$nota)->first();
+        if($jns==0){
+            $nota=Pembayaran::where('id',$id)->first();
+            $jasa=Sampling::where('id',$nota->samp_id)->first();
         }else{
-            $nota=Pembayaran::where('id',$id)->value('prod_id');
-            $jasa=Produksi::where('id',$nota)->first();
+            $nota=Pembayaran::where('id',$id)->first();
+            $jasa=Produksi::where('id',$nota->prod_id)->first();
         }
         $dataD=User::where('id',$jasa->cus_id)->first();
         $invoice=DetailInvoice::where('bayar_id',$id)->get();
         $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
-        $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum'))->setpaper('Legal','potrait');
+        $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
         $content = $pdf->download()->getOriginalContent();
         $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
         Storage::put('public/invoice/'.$nama,$content);
@@ -412,10 +412,55 @@ class AdminController extends Controller
     }
     public function verifbuktibyr(Request $request)
     {
-        //$wow=Pembayaran::where('id',$request->id)->get();
-        Pembayaran::where('id',$request->id)->update([
-            'status' => 2
-        ]);
+        $id=$request->id;
+        $jns=$request->jns;
+        if($request->jp==0){
+            $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
+            Pembayaran::where('id',$request->id)->update([
+                'status' => 2,
+                'terbayar' => $sum
+            ]);
+            if($jns==0){
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Sampling::where('id',$nota->samp_id)->first();
+            }else{
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Produksi::where('id',$nota->prod_id)->first();
+            }
+            $dataD=User::where('id',$jasa->cus_id)->first();
+            $invoice=DetailInvoice::where('bayar_id',$id)->get();
+            $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
+            $content = $pdf->download()->getOriginalContent();
+            $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
+            Storage::put('public/invoice/'.$nama,$content);
+            
+            Pembayaran::where('id',$id)->update([
+                'file_invoice' => $nama,
+            ]);  
+        }else if($request->jp==1){
+            Pembayaran::where('id',$request->id)->update([
+                'status' => 3,
+                'terbayar' => $request->terbayar
+            ]);
+            if($jns==0){
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Sampling::where('id',$nota->samp_id)->first();
+            }else{
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Produksi::where('id',$nota->prod_id)->first();
+            }
+            $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
+            $dataD=User::where('id',$jasa->cus_id)->first();
+            $invoice=DetailInvoice::where('bayar_id',$id)->get();
+            $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
+            $content = $pdf->download()->getOriginalContent();
+            $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
+            Storage::put('public/invoice/'.$nama,$content);
+            
+            Pembayaran::where('id',$id)->update([
+                'file_invoice' => $nama,
+            ]);  
+        }
         return redirect()->back();
         //return $wow;
     }
@@ -428,24 +473,40 @@ class AdminController extends Controller
     {
         $id_admin=Auth::user()->id;
         $jadwal = Konsul::all();
-        return view('konsul.setjadwal',compact('id_admin','jadwal'));
+        $jadwal1 = Konsul::where('status','1')->get();
+        return view('konsul.setjadwal',compact('id_admin','jadwal','jadwal1'));
     }
     public function tambahkonsul(Request $request)
-    {
-        
+    { 
         $this->validate($request, [
             'title' => 'required',
-            'tgl' => 'required',
+            'jns' => 'required',
             'mulai' => 'required', 
         ]);
         $konsul= new Konsul([
             'title' => $request->title,
             'tgl' => $request->tgl,
+            'jenis' => $request->jns,
             'mulai' => $request->mulai,
             'status' =>'0'
         ]);
         $konsul->save();
         return redirect()->back();
     }
-    
+    public function tgljadi(Request $request)
+    {
+        $this->validate($request, [
+            'tgl_jadi' => 'required',
+        ]);
+        if($request->jns==0){
+            Sampling::where('id',$request->id)->update([
+                'tgl_jadi' => $request->tgl_jadi,
+            ]);
+        }else if($request->jns==1){
+            Produksi::where('id',$request->id)->update([
+                'tgl_jadi' => $request->tgl_jadi,
+            ]);
+        }
+        return redirect()->back();
+    }
 }

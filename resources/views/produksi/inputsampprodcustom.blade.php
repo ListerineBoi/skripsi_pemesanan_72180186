@@ -36,7 +36,6 @@
                         <form method="post" action="{{route('savesamplingcustom')}}" enctype='multipart/form-data'>
                             @csrf
                             <h4 class="header-title ">Textual inputs</h4>
-                            <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
                             <div class="form-group">
                                 <label class="col-form-label">Model</label>
                                 <select class="custom-select" name="model">

@@ -15,10 +15,16 @@
                                     <form method="post" action="{{route('tambahkonsul')}}" enctype='multipart/form-data'>
                                         @csrf
                                         <h4 class="header-title">isi dengan jadwal konsul </h4>
-                                        <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
                                         <div class="form-group">
                                             <label for="example-text-input" class="col-form-label">title</label>
                                             <input class="form-control" type="text" value="" name="title">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Jenis</label>
+                                            <select class="custom-select" name="jns">
+                                                <option selected value="0">Tatap Muka</option>
+                                                <option selected value="1">Online</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="example-date-input" class="col-form-label">Date</label>
@@ -59,9 +65,43 @@
                             
                         
                     </div>
+                    </div>
+                    <div class="col-md-12 mt-5">
+            <div class="card">
+                <div class="card-header"></div>
+
+                <div class="card-body">
+                <div class="single-table">
+                        <div class="table-responsive">
+                            <table class="table table-hover progress-table text-center">
+                                <thead class="text-uppercase">
+                                    <tr>
+                                        <th scope="col">Jenis</th>
+                                        <th scope="col">Tgl</th>
+                                        <th scope="col">Jam</th>
+                                        <th scope="col">action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach( $jadwal1 as $jdwl)
+                                    <tr>
+                                        <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
+                                        <td>{{$jdwl->tgl}}</td>
+                                        <td>{{$jdwl->mulai}}</td>
+                                        <td>action</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
                 
             
-        </div>
+        
         <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('js/popper.min.js') }}"></script>
         <script src="{{ asset('fullcalendar/packages/core/main.js') }}"></script>
@@ -81,7 +121,7 @@
                     // {title:'eek',start:'2022-02-08'},
                     <?php
                  foreach($jadwal as $row){
-                     $echo="{"."title: "."'".$row['title']." ".$row['mulai']."'".",
+                    $echo="{"."title: "."'".$row['mulai'].' WIB'."'".",
                         start: "."'".$row['tgl']."'".",";
                         
                         if ($row['status']==0) {

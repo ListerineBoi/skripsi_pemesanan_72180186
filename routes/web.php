@@ -40,6 +40,7 @@ Route::get('/admin/listsampling/del/{id}', [App\Http\Controllers\AdminController
 Route::get('/admin/editsampling/{id}', [App\Http\Controllers\AdminController::class, 'vieweditsampling'])->name('adminvieweditsampling');
 Route::post('/admin/editsampling/saveedit', [App\Http\Controllers\AdminController::class, 'saveeditS'])->name('adminsaveeditS');
 Route::post('/admin/editsampling/statusSampling', [App\Http\Controllers\AdminController::class, 'statusSampling'])->name('statusSampling');
+Route::post('/admin/listsampling/tgljadi', [App\Http\Controllers\AdminController::class, 'tgljadi'])->name('tgljadi');
     //produksi//
 Route::get('/admin/slotproduksi', [App\Http\Controllers\AdminController::class, 'viewslotproduksi'])->name('viewslotproduksi');
 Route::post('/admin/slotproduksi/save', [App\Http\Controllers\AdminController::class, 'saveslotP'])->name('saveslotP');
@@ -80,7 +81,7 @@ Route::get('/produksi/custom/samp', [App\Http\Controllers\UserController::class,
 Route::post('/produksi/custom/samp/save', [App\Http\Controllers\UserController::class, 'savesamplingcustom'])->name('savesamplingcustom');
     //konsul//
 Route::get('/konsul', [App\Http\Controllers\UserController::class, 'viewkonsul'])->name('viewkonsul');
-Route::get('/konsul/input/{id}', [App\Http\Controllers\UserController::class, 'viewpilihkonsul'])->name('viewpilihkonsul');
+Route::get('/konsul/input/{id}/{jns}', [App\Http\Controllers\UserController::class, 'viewpilihkonsul'])->name('viewpilihkonsul');
 Route::post('/konsul/input/save', [App\Http\Controllers\UserController::class, 'pilihkonsul'])->name('pilihkonsul');   
     //invoice//
 Route::post('/listbayar/bukti', [App\Http\Controllers\UserController::class, 'inputbuktibyr'])->name('inputbuktibyr');   

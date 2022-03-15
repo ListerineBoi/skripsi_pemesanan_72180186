@@ -37,7 +37,6 @@
                             @csrf
                             <input type="hidden" name="id" value="{{$sampling->id}}">
                             <h4 class="header-title">Textual inputs</h4>
-                            <p class="text-muted font-14 mb-4">Here are examples of <code>.form-control</code> applied to each textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
                             <div class="row mb-3">
                             <div class="col-md-4 col-sm-4">
                                 <img src="/storage/imgsampling/{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('img')}}" height='350' class="card-img-top" alt="...">

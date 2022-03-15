@@ -20,6 +20,7 @@ class CreateProduksi extends Migration
             $table->unsignedBigInteger('detail_id')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->text('desc');
+            $table->date('tgl_jadi')->nullable();
             $table->unsignedSmallInteger('jml');
             $table->char('status', 1);
             $table->timestamps();
@@ -36,6 +37,7 @@ class CreateProduksi extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('produksi');
     }
 }

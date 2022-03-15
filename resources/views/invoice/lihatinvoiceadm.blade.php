@@ -31,15 +31,45 @@
                                         </td>
                                         <td>{{$row->jenis_pembayaran}}</td>
                                         
-                                        <td>@if($row->status==0) Belum Lunas @elseif($row->status==1) Menunggu @elseif($row->status==2) Lunas @endif</td>
+                                        <td>@if($row->status==0) Belum Lunas @elseif($row->status==1) Menunggu @elseif($row->status==2) Lunas @elseif($row->status==3) Deposit @endif</td>
                                         <td>
-                                            <form action="{{route('verifbuktibyr')}}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{$row->id}}">
-                                                <input type="hidden" name="jns" value="{{$jns}}">
-                                                <button type="submit" class="btn btn-primary">Verif Bukti Bayar</button>
+                                            
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong{{$loop->iteration}}">
+                                                Verifikasi Bukti Bayar
+                                                </button>
                                                 <a href="{{route('lihatdetailinvoice',['id' => $row->id,'jns' => $jns])}}" class="btn btn-primary" disabled>Detail</a>
-                                            </form>
+                                            
+
+                                            <div class="modal fade" id="exampleModalLong{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Verifikasi Pembayaran</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <label for="example-time-input" class="col-form-label">Jenis Pembayaran</label>
+                                                    <form method="post" action="{{route('verifbuktibyr')}}" enctype='multipart/form-data'>
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{$row->id}}">
+                                                    <input type="hidden" name="jns" value="{{$jns}}">
+                                                    <select class="custom-select" name="jp" id="disparent">
+                                                        <option value="0">Lunas</option>
+                                                        <option value="1">Deposit(Partial)</option>
+                                                    </select>
+                                                    <div class="form-group">
+                                                        <label for="example-time-input" class="col-form-label">Nominal Yang Terbayar</label>
+                                                        <input class="form-control" id="dischild1" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="terbayar">
+                                                    </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Kirim</button>
+                                                    </form>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach

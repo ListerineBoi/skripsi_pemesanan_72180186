@@ -45,7 +45,7 @@ z-index:-1895825408;left:0px;margin-left:-35px;margin-top:0px;width:299px;
 height:89px'><img width=299 height=89
 src="{{'images/logo_1.png'}}"></span></p>
 <br>
-<p class=MsoNormal style='margin-left:276.45pt'>No                              :</p>
+<p class=MsoNormal style='margin-left:276.45pt'>No                              :{{$id}}</p>
 <p class=MsoNormal style='margin-left:276.45pt'>Nama                         :{{$dataD->name}}</p>
 
 <p class=MsoNormal style='margin-left:276.45pt'>No Telp                      :{{$dataD->no_telp}}</p>
@@ -54,7 +54,7 @@ white'><span style='font-size:13.0pt;font-family:Roboto;color:#212529'>082123488
 @amoora.couture                               </span><span style='color:black'>Tgl.
 Masuk                 :{{$jasa->created_at}}</span></p>
 
-<p class=MsoNormal style='margin-left:276.45pt'>Tgl. Selesai               :</p>
+<p class=MsoNormal style='margin-left:276.45pt'>Tgl. Selesai               :{{$jasa->tgl_jadi}}</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -119,6 +119,30 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   @endforeach
   </td>
  </tr>
+ @if($nota->terbayar!=null)
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=57 valign=top style='width:42.5pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=261 valign=top style='width:195.7pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>Terbayar</p>
+  </td>
+  <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$nota->terbayar}}</p>
+  </td>
+ </tr>
+ @endif
  <tr>
   <td width=56 valign=top style='width:42.3pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>

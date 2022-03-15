@@ -427,13 +427,13 @@ class UserController extends Controller
                 $extn =$request->file('img_bukti')->getClientOriginalExtension();
                 $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'.'.$extn;
                 $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
-                Pembayaran::where('samp_id',$request->id)->update([
+                Pembayaran::where('id',$request->id)->update([
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'img_bukti' => $finalS,
                     'status' => 1,
                 ]);
             }else{
-                Pembayaran::where('samp_id',$request->id)->update([
+                Pembayaran::where('id',$request->id)->update([
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'status' => 1,
                 ]);
@@ -444,13 +444,13 @@ class UserController extends Controller
                 $extn =$request->file('img_bukti')->getClientOriginalExtension();
                 $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'.'.$extn;
                 $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
-                Pembayaran::where('prod_id',$request->id)->update([
+                Pembayaran::where('id',$request->id)->update([
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'img_bukti' => $finalS,
                     'status' => 1,
                 ]);
             }else{
-                Pembayaran::where('prod_id',$request->id)->update([
+                Pembayaran::where('id',$request->id)->update([
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'status' => 1,
                 ]);
@@ -478,11 +478,22 @@ class UserController extends Controller
         return view('konsul.pengajuankonsul',compact('sampling','produksi'));
     }
 
-    public function viewpilihkonsul($id)
+    public function viewpilihkonsul($id,$jns)
     {
         $jadwal = Konsul::where('status','0')->get();
+        if($jns==0){
+            $jadwal1 = Konsul::where([
+                ['status','1'],
+                ['samp_id',$id]
+            ])->get();
+        }else{
+            $jadwal1 = Konsul::where([
+                ['status','1'],
+                ['prod_id',$id]
+            ])->get();
+        }
         $cal = Konsul::all();
-        return view('konsul.ambiljadwal',compact('jadwal','id','cal'));
+        return view('konsul.ambiljadwal',compact('jadwal','jadwal1','id','cal'));
     }
 
     public function pilihkonsul(Request $request)

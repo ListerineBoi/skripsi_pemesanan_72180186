@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12 mt-5">
             <div class="card">
-                <div class="card-header">List Sampling</div>
+                <div class="card-header">List Produksi</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -91,13 +91,40 @@
                                             
                                         </td>
                                         <td>
-                                        <a href="{{route('admineditproduksi',['id' => $row->id])}}" class="btn btn-primary mb-2">Detail</a>
-                                        <a type="button" class="btn btn-danger mb-2" href="{{route('admindelS',['id' => $row->id])}}">Delete</a>
+                                        <a href="{{route('admineditproduksi',['id' => $row->id])}}" class="btn btn-primary mb-1">Detail</a>
+                                        <a type="button" class="btn btn-danger mb-1" href="{{route('admindelS',['id' => $row->id])}}">Delete</a>
+                                        <a href="{{route('lihatinvoicesampling',['id' => $row->id,'jns' => '1'])}}" class="btn btn-primary mb-1">Invoice</a>
                                         <br>
-                                        <a href="{{route('lihatinvoicesampling',['id' => $row->id,'jns' => '1'])}}" class="btn btn-primary">Invoice</a>
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong{{$loop->iteration}}">
                                                 Set Status
                                             </button>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong2{{$loop->iteration}}">
+                                                Set Tanggal Jadi
+                                            </button>
+                                            <div class="modal fade" id="exampleModalLong2{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Tanggal Jadi</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Set Tanggal Jadi
+                                                        <form method="post" action="{{route('tgljadi')}}" enctype='multipart/form-data'>
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$row->id}}">
+                                                        <input type="hidden" name="jns" value="1">
+                                                        <input type="date" name="tgl_jadi">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="modal fade" id="exampleModalLong{{$loop->iteration}}">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">

@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('chat-messages', require('./components/ChatMessages.vue').default);
 Vue.component('chat-form', require('./components/ChatForm.vue').default);
+Vue.component('chat-room', require('./components/ChatRoom.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,18 +34,36 @@ const app = new Vue({
     el: '#app',
     //Store chat messages for display in this array.
     data: {
-        messages: []
+        messages: [],
+        rooms: [],
+        roomchosen:''
     },
     //Upon initialisation, run fetchMessages(). 
     created() {
-        this.fetchMessages();
+        //this.fetchMessages();
+        this.fetchRoom();
+        Echo.private('chat')
+        .listen('MessageSent', (e) => {
+            this.messages.push({
+                message: e.message.message,
+                user: e.user
+            });
+        });
     },
     methods: {
         fetchMessages() {
             //GET request to the messages route in our Laravel server to fetch all the messages
-            axios.get('/messages').then(response => {
+            axios.get('/messagesfetch/'+this.roomchosen.room).then(response => {
                 //Save the response in the messages array to display on the chat view
                 this.messages = response.data;
+                
+            });
+            //console.log('/messagesfetch/'+this.roomchosen.room);
+        },
+        fetchRoom() {
+            axios.get('/room').then(response => {
+                this.rooms = response.data;
+                //console.log(response.data);
             });
         },
         //Receives the message that was emitted from the ChatForm Vue component
@@ -55,6 +74,12 @@ const app = new Vue({
             axios.post('/messages', message).then(response => {
                 console.log(response.data);
             });
-        }
+        },
+        getchosenroom(room) {
+                this.roomchosen = room;
+                this.fetchMessages();
+            
+        },
+        
     }
 });

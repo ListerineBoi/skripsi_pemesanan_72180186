@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 //live-msg//
 Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
-Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
-Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
+Route::get('messagesfetch/{id}', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
+Route::post('messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
+Route::get('room', [App\Http\Controllers\ChatsController::class, 'fetchRoom']);
 //coba//
 Route::get('/coba', [App\Http\Controllers\HomeController::class, 'indexcoba'])->name('indexcoba');
 
@@ -54,13 +55,13 @@ Route::post('/admin/editproduksi/statusProduksi', [App\Http\Controllers\AdminCon
 Route::get('/admin/setjadwal', [App\Http\Controllers\AdminController::class, 'viewformtambahkonsul'])->name('viewformtambahkonsul');
 Route::post('/admin/setjadwal/save', [App\Http\Controllers\AdminController::class, 'tambahkonsul'])->name('tambahkonsul');
     //invoice//
-Route::post('/tambahinvc', [App\Http\Controllers\AdminController::class, 'tambahinvoice'])->name('tambahinvoice');
-Route::get('/invc/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'lihatinvoicesampling'])->name('lihatinvoicesampling');
-Route::get('/invcd/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'lihatdetailinvoice'])->name('lihatdetailinvoice');
-Route::post('/invc/additem', [App\Http\Controllers\AdminController::class, 'addinvoice'])->name('addinvoice');
-Route::post('/invc/verifbuktibyr', [App\Http\Controllers\AdminController::class, 'verifbuktibyr'])->name('verifbuktibyr');
-Route::get('/invc/pdf/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'generateinvoicesampling'])->name('generateinvoicesampling');
-Route::get('/sendinvoice/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'sendinvoice'])->name('sendinvoice');
+Route::post('/admin/tambahinvc', [App\Http\Controllers\AdminController::class, 'tambahinvoice'])->name('tambahinvoice');
+Route::get('/admin/invc/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'lihatinvoicesampling'])->name('lihatinvoicesampling');
+Route::get('/admin/invcd/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'lihatdetailinvoice'])->name('lihatdetailinvoice');
+Route::post('/admin/invc/additem', [App\Http\Controllers\AdminController::class, 'addinvoice'])->name('addinvoice');
+Route::post('/admin/invc/verifbuktibyr', [App\Http\Controllers\AdminController::class, 'verifbuktibyr'])->name('verifbuktibyr');
+Route::post('/admin/invc/pdf', [App\Http\Controllers\AdminController::class, 'generateinvoicesampling'])->name('generateinvoicesampling');
+Route::post('/admin/sendinvoice', [App\Http\Controllers\AdminController::class, 'sendinvoice'])->name('sendinvoice');
 
 //customer//
     //sampling//

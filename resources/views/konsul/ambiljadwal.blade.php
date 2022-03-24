@@ -8,7 +8,8 @@
                 
                     
                             <!-- Textual inputs start -->
-                            <div class="col-12 mt-5">
+                            <div class="row">
+                            <div class="col-4 mt-5">
                                 <div class="card">
                                     <div class="card-body">
                                     <form method="post" action="{{route('pilihkonsul')}}" enctype='multipart/form-data'>
@@ -31,11 +32,8 @@
                             </div>
                             <!-- Textual inputs end -->
                             
-                            
-                        
-                    
                             <!-- basic form start -->
-                            <div class="col-12 mt-5">
+                            <div class="col-8 mt-5">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="header-title">Calendar</h4>
@@ -49,11 +47,41 @@
                                 </div>
                             </div>
                             <!-- basic form end -->
-                            
-                        
-                    
-                
             </div>
+            </div>
+                 <div class="col-md-12 mt-5">
+                                <div class="card">
+                                    <div class="card-header"></div>
+
+                                    <div class="card-body">
+                                    <div class="single-table">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover progress-table text-center">
+                                                    <thead class="text-uppercase">
+                                                        <tr>
+                                                            <th scope="col">Jenis</th>
+                                                            <th scope="col">Tgl</th>
+                                                            <th scope="col">Jam</th>
+                                                            <th scope="col">action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach( $jadwal1 as $jdwl)
+                                                        <tr>
+                                                            <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
+                                                            <td>{{$jdwl->tgl}}</td>
+                                                            <td>{{$jdwl->mulai}}</td>
+                                                            <td>action</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
         </div>
         <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('js/popper.min.js') }}"></script>

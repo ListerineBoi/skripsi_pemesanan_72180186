@@ -27,8 +27,46 @@
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <!-- modernizr css -->
     <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    
 </head>
+<style>
+  .chat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
+  .chat li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+  }
+
+  .chat li .chat-body p {
+    margin: 0;
+    color: #777777;
+  }
+
+  .panel-body {
+    overflow-y: scroll;
+    height: 350px;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+  }
+</style>
 <body>
     <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -278,7 +316,9 @@
             </div>
             <!-- page title area end -->
             <div class="main-content-inner">
+                <div id="app">
                 @yield('content')
+                </div>
             </div>
         </div>
         <!-- main content area end -->
@@ -469,6 +509,7 @@
         </div>
     </div>
     <!-- offset area end -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- jquery latest version -->
     <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>
     <!-- bootstrap 4 js -->
@@ -499,6 +540,7 @@
     <!-- others plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+    
 </body>
 
 </html>

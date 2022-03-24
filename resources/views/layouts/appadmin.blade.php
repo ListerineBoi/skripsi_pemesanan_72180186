@@ -267,7 +267,12 @@
                         <div class="breadcrumbs-area clearfix">
                             <h4 class="page-title pull-left">Dashboard</h4>
                             <ul class="breadcrumbs pull-left">
-                                <li><a href="index.html">Home</a></li>
+                                @php
+                                $segments = count(Request::segments());
+                                @endphp
+                                @for($i = 2; $i <= $segments; $i++)
+                                <li><a href="index.html"></a></li>
+                                @endfor
                                 <li><span>Dashboard</span></li>
                             </ul>
                         </div>

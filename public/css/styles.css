@@ -2837,5 +2837,8 @@ table.dataTable thead td {
     font-size: 16px;
     color: #555;
 }
-
+.scroll {
+    max-height: 500px;
+    overflow-y: auto;
+  }
 /*-------------------- END Offset Sidebar ------------------- */

@@ -54,13 +54,15 @@
                                         <td>{{$row->harga}}</td>
                                         <td>{{$row->total}}</td>
                                         <td>
+                                        @if($nota->status==0)
                                             <ul class="d-flex justify-content-center">
-                                                <li class="mr-3"><a href="#" class="text-secondary"><i class="fa fa-edit"></i></a></li>
                                                 <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
                                             </ul>
+                                        @endif
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @if($nota->status==0)
                                     <tr>
                                         <td class="text-center"></td>
                                         <td></td>
@@ -73,6 +75,7 @@
                                             </ul>
                                         </td>
                                     </tr>
+                                    @endif
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -124,8 +127,21 @@
                         </div>
                     </div>
                     <div class="invoice-buttons text-right">
-                        <a href="{{route('generateinvoicesampling',['id' => $id,'jns' => $jns])}}" class="invoice-btn">print invoice</a>
-                        <a href="{{route('sendinvoice',['id' => $id,'jns' => $jns])}}" class="invoice-btn">send invoice</a>
+                        <form action="{{route('generateinvoicesampling')}}" method="post">
+                        @csrf
+                        <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
+                        <input class="form-control" type="hidden" value="{{$id}}" name="id">
+                        <button class="btn btn-success btn-md">Preview invoice</button>
+                        </form>
+                        @if($nota->status==0)
+                        <form action="{{route('sendinvoice')}}" method="post">
+                        @csrf
+                        <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
+                        <input class="form-control" type="hidden" value="{{$id}}" name="id">
+                        <button class="btn btn-success btn-md">Preview invoice</button>
+                        </form>
+                        @else
+                        @endif
                     </div>
                 </div>
             </div>

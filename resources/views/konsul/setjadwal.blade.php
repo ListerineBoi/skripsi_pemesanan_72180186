@@ -5,51 +5,40 @@
             
             
             <div class="main-content-inner">
-                <div class="row">
-                   
-                        <div class="row">
+                        <div class="row mt-5">
                             <!-- Textual inputs start -->
-                            <div class="col-12 mt-5">
+                            <div class="col-4 ">
                                 <div class="card">
                                     <div class="card-body">
-                                    <form method="post" action="{{route('tambahkonsul')}}" enctype='multipart/form-data'>
-                                        @csrf
-                                        <h4 class="header-title">isi dengan jadwal konsul </h4>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">title</label>
-                                            <input class="form-control" type="text" value="" name="title">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-form-label">Jenis</label>
-                                            <select class="custom-select" name="jns">
-                                                <option selected value="0">Tatap Muka</option>
-                                                <option selected value="1">Online</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-date-input" class="col-form-label">Date</label>
-                                            <input class="form-control" type="date" value="2018-03-05" name="tgl">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-time-input" class="col-form-label">Time</label>
-                                            <input class="form-control" type="time" value="13:45:00" name="mulai">
-                                        </div>
-                                        <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
-                                    </form>
+                                        <form method="post" action="{{route('tambahkonsul')}}" enctype='multipart/form-data'>
+                                            @csrf
+                                            <h4 class="header-title">isi dengan jadwal konsul </h4>
+                                            <div class="form-group">
+                                                <label for="example-text-input" class="col-form-label">title</label>
+                                                <input class="form-control" type="text" value="" name="title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">Jenis</label>
+                                                <select class="custom-select" name="jns">
+                                                    <option selected value="0">Tatap Muka</option>
+                                                    <option selected value="1">Online</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-date-input" class="col-form-label">Date</label>
+                                                <input class="form-control" type="date" value="2018-03-05" name="tgl">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-time-input" class="col-form-label">Time</label>
+                                                <input class="form-control" type="time" value="13:45:00" name="mulai">
+                                            </div>
+                                            <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
+                                        </form>
                                         
                                     </div>
                                 </div>
                             </div>
-                            <!-- Textual inputs end -->
-                            
-                            
-                        </div>
-                    </div>
-                    </div>
-                    
-                    <div class="col-lg-10 col-md-12">
-                        
-                            <!-- basic form start -->
+                            <div class="col-8">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="header-title">Calendar</h4>
@@ -61,10 +50,11 @@
                                             <div id='calendar'></div>
                                     </div>
                                 </div>
-                            <!-- basic form end -->
-                            
-                        
-                    </div>
+                            </div>
+                        </div>
+                    
+                    
+                    
                     </div>
                     <div class="col-md-12 mt-5">
             <div class="card">
@@ -95,7 +85,7 @@
                             </table>
                         </div>
                     </div>
-                    
+                    </div>  
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <ul class="chat">
+  <ul class="chat ">
     <li class="left clearfix" v-for="message in messages" :key="message.id">
       <div class="clearfix">
         <div class="header">

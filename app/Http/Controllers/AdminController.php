@@ -334,18 +334,18 @@ class AdminController extends Controller
     public function lihatdetailinvoice($id,$jns)
     {
             if($jns==0){
-                $nota=Pembayaran::where('id',$id)->value('samp_id');
-                $jasa=Sampling::where('id',$nota)->first();
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Sampling::where('id',$nota->samp_id)->first();
             }else{
-                $nota=Pembayaran::where('id',$id)->value('prod_id');
-                $jasa=Produksi::where('id',$nota)->first();
+                $nota=Pembayaran::where('id',$id)->first();
+                $jasa=Produksi::where('id',$nota->prod_id)->first();
             }
             $dataD=User::where('id',$jasa->cus_id)->first();
             $invoice=DetailInvoice::where('bayar_id',$id)->get();
             $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
         
         //return
-        return view('invoice.lihatdetailadm',compact('dataD','jasa','id','jns','invoice','sum'));
+        return view('invoice.lihatdetailadm',compact('nota','dataD','jasa','id','jns','invoice','sum'));
     }
     
     public function addinvoice(Request $request)
@@ -370,8 +370,10 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function generateinvoicesampling($id,$jns)
+    public function generateinvoicesampling(Request $request)
     {
+        $id=$request->id;
+        $jns=$request->jns;
         if($jns==0){
             $nota=Pembayaran::where('id',$id)->first();
             $jasa=Sampling::where('id',$nota->samp_id)->first();
@@ -389,6 +391,8 @@ class AdminController extends Controller
     }
     public function sendinvoice($id,$jns)
     {
+        $id=$request->id;
+        $jns=$request->jns;
         if($jns==0){
             $nota=Pembayaran::where('id',$id)->first();
             $jasa=Sampling::where('id',$nota->samp_id)->first();

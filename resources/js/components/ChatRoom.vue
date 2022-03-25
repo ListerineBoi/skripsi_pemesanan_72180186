@@ -10,12 +10,16 @@
         <div class="input-group " >
           <input id="btn-input" type="hidden" name="room" class="form-control" :value="room.id" >
           <span class="input-group-btn ">
-            <button class="btn btn-primary btn-sm ml-2" id="btn-chat" >
-              Send
-            </button>
           </span>
         </div>
       </div>
+    </li>
+    <li>
+      <div class="header">
+          <strong>
+          ashdkjadhkadkj
+          </strong>
+        </div>
     </li>
   </ul>
 </template>

@@ -13,4 +13,12 @@ class Detail_pakaian extends Model
         'ling_paha','ling_lutut','ling_kaki','panj_cln_rok','tingg_dudk',
     ];
     protected $table="detail_pakaian";
+    public function samp()
+    {
+        return $this->hasMany(Sampling::class);
+    }
+    public function prod()
+    {
+        return $this->hasMany(Produksi::class);
+    }
 }

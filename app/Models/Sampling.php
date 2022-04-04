@@ -11,4 +11,12 @@ class Sampling extends Model
         'slot_id','jml','cus_id','admin_id','status','detail_id',
     ];
     protected $table="sampling";
+    public function room()
+    {
+        return $this->hasMany(Room::class);
+    }
+    public function detp()
+    {
+        return $this->belongsTo(Detail_pakaian::class,'detail_id');
+    }
 }

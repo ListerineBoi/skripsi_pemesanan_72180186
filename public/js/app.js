@@ -5324,6 +5324,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["messages"]
 });
@@ -5366,12 +5369,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-  props: ["rooms"],
+  props: ["rooms", "jasas"],
   data: function data() {
     return {
-      room: ""
+      room: "",
+      selectedJ: '',
+      selectedT: '',
+      selectedS: '',
+      selectedP: ''
     };
   },
   methods: {
@@ -5379,6 +5430,51 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("chooseroom", {
         room: value
       });
+    },
+    submitroom: function submitroom(value) {
+      switch (value) {
+        case 0:
+          if (this.selectedT == 0) {
+            this.$emit("newroom", {
+              jenis: this.selectedJ,
+              tipejasa: this.selectedT,
+              jasa_id: this.selectedP
+            });
+          } else if (this.selectedT == 1) {
+            this.$emit("newroom", {
+              jenis: this.selectedJ,
+              tipejasa: this.selectedT,
+              jasa_id: this.selectedS
+            });
+          }
+
+          break;
+
+        case 1:
+          if (this.selectedT == 0) {
+            this.$emit("newroom", {
+              jenis: this.selectedJ,
+              tipejasa: this.selectedT,
+              jasa_id: this.selectedP
+            });
+          } else if (this.selectedT == 1) {
+            this.$emit("newroom", {
+              jenis: this.selectedJ,
+              tipejasa: this.selectedT,
+              jasa_id: this.selectedS
+            });
+          }
+
+          break;
+
+        case 2:
+          this.$emit("newroom", {
+            jenis: this.selectedJ,
+            tipejasa: null,
+            jasa_id: null
+          });
+          break;
+      }
     }
   }
 });
@@ -5454,25 +5550,32 @@ Vue.component('chat-room', (__webpack_require__(/*! ./components/ChatRoom.vue */
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.prototype.$userId = document.querySelector("meta[name='user-id']").getAttribute('content');
 var app = new Vue({
   el: '#app',
   //Store chat messages for display in this array.
   data: {
     messages: [],
     rooms: [],
+    jasas: [],
     roomchosen: ''
   },
   //Upon initialisation, run fetchMessages(). 
   created: function created() {
     var _this = this;
 
-    //this.fetchMessages();
+    //console.log(this.$userId);
     this.fetchRoom();
-    Echo["private"]('chat').listen('MessageSent', function (e) {
-      _this.messages.push({
-        message: e.message.message,
-        user: e.user
-      });
+    this.fetchjasa();
+    window.Echo.channel('chat').listen('MessageSent', function (e) {
+      console.log(e.message.room_id);
+
+      if (e.message.room_id == _this.roomchosen.room) {
+        _this.messages.push({
+          message: e.message.message,
+          user: e.user
+        });
+      }
     });
   },
   methods: {
@@ -5482,14 +5585,23 @@ var app = new Vue({
       //GET request to the messages route in our Laravel server to fetch all the messages
       axios.get('/messagesfetch/' + this.roomchosen.room).then(function (response) {
         //Save the response in the messages array to display on the chat view
-        _this2.messages = response.data;
+        _this2.messages = response.data; // var wow= JSON.stringify(this.messages);
+        // console.log(wow);
       }); //console.log('/messagesfetch/'+this.roomchosen.room);
     },
     fetchRoom: function fetchRoom() {
       var _this3 = this;
 
       axios.get('/room').then(function (response) {
-        _this3.rooms = response.data; //console.log(response.data);
+        _this3.rooms = response.data;
+      });
+    },
+    fetchjasa: function fetchjasa() {
+      var _this4 = this;
+
+      axios.get('/jasa/' + this.$userId).then(function (response) {
+        _this4.jasas = response.data; // var wow= JSON.stringify(this.jasas.sampling);
+        // console.log(wow);
       });
     },
     //Receives the message that was emitted from the ChatForm Vue component
@@ -5504,6 +5616,14 @@ var app = new Vue({
     getchosenroom: function getchosenroom(room) {
       this.roomchosen = room;
       this.fetchMessages();
+    },
+    createroom: function createroom(jenis, tipejasa, jasa_id) {
+      axios.get('/createroom/' + this.$userId + '/' + jenis.jenis + '/' + jenis.tipejasa + '/' + jenis.jasa_id).then(function (response) {
+        //Save the response in the messages array to display on the chat view
+        console.log(response.data);
+      });
+      this.fetchRoom(); //console.log(this.$userId)
+      //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
     }
   }
 });
@@ -5543,7 +5663,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "d16047c05158f9d8b58b",
+  key: "33a71725c67fb72e3439",
   cluster: "ap1",
   forceTLS: true
 });
@@ -34536,9 +34656,17 @@ var render = function () {
       return _c("li", { key: message.id, staticClass: "left clearfix" }, [
         _c("div", { staticClass: "clearfix" }, [
           _c("div", { staticClass: "header" }, [
-            _c("strong", [
-              _vm._v("\n          " + _vm._s(message.user.name) + "\n        "),
-            ]),
+            message.user != null
+              ? _c("strong", [
+                  _vm._v(
+                    "\n          " + _vm._s(message.user.name) + "\n        "
+                  ),
+                ])
+              : _c("strong", [
+                  _vm._v(
+                    "\n          " + _vm._s(message.admin.name) + "\n        "
+                  ),
+                ]),
           ]),
           _vm._v(" "),
           _c("p", [
@@ -34575,14 +34703,15 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "ul",
-    { staticClass: "chat " },
+    { staticClass: "list-group" },
     [
       _vm._l(_vm.rooms, function (room) {
         return _c(
           "li",
           {
             key: room.id,
-            staticClass: "left clearfix",
+            staticClass:
+              "list-group-item list-group-item-action flex-column align-items-start",
             on: {
               click: function ($event) {
                 return _vm.chooseId(room.id)
@@ -34590,21 +34719,55 @@ var render = function () {
             },
           },
           [
-            _c("div", { staticClass: "clearfix" }, [
-              _c("div", { staticClass: "header" }, [
-                _c("strong", [
-                  _vm._v("\n          room " + _vm._s(room.id) + "\n        "),
-                ]),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-4" }, [
+                room.samp_id != null
+                  ? _c("img", {
+                      staticClass: "img-fluid mr-4",
+                      attrs: {
+                        src: "/storage/imgsampling/" + room.sampling.detp.img,
+                        alt: "image",
+                      },
+                    })
+                  : _c("img", {
+                      staticClass: "img-fluid mr-4",
+                      attrs: {
+                        src: "/storage/imgsampling/" + room.produksi.detp.img,
+                        alt: "image",
+                      },
+                    }),
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "input-group " }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { id: "btn-input", type: "hidden", name: "room" },
-                  domProps: { value: room.id },
-                }),
+              _c("div", { staticClass: "col-8" }, [
+                _c(
+                  "div",
+                  { staticClass: "d-flex w-100 justify-content-between" },
+                  [
+                    room.samp_id != null
+                      ? _c("h5", { staticClass: "mb-1" }, [
+                          _vm._v(
+                            "List group item heading " +
+                              _vm._s(room.sampling.detp.img)
+                          ),
+                        ])
+                      : _c("h5", { staticClass: "mb-1" }, [
+                          _vm._v(
+                            "List group item heading " +
+                              _vm._s(room.produksi.detp.img)
+                          ),
+                        ]),
+                    _vm._v(" "),
+                    _c("small", [_vm._v("3 days ago")]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("span", { staticClass: "input-group-btn " }),
+                _c("p", { staticClass: "mb-1" }, [
+                  _vm._v(
+                    "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit."
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("small", [_vm._v("Donec id elit non mi porta.")]),
               ]),
             ]),
           ]
@@ -34612,6 +34775,259 @@ var render = function () {
       }),
       _vm._v(" "),
       _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "modal fade", attrs: { id: "exampleModalLong" } },
+        [
+          _c(
+            "div",
+            { staticClass: "modal-dialog modal-dialog-centered modal-lg" },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("label", { staticClass: "col-form-label" }, [
+                    _vm._v("Jenis"),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedJ,
+                          expression: "selectedJ",
+                        },
+                      ],
+                      staticClass: "custom-select mb-2",
+                      attrs: { name: "model" },
+                      on: {
+                        change: function ($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function (o) {
+                              return o.selected
+                            })
+                            .map(function (o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedJ = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                      },
+                    },
+                    [
+                      _c("option", { attrs: { value: "0" } }, [
+                        _vm._v("Konsultasi Produksi/Sampling"),
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "1" } }, [
+                        _vm._v("Komplain Paska-Produksi/Sampling"),
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2" } }, [
+                        _vm._v("Konsultasi Pra-Pemesanan"),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.selectedJ != 2
+                    ? _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Tipe Jasa"),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selectedJ != 2
+                    ? _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selectedT,
+                              expression: "selectedT",
+                            },
+                          ],
+                          staticClass: "custom-select mb-2",
+                          attrs: { name: "model" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.selectedT = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                          },
+                        },
+                        [
+                          _c("option", { attrs: { value: "0" } }, [
+                            _vm._v("Produksi"),
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "1" } }, [
+                            _vm._v("Sampling"),
+                          ]),
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selectedT != null && _vm.selectedJ != 2
+                    ? _c("label", { staticClass: "col-form-label" }, [
+                        _vm._v("Subyek"),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selectedT == 0 && _vm.selectedJ != 2
+                    ? _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selectedP,
+                              expression: "selectedP",
+                            },
+                          ],
+                          staticClass: "custom-select mb-2",
+                          attrs: { name: "model" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.selectedP = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                          },
+                        },
+                        _vm._l(_vm.jasas.produksi, function (produksi) {
+                          return _c("option", { key: produksi.id }, [
+                            _vm._v(_vm._s(produksi.id)),
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.selectedT == 1 && _vm.selectedJ != 2
+                    ? _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selectedS,
+                              expression: "selectedS",
+                            },
+                          ],
+                          staticClass: "custom-select mb-2",
+                          attrs: { name: "model" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.selectedS = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                          },
+                        },
+                        _vm._l(_vm.jasas.sampling, function (sampling) {
+                          return _c("option", { key: sampling.id }, [
+                            _vm._v(_vm._s(sampling.id)),
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _vm.selectedJ == 2
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.submitroom(2)
+                            },
+                          },
+                        },
+                        [_vm._v("Save changes2")]
+                      )
+                    : _vm.selectedJ == 0
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.submitroom(0)
+                            },
+                          },
+                        },
+                        [_vm._v("Save changes0")]
+                      )
+                    : _vm.selectedJ == 1
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.submitroom(1)
+                            },
+                          },
+                        },
+                        [_vm._v("Save changes1")]
+                      )
+                    : _vm._e(),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
     ],
     2
   )
@@ -34621,10 +35037,46 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("div", { staticClass: "header" }, [
-        _c("strong", [_vm._v("\n        ashdkjadhkadkj\n        ")]),
-      ]),
+    return _c(
+      "li",
+      {
+        staticClass:
+          "list-group-item list-group-item-action flex-column align-items-start",
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "d-flex justify-content-center",
+            attrs: {
+              "data-toggle": "modal",
+              "data-target": "#exampleModalLong",
+            },
+          },
+          [
+            _c("h2", { staticClass: "mb-1" }, [
+              _c("i", { staticClass: "ti-plus" }),
+            ]),
+          ]
+        ),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Buka Room Baru")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" },
+        },
+        [_c("span", [_vm._v("×")])]
+      ),
     ])
   },
 ]
@@ -46846,7 +47298,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","D:\\\\xampp\\\\htdocs\\\\E-commerce_Amoora"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"D:\\\\xampp\\\\htdocs\\\\E-commerce_Amoora","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","E:\\\\xampp\\\\htdocs\\\\E-commerce_Amoora"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"E:\\\\xampp\\\\htdocs\\\\E-commerce_Amoora","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

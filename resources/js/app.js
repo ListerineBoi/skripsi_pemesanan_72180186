@@ -29,26 +29,32 @@ Vue.component('chat-room', require('./components/ChatRoom.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+Vue.prototype.$userId = document.querySelector("meta[name='user-id']").getAttribute('content');
 const app = new Vue({
     el: '#app',
     //Store chat messages for display in this array.
     data: {
         messages: [],
         rooms: [],
+        jasas: [],
         roomchosen:''
     },
     //Upon initialisation, run fetchMessages(). 
     created() {
-        //this.fetchMessages();
+        //console.log(this.$userId);
         this.fetchRoom();
-        Echo.private('chat')
+        this.fetchjasa()
+        window.Echo.channel('chat')
         .listen('MessageSent', (e) => {
-            this.messages.push({
-                message: e.message.message,
-                user: e.user
-            });
+            console.log(e.message.room_id);
+            if(e.message.room_id==this.roomchosen.room){
+                this.messages.push({
+                    message: e.message.message,
+                    user: e.user
+                });
+            }
         });
+        
     },
     methods: {
         fetchMessages() {
@@ -56,14 +62,22 @@ const app = new Vue({
             axios.get('/messagesfetch/'+this.roomchosen.room).then(response => {
                 //Save the response in the messages array to display on the chat view
                 this.messages = response.data;
-                
+                // var wow= JSON.stringify(this.messages);
+                // console.log(wow);
             });
             //console.log('/messagesfetch/'+this.roomchosen.room);
         },
         fetchRoom() {
             axios.get('/room').then(response => {
                 this.rooms = response.data;
-                //console.log(response.data);
+                
+            });
+        },
+        fetchjasa() {
+            axios.get('/jasa/'+this.$userId).then(response => {
+                this.jasas = response.data;
+                // var wow= JSON.stringify(this.jasas.sampling);
+                // console.log(wow);
             });
         },
         //Receives the message that was emitted from the ChatForm Vue component
@@ -79,6 +93,16 @@ const app = new Vue({
                 this.roomchosen = room;
                 this.fetchMessages();
             
+        },
+        createroom(jenis,tipejasa,jasa_id) {
+            axios.get('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id).then(response => {
+                //Save the response in the messages array to display on the chat view
+                console.log(response.data);
+                
+            });
+            this.fetchRoom();
+            //console.log(this.$userId)
+            //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
         },
         
     }

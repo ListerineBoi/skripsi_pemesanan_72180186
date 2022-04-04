@@ -11,4 +11,12 @@ class Produksi extends Model
         'slot_id','detail_id','desc','jml','cus_id','admin_id','status',
     ];
     protected $table="produksi";
+    public function room()
+    {
+        return $this->hasMany(Room::class);
+    }
+    public function detp()
+    {
+        return $this->belongsTo(Detail_pakaian::class,'detail_id');
+    }
 }

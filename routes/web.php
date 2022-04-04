@@ -17,6 +17,8 @@ Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
 Route::get('messagesfetch/{id}', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
 Route::post('messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
 Route::get('room', [App\Http\Controllers\ChatsController::class, 'fetchRoom']);
+Route::get('jasa/{id}', [App\Http\Controllers\ChatsController::class, 'fetchjasa']);
+Route::get('createroom/{user_id}/{jenis}/{tipejasa}/{jasa_id}', [App\Http\Controllers\ChatsController::class, 'createRoom']);
 //coba//
 Route::get('/coba', [App\Http\Controllers\HomeController::class, 'indexcoba'])->name('indexcoba');
 

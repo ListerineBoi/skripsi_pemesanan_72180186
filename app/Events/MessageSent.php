@@ -1,6 +1,7 @@
 <?php
 namespace App\Events;
 use App\Models\User;
+use App\Models\admin;
 use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -33,10 +34,15 @@ class MessageSent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, Message $message)
+    public function __construct( $admin, $user, $message)
     {
-        $this->user = $user;
-        $this->message = $message;
+        if($admin==null){
+            $this->user = $user;
+            $this->message = $message;
+        }elseif ($user==null) {
+            $this->user = $admin;
+            $this->message = $message;
+        }
     }
 
     /**
@@ -46,6 +52,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat');
+        return new Channel('chat');
     }
 }

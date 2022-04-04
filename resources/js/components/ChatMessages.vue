@@ -3,8 +3,11 @@
     <li class="left clearfix" v-for="message in messages" :key="message.id">
       <div class="clearfix">
         <div class="header">
-          <strong>
+          <strong v-if="message.user!=null">
             {{ message.user.name }}
+          </strong>
+          <strong v-else>
+            {{ message.admin.name }}
           </strong>
         </div>
         <p>

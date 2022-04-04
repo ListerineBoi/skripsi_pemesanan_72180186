@@ -37,6 +37,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
+    public function samplings()
+    {
+        return $this->hasMany(Sampling::class,'cus_id');
+    }
+    public function produksis()
+    {
+        return $this->hasMany(Produksi::class,'cus_id');
+    }
     
 
     /**

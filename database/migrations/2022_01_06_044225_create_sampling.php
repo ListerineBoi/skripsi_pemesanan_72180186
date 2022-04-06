@@ -20,7 +20,6 @@ class CreateSampling extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->unsignedBigInteger('detail_id')->nullable();
             $table->date('tgl_jadi')->nullable();
-            $table->tinyInteger('jml')->nullable();
             $table->char('status', 1);
             $table->timestamps();
             $table->foreign('detail_id')->references('id')->on('detail_pakaian');

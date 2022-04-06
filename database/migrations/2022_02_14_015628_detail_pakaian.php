@@ -15,8 +15,11 @@ class DetailPakaian extends Migration
     {
         Schema::create('detail_pakaian', function (Blueprint $table) {
             $table->id();
-            $table->char('model', 2);
-            $table->text('img');
+            $table->char('public', 1);
+            $table->char('jenis', 1);
+            $table->string('nama_atasan', 35)->nullable();
+            $table->string('nama_bawahan', 35)->nullable();
+            $table->text('img')->nullable();
             $table->char('ling_b', 5)->nullable();
             $table->char('ling_pgang', 5)->nullable();
             $table->char('ling_pingl', 5)->nullable();

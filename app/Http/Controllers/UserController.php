@@ -50,19 +50,19 @@ class UserController extends Controller
             $id=Auth::user()->id;
             $this->validate($request, [
                 'slot_id' => 'required',
-                'model' => 'required',
-                'img_model' => 'required',
-                'desc' => 'required',
-                'jml' => 'required'     
+                'jenis' => 'required',
+                'desc' => 'required', 
             ]);
-            $fullname = $request->file('img_model')->getClientOriginalName();
-            $extn =$request->file('img_model')->getClientOriginalExtension();
-            $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
-            $path = $request->file('img_model')->storeAs('public/imgsampling', $finalS);
+            // $fullname = $request->file('img_model')->getClientOriginalName();
+            // $extn =$request->file('img_model')->getClientOriginalExtension();
+            // $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
+            // $path = $request->file('img_model')->storeAs('public/imgsampling', $finalS);
 
             $Detail_pakaian= Detail_pakaian::create([
-                'model' => $request->model,
-                'img' => $finalS,
+                'public' => '1',
+                'nama_atasan' => $request->nama_atasan,
+                'nama_bawahan' => $request->nama_bawahan,
+                'jenis' => $request->jenis,
                 'desc' => $request->desc,
                 'ling_b' => $request->ling_b,
                 'ling_pgang' => $request->ling_pgang,
@@ -92,7 +92,6 @@ class UserController extends Controller
                 'slot_id' => $request->slot_id,
                 'cus_id' => $id,
                 'status' => 0,
-                'jml' => $request->jml,
             ]);
             $Sampling->save();
 
@@ -341,14 +340,16 @@ class UserController extends Controller
             'img_model' => 'required',
             'desc' => 'required',  
         ]);
-        $fullname = $request->file('img_model')->getClientOriginalName();
-        $extn =$request->file('img_model')->getClientOriginalExtension();
-        $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
-        $path = $request->file('img_model')->storeAs('public/imgsampling', $finalS);
+        // $fullname = $request->file('img_model')->getClientOriginalName();
+        // $extn =$request->file('img_model')->getClientOriginalExtension();
+        // $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
+        // $path = $request->file('img_model')->storeAs('public/imgsampling', $finalS);
 
         $detail= Detail_pakaian::create([
-            'model' => $request->model,
-            'img' => $finalS,
+            'public' => '1',
+            'nama_atasan' => $request->jenis,
+            'nama_bawahan' => $request->jenis,
+            'jenis' => $request->jenis,
             'desc' => $request->desc,
             'ling_b' => $request->ling_b,
             'ling_pgang' => $request->ling_pgang,

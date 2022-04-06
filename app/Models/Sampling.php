@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sampling extends Model
 {
     protected $fillable = [
-        'slot_id','jml','cus_id','admin_id','status','detail_id',
+        'slot_id','cus_id','admin_id','status','detail_id',
     ];
     protected $table="sampling";
     public function room()

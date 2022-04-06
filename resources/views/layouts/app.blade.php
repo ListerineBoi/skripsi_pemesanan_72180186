@@ -518,6 +518,7 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/metisMenu.min.js') }}"></script>
     <script src="{{ asset('js/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset('js/disablefunc.js') }}"></script>
     <script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
     
 

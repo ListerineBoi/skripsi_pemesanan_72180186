@@ -76,8 +76,8 @@ const app = new Vue({
         fetchjasa() {
             axios.get('/jasa/'+this.$userId).then(response => {
                 this.jasas = response.data;
-                // var wow= JSON.stringify(this.jasas.sampling);
-                // console.log(wow);
+                var wow= JSON.stringify(response.data);
+                 console.log(wow);
             });
         },
         //Receives the message that was emitted from the ChatForm Vue component

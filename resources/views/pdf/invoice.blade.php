@@ -162,7 +162,7 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum - $nota->terbayar}}</p>
   </td>
  </tr>
  

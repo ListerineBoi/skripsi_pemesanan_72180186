@@ -18,10 +18,7 @@ class Pembayaran extends Migration
             $table->unsignedBigInteger('samp_id')->nullable();
             $table->unsignedBigInteger('prod_id')->nullable();
             $table->char('jenis_jasa', 1);
-            $table->char('jenis_pembayaran', 1)->nullable();
-            $table->char('sarana_p', 1)->nullable();
             $table->mediumInteger('terbayar')->nullable();
-            $table->text('img_bukti')->nullable();
             $table->text('file_invoice')->nullable();
             $table->char('status', 1)->default('0');
             $table->timestamps();

@@ -19,7 +19,6 @@ class CreateProduksi extends Migration
             $table->unsignedBigInteger('cus_id');
             $table->unsignedBigInteger('detail_id')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable();
-            $table->text('desc');
             $table->date('tgl_jadi')->nullable();
             $table->unsignedSmallInteger('jml');
             $table->char('status', 1);

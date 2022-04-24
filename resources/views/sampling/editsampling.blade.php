@@ -3,6 +3,84 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                            @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                            @endforeach
+                            </ul>
+                            </div>
+                        @endif
+
+                        @if(\Session::has('success'))
+                            <div class="alert alert-success">
+                                <p>{{\Session::get('success')}}</p>
+                            </div>
+                        @endif
+
+                        @if(\Session::has('Forbidden'))
+                            <div class="alert alert-danger">
+                                <p>{{\Session::get('Forbidden')}}</p>
+                            </div>
+                        @endif
+                            <h4 class="header-title">File/Gambar Design
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="File/Gambar Design" 
+                                data-content="Anda dapat upload gambar maupun file yang dapat membantu kami memahami design pakaian pesanan anda. (Upload File/gambar hanya bisa dilakukan pada tahap konsultasi).">
+                                    <i class="fa fa-info-circle text-info"></i>
+                            </a>
+                            </h4>
+                            <div class="row row-cols-1 row-cols-md-3 mb-3 pb-3 g-4 bg-light" >
+                                @foreach($fileimg as $row)
+                                    <div class="col-lg-4 col-md-6 mt-3">
+                                        <div class="card h-100 card-bordered">
+                                        
+                                                <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
+                                        
+                                            <div class="card-body">
+                                            @if($sampling->status==0)
+                                                <a type="button" class="btn btn-danger" href="">Delete</a>
+                                            @endif
+                                            </div>
+                                        </div>
+                                    </div> 
+                                @endforeach
+                            </div>
+                            <div class="input-group mb-3">
+                            @if($sampling->status==0)
+                                <div class="row col-12">
+                                    <h4 class="header-title">Upload File/Gambar Design</h4>
+                                </div>
+                                
+                                <div class="row col-12">
+                                    <div class="custom-file col-6">
+                                        <form method="post" action="{{route('uploadimg')}}" enctype='multipart/form-data'>
+                                        @csrf
+                                        <input type="hidden" name="detail_id" value="{{$sampling->detail_id}}">
+                                        <label class="custom-file-label " for="file-upload">Choose file</label>
+                                        <input type="file" class="form-control-file" name="file_img" id="file-upload">
+                                    </div>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-Primary" type="submit">Simpan</button>
+                                        </div>
+                                    </div>
+                            </div>
+                            </form>
+                            @endif
+
+                                
+                    </div>
+                </div>
+            </div>
+    <!-- /////////////////// -->
     <div class="col-12 mt-5">
                 <div class="card">
                     <div class="card-body">
@@ -32,22 +110,25 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                        <form method="post" action="{{route('saveeditS')}}" enctype='multipart/form-data'>
+                        <form id="target" method="post" action="{{route('saveeditS')}}" enctype='multipart/form-data'>
                             @csrf
                             <input type="hidden" name="id" value="{{$sampling->id}}">
-                            <h4 class="header-title">Textual inputs</h4>
-                            <div class="row mb-3">
-                            <div class="col-md-4 col-sm-4">
-                                <img src="/storage/imgsampling/{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('img')}}" height='350' class="card-img-top" alt="...">
-                            </div>
-                                <div class="col-md-8 col-sm-8">
+                            <h4 class="header-title">Detail Pesanan
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Detail Pesanan" 
+                                data-content="Detail pesanan hanya dapat diedit ketika dalam tahap konsultasi,
+                                 setelah terjadi kesepakatan antara pihak kami dan customer dan masuk tahap selanjutnya maka detail pakaian tidak dapat lagi diedit.">
+                                    <i class="fa fa-info-circle text-info"></i>
+                            </a>
+                            </h4>
+                            
+                                <div class="col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label class="col-form-label">Slot</label>
                                         <select class="custom-select" name="slot_id" disabled>
                                             <option value="{{$sampling->slot_id}}">{{DB::table('slot_s')->where('id', $sampling->slot_id)->value('mulai')}} sampai {{DB::table('slot_s')->where('id', $sampling->slot_id)->value('selesai')}}</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                            <div class="form-group">
                             
                                 <label class="col-form-label">Jenis</label> 
                                 <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Jenis" 
@@ -220,11 +301,12 @@
                                     <textarea class="form-control" aria-label="With textarea" name="desc">{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('desc')}}</textarea>
                                 </div>
                             </div>
-                            
+                            @if($sampling->status==0)
                             <button type="submit" class="btn btn-success" class="text-right" style="float: right;">Simpan</button>
+                            @endif
                         </form>
                     </div>
-                </div>
+               
                 </div>
             </div>
         </div>

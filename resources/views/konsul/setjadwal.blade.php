@@ -26,7 +26,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-date-input" class="col-form-label">Date</label>
-                                                <input class="form-control" type="date" value="2018-03-05" name="tgl">
+                                                <input class="form-control" type="date" value="" name="tgl">
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-time-input" class="col-form-label">Time</label>
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="col-7">
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="header-title">Calendar</h4>
@@ -66,19 +66,57 @@
                             <table class="table table-hover progress-table text-center">
                                 <thead class="text-uppercase">
                                     <tr>
+                                        <th scope="col">Customer</th>
                                         <th scope="col">Jenis</th>
-                                        <th scope="col">Tgl</th>
-                                        <th scope="col">Jam</th>
+                                        <th scope="col">Tgl/jam</th>
                                         <th scope="col">action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach( $jadwal1 as $jdwl)
+                                    @foreach( $jadwal as $jdwl)
                                     <tr>
+                                        <td>
+                                            @if($jdwl->samp_id != null)
+                                            {{DB::table('users')->where('id', DB::table('sampling')->where('id', $jdwl->samp_id)->value('cus_id'))->value('name')}}
+                                            @elseif($jdwl->prod_id != null)
+                                            {{DB::table('users')->where('id', DB::table('produksi')->where('id', $jdwl->prod_id)->value('cus_id'))->value('name')}}
+                                            @else
+                                            Belum Ada
+                                            @endif
+                                        </td>
                                         <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
-                                        <td>{{$jdwl->tgl}}</td>
-                                        <td>{{$jdwl->mulai}}</td>
-                                        <td>action</td>
+                                        <td>{{$jdwl->tgl}}/{{$jdwl->mulai}}</td>
+                                        <td>
+                                            @if($jdwl->jenis!=0)
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalnota{{$loop->iteration}}">Set link</button>
+                                            @endif
+                                        </td>
+                                        <div class="modal fade" id="modalnota{{$loop->iteration}}">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Link</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <form method="post" action="{{route('addlink')}}" enctype='multipart/form-data'>
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{$jdwl->id}}">
+                                                    <div class="form-group">
+                                                        <label for="example-time-input" class="col-form-label">Link Google Meet</label>
+                                                        <input class="form-control" type="text" value="{{$jdwl->link}}" name="link">
+                                                    </div>
+                                                    
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Kirim</button>
+                                                    </form>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -115,8 +153,13 @@
                         start: "."'".$row['tgl']."'".",";
                         
                         if ($row['status']==0) {
-                            $echo.="backgroundColor: "."'"."green"."'".",
-                            borderColor: "."'"."green"."'"."},";
+                            if ($row['jenis']==0) {
+                                $echo.="backgroundColor: "."'"."green"."'".",
+                                borderColor: "."'"."green"."'"."},";
+                            }elseif ($row['jenis']==1) {
+                                $echo.="backgroundColor: "."'"."blue"."'".",
+                                borderColor: "."'"."blue"."'"."},";
+                            }
                         }elseif ($row['status']==1) {
                             $echo.="backgroundColor: "."'"."red"."'".",
                             borderColor: "."'"."red"."'"."},";

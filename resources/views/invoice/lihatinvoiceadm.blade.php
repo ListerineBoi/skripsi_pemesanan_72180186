@@ -23,8 +23,62 @@
                                     <tr>
                                         <td>{{$row->id}}</td>
                                         <td>
-                                        @if($row->img_bukti !=null)
-                                        <a href="/storage/buktibayar/{{$row->img_bukti}}" class="btn btn-primary" disabled>lihat bukti bayar</a>
+                                        @if($row->nota !=null)
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalnota{{$loop->iteration}}">
+                                            Lihat Bukti Bayar
+                                        </button>
+                                        <div class="modal fade" id="modalnota{{$loop->iteration}}">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Status</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="single-table">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover text-center">
+                                                                    <thead class="text-uppercase">
+                                                                        <tr>
+                                                                            <th scope="col">ID</th>
+                                                                            <th scope="col">Jenis Pembayaran</th>
+                                                                            <th scope="col">Bukti Bayar</th>
+                                                                            <th scope="col">Nota</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    @foreach($row->nota as $nota)
+                                                                        <tr>
+                                                                            <th scope="row">{{$nota->id}}</th>
+                                                                            <td>
+                                                                                @if($nota->jenis_pembayaran==1)
+                                                                                Deposit
+                                                                                @else
+                                                                                Full
+                                                                                @endif
+                                                                            </td>
+                                                                            <td><a href="/storage/buktibayar/{{$nota->img_bukti}}" class="btn btn-primary">{{$nota->img_bukti}}</a></td>
+                                                                            @if($nota->file_nota!=null)
+                                                                            <td><a href="/storage/nota/{{$nota->file_nota}}" class="btn btn-primary">{{$nota->file_nota}}</a></td>
+                                                                            @else
+                                                                            <td>Menunggu Verifikasi Admin.</td>
+                                                                            @endif
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </form>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @else
                                         <p>Belum Ada</p>
                                         @endif

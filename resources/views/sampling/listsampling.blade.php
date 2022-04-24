@@ -19,9 +19,8 @@
                                 <thead class="text-uppercase">
                                     <tr>
                                         <th scope="col">Customer</th>
-                                        <th scope="col">Tanggal Slot</th>
+                                        <th scope="col">Jadwal Pembuatan</th>
                                         <th scope="col">Model</th>
-                                        <th scope="col">Jumlah</th>
                                         <th scope="col">status</th>
                                         <th scope="col">action</th>
                                     </tr>
@@ -30,19 +29,21 @@
                                 @foreach($sampling as $row)
                                     <tr>
                                         <th>{{DB::table('users')->where('id', $row->cus_id)->value('name')}}</th>
-                                        <td>{{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}} <br> s/d {{DB::table('slot_s')->where('id', $row->slot_id)->value('selesai')}}</td>
-                                        <td>@if($row->model == 0)
-                                            rok
-                                            @elseif($row->model == 1)
-                                            dress
-                                            @elseif($row->model == 2)
-                                            Top
+                                        <td> Mulai Pembuatan: <strong> {{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
+                                        <td>
+                                            @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                                {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}}
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} 
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} 
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} 
                                             @endif
                                         </td>
-                                        <td>{{$row->jml}}</td>
                                         <td>
                                             @if($row->status == 0)
-                                            <span class="status-p bg-secondary mb-2">pending</span>
+                                            <span class="status-p bg-secondary mb-2">Konsultasi</span>
                                             <div class="progress" style="height: 8px;">
                                                 <div class="progress-bar bg-secondary" role="progressbar" style="width: 2%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
@@ -127,7 +128,9 @@
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{$row->id}}">
                                                         <input type="hidden" name="jns" value="0">
-                                                        <input type="date" name="tgl_jadi">
+                                                        <div class="form-group">
+                                                            <input class="form-control" name="tgl_jadi" type="date" value="{{$row->tgl_jadi}}" id="example-datetime-local-input">
+                                                        </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

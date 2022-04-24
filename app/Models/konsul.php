@@ -11,4 +11,12 @@ class Konsul extends Model
         'samp_id','prod_id','title','tgl','mulai','status','jenis','link'
     ];
     protected $table="konsul";
+    public function sampling()
+    {
+    return $this->belongsTo(Sampling::class, 'samp_id');
+    }
+    public function produksi()
+    {
+    return $this->belongsTo(Produksi::class, 'prod_id');
+    }
 }

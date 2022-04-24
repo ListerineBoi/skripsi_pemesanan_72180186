@@ -7,10 +7,12 @@ use App\Models\Slot_S;
 use App\Models\Slot_P;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Sampling;
+use App\Models\DetailFile;
 use App\Models\Produksi;
 use App\Models\Pembayaran;
 use App\Models\Konsul;
 use App\Models\Detail_pakaian;
+use App\Models\Nota;
 use Auth;
 class UserController extends Controller
 {
@@ -30,17 +32,14 @@ class UserController extends Controller
         $sampling=Sampling::where([
             ['cus_id','=', $id],
             ['status','!=', '5'],
-            ['status','!=', '6'],
         ])->get();
         $samplingS=Sampling::where([
             ['cus_id','=', $id],
             ['status','=', '5'],
-        ])->orwhere([
-            ['cus_id','=', $id],
-            ['status','=', '6'],
         ])->get();
         return view('sampling.pengajuansampling',compact('slot','sampling','samplingS'));
-        //return $slot;
+        
+        
     }
     public function savesampling(Request $request)
     {
@@ -104,29 +103,34 @@ class UserController extends Controller
     public function vieweditsampling($id)
     {
         $sampling=Sampling::where('id','=', $id)->first();
-        //return $sampling;
-        return view('sampling.editsampling',compact('sampling'));
+        $fileimg=DetailFile::where('detail_id','=', $sampling->detail_id)->get();
+        //return $fileimg;
+        return view('sampling.editsampling',compact('sampling','fileimg'));
+    }
+    public function uploadimg(Request $request)
+    {
+            $this->validate($request, [
+                'file_img' => 'required'
+            ]);
+            $fullname = $request->file('file_img')->getClientOriginalName();
+            $extn =$request->file('file_img')->getClientOriginalExtension();
+            $finalS=$request->slot_id.'detail'.'_'.$request->detail_id.'_'.time().'.'.$extn;
+            $path = $request->file('file_img')->storeAs('public/imgdetail', $finalS);
+            $Sampling = new DetailFile([
+                'detail_id' => $request->detail_id,
+                'img' => $finalS,
+            ]);
+            $Sampling->save();
+            return redirect()->back()->with('success');
     }
     public function saveeditS(Request $request)
     {
         $id=Auth::user()->id;
-        $this->validate($request, [
-            'model' => 'required',
-            'desc' => 'required',
-            'jml' => 'required'      
-        ]);
         $iddetail=Sampling::where('id','=', $request->id)->value('detail_id');
-        if($request->img_model != null){
-            $fullname = $request->file('img_model')->getClientOriginalName();
-            $extn =$request->file('img_model')->getClientOriginalExtension();
-            $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
-            $path = $request->file('img_model')->storeAs('public/imgsampling', $finalS);
-            $del=Sampling::where('id','=', $request->id)->value('img');
-            $delpath='public/imgsampling/'.$del;
-            Storage::delete($delpath);
             Detail_pakaian::where('id', $iddetail)->update([
-                'model' => $request->model,
-                'img' => $finalS,
+                'nama_atasan' => $request->nama_atasan,
+                'nama_bawahan' => $request->nama_bawahan,
+                'jenis' => $request->jenis,
                 'desc' => $request->desc,
                 'ling_b' => $request->ling_b,
                 'ling_pgang' => $request->ling_pgang,
@@ -150,54 +154,26 @@ class UserController extends Controller
                 'panj_cln_rok' => $request->panj_cln_rok,
                 'tingg_dudk' => $request->tingg_dudk,
             ]);
-            Sampling::where('id', $iddetail)->update([
-                'cus_id' => $id,
-                'jml' => $request->jml,
-            ]);
-        }else{
-            Detail_pakaian::where('id', $iddetail)->update([
-                'model' => $request->model,
-                'desc' => $request->desc,
-                'ling_b' => $request->ling_b,
-                'ling_pgang' => $request->ling_pgang,
-                'ling_pingl' => $request->ling_pingl,
-                'ling_lh' => $request->ling_lh,
-                'leb_bahu' => $request->leb_bahu,
-                'pj_lengan' => $request->pj_lengan,
-                'ling_kr_leng' => $request->ling_kr_leng,
-                'ling_lengan' => $request->ling_lengan,
-                'ling_pergel' => $request->ling_pergel,
-                'leb_muka' => $request->leb_muka,
-                'leb_pungg' => $request->leb_pungg,
-                'panj_pungg' => $request->panj_pungg,
-                'panj_baju' => $request->panj_baju,
-                'tinggi_pingl' => $request->tinggi_pingl,
-                'ling_pinggang' => $request->ling_pinggang,
-                'ling_pesak' => $request->ling_pesak,
-                'ling_paha' => $request->ling_paha,
-                'ling_lutut' => $request->ling_lutut,
-                'ling_kaki' => $request->ling_kaki,
-                'panj_cln_rok' => $request->panj_cln_rok,
-                'tingg_dudk' => $request->tingg_dudk,
-            ]);
-            Sampling::where('id', $request->id)->update([
-                'cus_id' => $id,
-                'jml' => $request->jml,
-            ]); 
-        }
-        //return $request;
-        return redirect()->route('viewsampling');
+        
+        return redirect()->back();
     }
     
     public function delS($id)
     {
-        $del=Sampling::where('id','=', $id)->value('img');
-        $delpath='public/imgsampling/'.$del;
-        Storage::delete($delpath);
-        $id_slot=Sampling::where('id', $id)->value('slot_id');
+        $sampling=Sampling::where('id','=', $id)->first();
+        $del=DetailFile::where('detail_id',$sampling->detail_id)->select('id','img')->get();
+        if($del != null){
+            foreach ($del as $row) {
+                $delpath='public/imgdetail/'.$row->img;
+                Storage::delete($delpath);
+                DetailFile::where('id', $row->id)->delete();
+            }
+        }
+        Slot_S::where('id', $sampling->slot_id)->decrement('jml');
         Sampling::where('id', $id)->delete();
-        Slot_S::where('id', $id_slot)->decrement('jml');
-        return redirect()->route('viewsampling');
+        Detail_pakaian::where('id',$sampling->detail_id)->delete();
+        return redirect()->back();
+        //return $delpath;
     }
 
     public function revisisampling($id)
@@ -211,20 +187,17 @@ class UserController extends Controller
 
     public function saverevisiS(Request $request)
     {
-        $iduser=Auth::user()->id;
+        $id=Auth::user()->id;
         $this->validate($request, [
             'slot_id' => 'required',
-            'model' => 'required',
-            'desc' => 'required',
-            'jml' => 'required'      
+            'jenis' => 'required',
+            'desc' => 'required',  
         ]);
-        if($request->img_model != null){
-        $fullname = $request->file('img_model')->getClientOriginalName();
-        $extn =$request->file('img_model')->getClientOriginalExtension();
-        $finalS=$id.$request->slot_id.'sampling'.'_'.time().'.'.$extn;
-        Detail_pakaian::where('id',$request->id)->update([
-            'model' => $request->model,
-            'img' => $finalS,
+        $Detail_pakaian= Detail_pakaian::create([
+            'public' => '1',
+            'nama_atasan' => $request->nama_atasan,
+            'nama_bawahan' => $request->nama_bawahan,
+            'jenis' => $request->jenis,
             'desc' => $request->desc,
             'ling_b' => $request->ling_b,
             'ling_pgang' => $request->ling_pgang,
@@ -248,43 +221,14 @@ class UserController extends Controller
             'panj_cln_rok' => $request->panj_cln_rok,
             'tingg_dudk' => $request->tingg_dudk,
         ]);
-        }else{
-            Detail_pakaian::where('id',$request->id)->update([
-                'model' => $request->model,
-                'desc' => $request->desc,
-                'ling_b' => $request->ling_b,
-                'ling_pgang' => $request->ling_pgang,
-                'ling_pingl' => $request->ling_pingl,
-                'ling_lh' => $request->ling_lh,
-                'leb_bahu' => $request->leb_bahu,
-                'pj_lengan' => $request->pj_lengan,
-                'ling_kr_leng' => $request->ling_kr_leng,
-                'ling_lengan' => $request->ling_lengan,
-                'ling_pergel' => $request->ling_pergel,
-                'leb_muka' => $request->leb_muka,
-                'leb_pungg' => $request->leb_pungg,
-                'panj_pungg' => $request->panj_pungg,
-                'panj_baju' => $request->panj_baju,
-                'tinggi_pingl' => $request->tinggi_pingl,
-                'ling_pinggang' => $request->ling_pinggang,
-                'ling_pesak' => $request->ling_pesak,
-                'ling_paha' => $request->ling_paha,
-                'ling_lutut' => $request->ling_lutut,
-                'ling_kaki' => $request->ling_kaki,
-                'panj_cln_rok' => $request->panj_cln_rok,
-                'tingg_dudk' => $request->tingg_dudk,
-            ]);
-        }
-        Sampling::create([
+        $Sampling = new Sampling([
+            'detail_id' => $Detail_pakaian->id,
             'slot_id' => $request->slot_id,
-            'cus_id' => $iduser,
-            'detail_id' => $request->id,
-            'model' => $request->model,
-            'desc' => $request->desc,
+            'cus_id' => $id,
             'status' => 0,
-            'jml' => $request->jml
-            
-        ]); 
+        ]);
+        $Sampling->save();
+
         Slot_S::where('id', $request->slot_id)->increment('jml');
         return redirect()->route('viewsampling');
     }
@@ -292,19 +236,26 @@ class UserController extends Controller
     {
         $id=Auth::user()->id;
         $slot=Slot_P::where('status','=', '1')->get();
-        $detail=Detail_pakaian::all();
         $produksi=Produksi::where([
             ['cus_id','=', $id],
             ['status','!=', '4'],
         ])->get();
+        $sampling=Sampling::where([
+            ['cus_id','=', $id],
+            ['status','=', '5'],
+        ])->whereNotIn('detail_id',  $produksi->pluck('detail_id'))
+        ->with('detp')->get();
+        $detail= $sampling->pluck('detp');
+        
         return view('produksi.pengajuanproduksi',compact('slot','detail','produksi'));
-       
+        //return $produksi->detail_id;
     }
     public function viewinputproduksi($id)
     {
         $slot=Slot_P::where('status','=', '1')->get();
         $detail=Detail_pakaian::where('id',$id)->first();
-        return view('produksi.inputproduksi',compact('slot','detail'));
+        $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
+        return view('produksi.inputproduksi',compact('slot','detail','fileimg'));
     }
     public function saveinputprod(Request $request)
     {
@@ -312,7 +263,6 @@ class UserController extends Controller
         $this->validate($request,[
             'slot_id' => 'required',
             'detail_id' => 'required',
-            'desc' => 'required',
             'jml' => 'required' 
         ]);
 
@@ -330,14 +280,13 @@ class UserController extends Controller
     }
     public function viewcussampproduksi()
     {
-        return view('produksi.inputsampprodcustom');
+        $slot=Slot_P::where('status','=', '1')->get();
+        return view('produksi.inputsampprodcustom',compact('slot'));
     }
     public function savesamplingcustom(Request $request)
     {
         $id=Auth::user()->id;
         $this->validate($request, [
-            'model' => 'required',
-            'img_model' => 'required',
             'desc' => 'required',  
         ]);
         // $fullname = $request->file('img_model')->getClientOriginalName();
@@ -347,8 +296,8 @@ class UserController extends Controller
 
         $detail= Detail_pakaian::create([
             'public' => '1',
-            'nama_atasan' => $request->jenis,
-            'nama_bawahan' => $request->jenis,
+            'nama_atasan' => $request->nama_atasan,
+            'nama_bawahan' => $request->nama_bawahan,
             'jenis' => $request->jenis,
             'desc' => $request->desc,
             'ling_b' => $request->ling_b,
@@ -387,20 +336,59 @@ class UserController extends Controller
         $detail=detail_pakaian::where([
             ['id','=', $produksi->detail_id],
         ])->first();
-        return view('produksi.editproduksi',compact('produksi','detail'));
+        $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
+        return view('produksi.editproduksi',compact('produksi','detail','fileimg','id'));
+        //return $currentURL;
     }
 
     public function saveeditprod(Request $request)
     {
         $this->validate($request,[
-            'desc' => 'required',
             'jml' => 'required' 
         ]);
         Produksi::where('id',$request->id)->update([
-            'desc' => $request->desc,
             'jml' => $request->jml
         ]);
         return redirect()->route('viewproduksi');
+    }
+    public function vieweditdetailprod($id)
+    {
+        $detail=detail_pakaian::where('id','=', $id)->first();
+        $redirURL = str_replace(url('/'), '', url()->previous());
+        return view('produksi.editdetailprod',compact('detail','redirURL'));
+        //return $redirURL;
+    }
+    public function saveeditdetailprod(Request $request)
+    {
+        Detail_pakaian::where('id', $request->id)->update([
+            'nama_atasan' => $request->nama_atasan,
+            'nama_bawahan' => $request->nama_bawahan,
+            'jenis' => $request->jenis,
+            'desc' => $request->desc,
+            'ling_b' => $request->ling_b,
+            'ling_pgang' => $request->ling_pgang,
+            'ling_pingl' => $request->ling_pingl,
+            'ling_lh' => $request->ling_lh,
+            'leb_bahu' => $request->leb_bahu,
+            'pj_lengan' => $request->pj_lengan,
+            'ling_kr_leng' => $request->ling_kr_leng,
+            'ling_lengan' => $request->ling_lengan,
+            'ling_pergel' => $request->ling_pergel,
+            'leb_muka' => $request->leb_muka,
+            'leb_pungg' => $request->leb_pungg,
+            'panj_pungg' => $request->panj_pungg,
+            'panj_baju' => $request->panj_baju,
+            'tinggi_pingl' => $request->tinggi_pingl,
+            'ling_pinggang' => $request->ling_pinggang,
+            'ling_pesak' => $request->ling_pesak,
+            'ling_paha' => $request->ling_paha,
+            'ling_lutut' => $request->ling_lutut,
+            'ling_kaki' => $request->ling_kaki,
+            'panj_cln_rok' => $request->panj_cln_rok,
+            'tingg_dudk' => $request->tingg_dudk,
+        ]);
+    
+    return redirect($request->redirect);
     }
     public function viewlistbayar()
     {
@@ -411,51 +399,44 @@ class UserController extends Controller
             ['status','!=', '6'],
             ])->get();
         $prod = Produksi::where('cus_id',$id)->get();
-        $pemba1 =Pembayaran::wherein('samp_id',$sampling->pluck('id'));
-        $pemba =Pembayaran::wherein('prod_id',$prod->pluck('id'))->union($pemba1)->get();
-        //return $pemba;
-        return view('invoice.listbayar',compact('pemba'));
+        $pemba_samp =Pembayaran::wherein('samp_id',$sampling->pluck('id'))->with('nota')->with('sampling')->get();
+        $pemba_prod =Pembayaran::wherein('prod_id',$prod->pluck('id'))->with('nota')->with('produksi')->get();
+        //return $pemba_samp[0]->sampling->detail_id;
+        return view('invoice.listbayar',compact('pemba_samp','pemba_prod'));
     }
     public function inputbuktibyr(Request $request)
     {
         $id=Auth::user()->id;
         $this->validate($request, [
             'jenis_pembayaran' => 'required',   
+            'img_bukti' => 'required', 
         ]);
         if($request->jns==0){
-            if($request->img_bukti){
                 $fullname = $request->file('img_bukti')->getClientOriginalName();
                 $extn =$request->file('img_bukti')->getClientOriginalExtension();
-                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'.'.$extn;
+                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'_'.time().'.'.$extn;
                 $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
                 Pembayaran::where('id',$request->id)->update([
+                    'status' => 1,
+                ]);
+                Nota::create([
+                    'bayar_id' => $request->id,
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'img_bukti' => $finalS,
-                    'status' => 1,
-                ]);
-            }else{
-                Pembayaran::where('id',$request->id)->update([
-                    'jenis_pembayaran' => $request->jenis_pembayaran,
-                    'status' => 1,
-                ]);
-            }
+                ]); 
         }elseif ($request->jns==1) {
-            if($request->img_bukti){
                 $fullname = $request->file('img_bukti')->getClientOriginalName();
                 $extn =$request->file('img_bukti')->getClientOriginalExtension();
-                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'.'.$extn;
+                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'_'.time().'.'.$extn;
                 $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
                 Pembayaran::where('id',$request->id)->update([
+                    'status' => 1,
+                ]);
+                Nota::create([
+                    'bayar_id' => $request->id,
                     'jenis_pembayaran' => $request->jenis_pembayaran,
                     'img_bukti' => $finalS,
-                    'status' => 1,
-                ]);
-            }else{
-                Pembayaran::where('id',$request->id)->update([
-                    'jenis_pembayaran' => $request->jenis_pembayaran,
-                    'status' => 1,
-                ]);
-            }
+                ]); 
         }
         return redirect()->back();
          //return $request->file('img_bukti')->getClientOriginalName();

@@ -43,20 +43,20 @@
                             <input type="text" class="form-control" name="title" value="{{$slot->title}}">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="nik">Mulai</label>
-                        <div class="col-sm-10">
-                            <input type="date" class="form-control" name="mulai" value="{{$slot->mulai}}">
-                        </div>
-                    </div>		
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="nik">Selesai</label>
-                        <div class="col-sm-10">
+                    <div class="form-group row mt-2">
+                        <label class="control-label col-sm-2" for="nik">Tanggal Slot Ditutup</label>
+                        <div class="col-sm-2 ">
                             <input type="date" class="form-control" name="selesai" value="{{$slot->selesai}}">
                         </div>
                     </div>
+                    <div class="form-group row mt-2">
+                        <label class="control-label col-sm-2" for="nik">Mulai Pembuatan</label>
+                        <div class="col-sm-2 ">
+                            <input type="date" class="form-control" name="mulai" value="{{$slot->mulai}}">
+                        </div>
+                    </div>
                     <div class="form-group row">
-                        <label class="control-label col-sm-2" for="nik">Kuota</label>
+                        <label class="control-label col-sm-2" for="nik">Kuota Max Pesanan</label>
                         <div class="col-sm-2 ">
                             <input type="number" class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" value="{{$slot->kuota}}">
                         </div>

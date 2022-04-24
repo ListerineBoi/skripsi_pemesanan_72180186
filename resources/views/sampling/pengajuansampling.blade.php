@@ -3,7 +3,142 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12 mt-5">
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Sampling Aktif
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sampling Aktif" 
+                                data-content="Pesanan sampling anda yang saat ini sedang dalam pelaksanaan/pembuatan.">
+                                    <i class="fa fa-info-circle text-info"></i>
+                            </a>
+                        </h4>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            @foreach($sampling as $row)
+                            <div class="col-lg-4 col-md-6 mt-3">
+                                <div class="card h-100 card-bordered">
+                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                        <img src="\img\tnb.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                        <img src="\img\top.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                        <img src="\img\bottom.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                        <img src="\img\dress.png" class="card-img-top" alt="...">
+                                    @endif
+                                <div class="card-body">
+                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                    @endif
+                                    <h5 class="title">Pembuatan dimulai {{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}} 
+                                        @if($row->status == 0)
+                                        <a href="#" class="badge badge-secondary">Konsultasi</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Konsultasi" 
+                                        data-content="Fase konsultasi merupakan fase pertama dalam melakukan pemesanan,
+                                         dalam fase ini customer dan pihak amoora akan membicarakan lebih lanjut tentang 
+                                         detail pakaian yang dipesan hingga terjadi kesepakatan antar customer dan pihak amoora.
+                                         Konsultasi dapat dilakukan melalui fitur livechat maupun fitur konsul online/offline.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                        @elseif($row->status == 1)
+                                        <a href="#" class="badge badge-warning">Waiting list</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Waiting list" 
+                                        data-content="Fase waiting list merupakan fase dimana sudah terjadi kesepakatan antara pihak amoora dan customer,
+                                        dengan demikian proses pembuatan akan segera kami laksanakan, Terimakasih atas kesabaran anda.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                        @elseif($row->status == 2)
+                                        <a href="#" class="badge badge-info">Cutting</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Cutting" 
+                                        data-content="Fase pembuatan dimana sewer kami sedang dalam proses pemotongan kain.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                        @elseif($row->status == 3)
+                                        <a href="#" class="badge badge-primary">Sewing</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sewing" 
+                                        data-content="Fase pembuatan dimana sewer kami dalam proses penjaitan pakaian.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                        @elseif($row->status == 4)
+                                        <a href="#" class="badge badge-info">Finishing & QC</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sewing" 
+                                        data-content="Fase pembuatan dimana sewer kami memasang accessories pakaian dll, serta mengemas pakaian yang sudah jadi.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                        @endif
+                                    </h5>
+                                    <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
+                                    <p class="card-text text-dark"> <strong>{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</strong> </p>
+                                    <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
+                                    @if($row->status == 0)
+                                    <a type="button" class="btn btn-danger" href="{{route('delS',['id' => $row->id])}}">Delete</a>
+                                    @endif
+                                </div>
+                                </div>
+                            </div> 
+                            @endforeach
+                    </div>
+                    </div>
+                </div>
+            </div>
+            @if(count($samplingS) != 0)
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Sampling Selesai
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sampling Selesai" 
+                                data-content="Tabel ini berisi histori pemesanan sampling anda yang sudah selesai. Semua detail pakaian yang anda berikan pada saat pemesanan tersimpan pada tabel ini,
+                                 anda dapat mengajukan revisi/pesan kembali menggunakan detail pakaian yang sama.">
+                                    <i class="fa fa-info-circle text-info"></i>
+                            </a>
+                        </h4>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                          
+                            @foreach($samplingS as $row)
+                            <div class="col-lg-4 col-md-6 mt-3">
+                                <div class="card h-100 card-bordered">
+                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                        <img src="\img\tnb.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                        <img src="\img\top.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                        <img src="\img\bottom.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                        <img src="\img\dress.png" class="card-img-top" alt="...">
+                                    @endif
+                                <div class="card-body">
+                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                    @endif
+                                    <h5 class="title">Pembuatan Selesai {{$row->tgl_jadi}} 
+                                    </h5>
+                                    <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
+                                    <p class="card-text text-dark"> <strong>{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</strong></p>
+                                    <a href="{{route('revisisampling',['id' => $row->id])}}" class="btn btn-primary">Ajukan Revisi</a>
+                                    <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
+                                </div>
+                                </div>
+                            </div> 
+                            @endforeach
+                           
+                    </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+          
+            <div class="col-md-12 mt-5">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -231,88 +366,8 @@
                         </form>
                     </div>
                 </div>
-                </div>
             </div>
-
-            <div class="col-12 mt-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="header-title">Sampling Aktif</h4>
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            @foreach($sampling as $row)
-                            <div class="col-lg-4 col-md-6 mt-3">
-                                <div class="card h-100 card-bordered">
-                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
-                                        <img src="\img\tnb.png" class="card-img-top" alt="...">
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
-                                        <img src="\img\top.png" class="card-img-top" alt="...">
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
-                                        <img src="\img\bottom.png" class="card-img-top" alt="...">
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
-                                        <img src="\img\dress.png" class="card-img-top" alt="...">
-                                    @endif
-                                <div class="card-body">
-                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->slot_id)->value('nama_bawahan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
-                                    @endif
-                                    <h5 class="title">Pembuatan dimulai {{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}} 
-                                        @if($row->status == 0)
-                                        <a href="#" class="badge badge-secondary">Pending</a>
-                                        @elseif($row->status == 1)
-                                        <a href="#" class="badge badge-warning">Waiting list</a>
-                                        @elseif($row->status == 2)
-                                        <a href="#" class="badge badge-info">Cutting</a>
-                                        @elseif($row->status == 3)
-                                        <a href="#" class="badge badge-primary">Sewing</a>
-                                        @elseif($row->status == 4)
-                                        <a href="#" class="badge badge-info">Finishing & QC</a>
-                                        @endif
-                                    </h5>
-                                    <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
-                                    <p class="card-text">{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</p>
-                                    <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
-                                    <a type="button" class="btn btn-danger" href="{{route('delS',['id' => $row->id])}}">Delete</a>
-                                </div>
-                                </div>
-                            </div> 
-                            @endforeach
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 mt-5">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="header-title">Sampling Selesai</h4>
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            @foreach($samplingS as $row)
-                            <div class="col-lg-4 col-md-6">
-                                <div class="card h-100 card-bordered">
-                                <img src="/storage/imgsampling/{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('img')}}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="title">{{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}} s/d {{DB::table('slot_s')->where('id', $row->slot_id)->value('selesai')}} 
-                                        <a href="#" class="badge badge-success">Selesai</a>
-                                    </h5>
-                                    <h5 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('model')==0) rok @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('model')==1) dress @else Top @endif</h5>
-                                    <p class="card-text">{{$row->desc}}</p>
-                                    <a href="{{route('revisisampling',['id' => $row->id])}}" class="btn btn-primary">Ajukan Revisi</a>
-                                    <a type="button" class="btn btn-danger" href="{{route('delS',['id' => $row->id])}}">Delete</a>
-                                </div>
-                                </div>
-                            </div> 
-                            @endforeach
-                    </div>
-                    </div>
-                </div>
-            </div>
-                
-</div>
+        </div>
+    </div>
 </div>
 @endsection

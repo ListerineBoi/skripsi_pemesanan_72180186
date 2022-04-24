@@ -40,7 +40,7 @@
                                 <thead class="text-uppercase">
                                     <tr>
                                         <th scope="col">Customer</th>
-                                        <th scope="col">Tanggal Slot</th>
+                                        <th scope="col">Jadwal Pembuatan</th>
                                         <th scope="col">Model</th>
                                         <th scope="col">Jumlah</th>
                                         <th scope="col">status</th>
@@ -51,13 +51,16 @@
                                 @foreach($produksi as $row)
                                     <tr>
                                         <th>{{DB::table('users')->where('id', $row->cus_id)->value('name')}}</th>
-                                        <td>{{DB::table('slot_p')->where('id', $row->slot_id)->value('mulai')}} <br> s/d {{DB::table('slot_p')->where('id', $row->slot_id)->value('selesai')}}</td>
-                                        <td>@if($row->model == 0)
-                                            rok
-                                            @elseif($row->model == 1)
-                                            dress
-                                            @elseif($row->model == 2)
-                                            Top
+                                        <td>Mulai Pembuatan: <strong> {{DB::table('slot_p')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
+                                        <td>
+                                            @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                                {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}}
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} 
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} 
+                                            @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                                {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} 
                                             @endif
                                         </td>
                                         <td>{{$row->jml}}</td>
@@ -114,7 +117,9 @@
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{$row->id}}">
                                                         <input type="hidden" name="jns" value="1">
-                                                        <input type="date" name="tgl_jadi">
+                                                        <div class="form-group">
+                                                            <input class="form-control" name="tgl_jadi" type="date" value="{{$row->tgl_jadi}}" id="example-datetime-local-input">
+                                                        </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -138,10 +143,11 @@
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{$row->id}}">
                                                 <select class="custom-select" name="status">
-                                                    <option value="1">Waiting list</option>
-                                                    <option value="2">Proses</option>
-                                                    <option value="3">Finishing</option>
-                                                    <option value="4">Selesai</option>
+                                                        <option value="1">Waiting list</option>
+                                                        <option value="2">cutting</option>
+                                                        <option value="3">sewing</option>
+                                                        <option value="4">Finishing & QC</option>
+                                                        <option value="5">Selesai</option>
                                                 </select>
                                                 </div>
                                                 <div class="modal-footer">

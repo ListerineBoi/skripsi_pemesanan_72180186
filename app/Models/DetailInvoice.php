@@ -11,4 +11,8 @@ class DetailInvoice extends Model
         'bayar_id','qty','ket','harga','total',
     ];
     protected $table="detail_invoice";
+    public function imgfile()
+    {
+        return $this->hasMany(DetailFile::class,'detail_id');
+    }
 }

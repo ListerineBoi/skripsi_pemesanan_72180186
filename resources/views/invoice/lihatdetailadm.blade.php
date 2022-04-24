@@ -127,21 +127,22 @@
                         </div>
                     </div>
                     <div class="invoice-buttons text-right">
-                        <form action="{{route('generateinvoicesampling')}}" method="post">
-                        @csrf
-                        <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
-                        <input class="form-control" type="hidden" value="{{$id}}" name="id">
-                        <button class="btn btn-success btn-md">Preview invoice</button>
-                        </form>
-                        @if($nota->status==0)
-                        <form action="{{route('sendinvoice')}}" method="post">
-                        @csrf
-                        <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
-                        <input class="form-control" type="hidden" value="{{$id}}" name="id">
-                        <button class="btn btn-success btn-md">Preview invoice</button>
-                        </form>
-                        @else
-                        @endif
+                        <div class="row">
+                            <form action="{{route('generateinvoicesampling')}}" method="post">
+                            @csrf
+                            <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
+                            <input class="form-control" type="hidden" value="{{$id}}" name="id">
+                            <button class="btn btn-success btn-md mr-3">Preview invoice</button>
+                            </form>
+                            @if($nota->status==0)
+                            <form action="{{route('sendinvoice')}}" method="post">
+                            @csrf
+                            <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
+                            <input class="form-control" type="hidden" value="{{$id}}" name="id">
+                            <button class="btn btn-success btn-md">send invoice</button>
+                            </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

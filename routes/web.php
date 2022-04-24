@@ -42,6 +42,7 @@ Route::get('/admin/listsampling', [App\Http\Controllers\AdminController::class, 
 Route::get('/admin/listsampling/del/{id}', [App\Http\Controllers\AdminController::class, 'delS'])->name('admindelS');
 Route::get('/admin/editsampling/{id}', [App\Http\Controllers\AdminController::class, 'vieweditsampling'])->name('adminvieweditsampling');
 Route::post('/admin/editsampling/saveedit', [App\Http\Controllers\AdminController::class, 'saveeditS'])->name('adminsaveeditS');
+Route::post('/admin/editsampling/uploadimg', [App\Http\Controllers\AdminController::class, 'uploadimg'])->name('adminuploadimg');
 Route::post('/admin/editsampling/statusSampling', [App\Http\Controllers\AdminController::class, 'statusSampling'])->name('statusSampling');
 Route::post('/admin/listsampling/tgljadi', [App\Http\Controllers\AdminController::class, 'tgljadi'])->name('tgljadi');
     //produksi//
@@ -56,6 +57,7 @@ Route::post('/admin/editproduksi/statusProduksi', [App\Http\Controllers\AdminCon
     //konsul//
 Route::get('/admin/setjadwal', [App\Http\Controllers\AdminController::class, 'viewformtambahkonsul'])->name('viewformtambahkonsul');
 Route::post('/admin/setjadwal/save', [App\Http\Controllers\AdminController::class, 'tambahkonsul'])->name('tambahkonsul');
+Route::post('/admin/addlink/save', [App\Http\Controllers\AdminController::class, 'addlink'])->name('addlink');
     //invoice//
 Route::post('/admin/tambahinvc', [App\Http\Controllers\AdminController::class, 'tambahinvoice'])->name('tambahinvoice');
 Route::get('/admin/invc/{id}/{jns}', [App\Http\Controllers\AdminController::class, 'lihatinvoicesampling'])->name('lihatinvoicesampling');
@@ -73,11 +75,14 @@ Route::get('/editsampling/{id}', [App\Http\Controllers\UserController::class, 'v
 Route::post('/editsampling/saveedit', [App\Http\Controllers\UserController::class, 'saveeditS'])->name('saveeditS');
 Route::get('/reviewsampling/{id}', [App\Http\Controllers\UserController::class, 'revisisampling'])->name('revisisampling');
 Route::post('/reviewsampling/saveedit', [App\Http\Controllers\UserController::class, 'saverevisiS'])->name('saverevisiS');
+Route::post('/editsampling/uploadimg', [App\Http\Controllers\UserController::class, 'uploadimg'])->name('uploadimg');
 Route::get('/sampling/del/{id}', [App\Http\Controllers\UserController::class, 'delS'])->name('delS');
     //produksi//
 Route::get('/produksi', [App\Http\Controllers\UserController::class, 'viewproduksi'])->name('viewproduksi');
 Route::get('/produksi/input/{id}', [App\Http\Controllers\UserController::class, 'viewinputproduksi'])->name('viewinputproduksi');
 Route::get('/produksi/edit/{id}', [App\Http\Controllers\UserController::class, 'vieweditproduksi'])->name('editproduksi');
+Route::get('/produksi/edit/detail/{id}', [App\Http\Controllers\UserController::class, 'vieweditdetailprod'])->name('vieweditdetailprod');
+Route::post('/produksi/edit/detail/save', [App\Http\Controllers\UserController::class, 'saveeditdetailprod'])->name('saveeditdetailprod');
 Route::post('/produksi/input/save', [App\Http\Controllers\UserController::class, 'saveinputprod'])->name('saveinputprod');
 Route::post('/produksi/edit/save', [App\Http\Controllers\UserController::class, 'saveeditprod'])->name('saveeditprod');
 Route::get('/produksi/custom/samp', [App\Http\Controllers\UserController::class, 'viewcussampproduksi'])->name('viewcussampproduksi');

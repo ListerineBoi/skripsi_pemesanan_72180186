@@ -8,15 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Konsul extends Model
 {
     protected $fillable = [
-        'samp_id','prod_id','title','tgl','mulai','status','jenis','link'
+        'jasa_id','title','tgl','mulai','status','jenis','link'
     ];
     protected $table="konsul";
-    public function sampling()
+    public function jasa()
     {
-    return $this->belongsTo(Sampling::class, 'samp_id');
-    }
-    public function produksi()
-    {
-    return $this->belongsTo(Produksi::class, 'prod_id');
+    return $this->belongsTo(Jasa::class, 'jasa_id');
     }
 }

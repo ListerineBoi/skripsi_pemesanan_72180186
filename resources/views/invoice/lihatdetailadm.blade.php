@@ -56,7 +56,11 @@
                                         <td>
                                         @if($nota->status==0)
                                             <ul class="d-flex justify-content-center">
-                                                <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
+                                                <form action="{{route('delinvoice')}}" method="post">
+                                                    @csrf
+                                                   <input type="hidden" name="id" value="{{$row->id}}">
+                                                <li><button type="submit" class="unstyled-btn text-danger"><i class="ti-trash"></i></button></a></li>
+                                                </form>
                                             </ul>
                                         @endif
                                         </td>
@@ -95,7 +99,6 @@
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" action="{{route('addinvoice')}}" enctype='multipart/form-data'>
-                                            <input class="form-control" type="hidden" value="{{$jns}}" name="jns">
                                             <input class="form-control" type="hidden" value="{{$id}}" name="id">
                                             @csrf
                                             <div class="form-group">

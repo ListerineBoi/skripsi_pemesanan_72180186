@@ -33,7 +33,7 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                        <form method="post" action="{{route('saveeditdetailprod')}}" enctype='multipart/form-data'>
+                        <form method="post" action="{{route('adminsaveeditdetailprod')}}" enctype='multipart/form-data'>
                             @csrf
                             <input type="hidden" name="id" value="{{$detail->id}}">
                             <input type="hidden" name="redirect" value="{{$redirURL}}">

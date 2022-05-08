@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Detail_pakaian;
-use App\Models\Slot_S;
-use App\Models\Slot_P;
-use App\Models\Sampling;
-use App\Models\Produksi;
+use App\Models\Slot;
+use App\Models\Jasa;
 use App\Models\DetailFile;
 use App\Models\Pembayaran;
 use App\Models\Konsul;
+use App\Models\Katalog;
 use App\Models\User;
 use App\Models\DetailInvoice;
 use App\Models\Nota;
@@ -26,12 +25,192 @@ class AdminController extends Controller
     }
     public function index()
     {
-        return view('homeAdmin');
+        $Katalog=Katalog::all();
+        return view('homeAdmin',compact('Katalog'));
     }
+
+    public function setkatalog(Request $request)
+    {
+        $this->validate($request, [
+            'desc' => 'required',
+            'harga' => 'required',
+            'title' => 'required'     
+        ]);
+        
+        $Katalog= new Katalog([
+            'title' => $request->title,
+            'desc' => $request->desc,
+            'harga' => $request->harga,
+        ]);
+        $Katalog->save();
+        return redirect()->back();
+    }
+
+    public function delkatalog(Request $request)
+    {
+        $Katalog=Katalog::where('id',$request->id)->first();
+        $delpath='public/katalog/'.$Katalog->img;
+        Storage::delete($delpath);
+        Katalog::where('id', $request->id)->delete();
+        return redirect()->back();
+        //return $Katalog;    
+    }
+    public function editkatalog(Request $request)
+    {
+        Katalog::where('id', $request->id)->update([
+            'desc' => $request->desc,
+        ]);
+        return redirect()->back();
+    }
+    public function addimgkatalog(Request $request)
+    {
+        $fullname = $request->file('img')->getClientOriginalName();
+        $extn =$request->file('img')->getClientOriginalExtension();
+        $finalS='katalog'.'_'.$request->jenis.'_'.$request->id.'.'.$extn;
+        $path = $request->file('img')->storeAs('public/katalog', $finalS);
+        if($request->jenis=='dep'){
+            Katalog::where('id', $request->id)->update([
+                'img_depan' => $finalS,
+            ]);
+        }elseif ($request->jenis=='bel') {
+            Katalog::where('id', $request->id)->update([
+                'img_belakang' => $finalS,
+            ]);
+        }elseif ($request->jenis=='dll1') {
+            Katalog::where('id', $request->id)->update([
+                'img_dll1' => $finalS,  
+            ]);
+        }elseif ($request->jenis=='dll2') {
+            Katalog::where('id', $request->id)->update([
+                'img_dll2' => $finalS,   
+            ]);
+        }
+        return redirect()->back();
+    }
+
+    public function viewadmindetailkatalog($id)
+    {
+        $katalog=Katalog::where('id',$id)->first();
+        $details=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_s],
+        ])->first();
+        $detailm=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_m],
+        ])->first();
+        $detaill=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_l],
+        ])->first();
+        $detailxl=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_xl],
+        ])->first();
+        return view('katalog.admindetailkatalog',compact('katalog','details','detailm','detaill','detailxl'));
+    }
+    public function createdetailkatalog($id,$tipe)
+    {
+        $katalog=Katalog::where('id',$id)->first();
+        $Detail_pakaian= Detail_pakaian::create([
+            'public' => '0',
+            'nama_atasan' => $katalog->title.' '.$tipe,
+            'jenis' => '1',
+            'desc' => '',
+        ]);
+        if($tipe == 'S'){
+            Katalog::where('id', $id)->update([
+                'detail_id_s' => $Detail_pakaian->id,
+            ]);
+        }elseif ($tipe == 'M') {
+            Katalog::where('id', $id)->update([
+                'detail_id_m' => $Detail_pakaian->id,
+            ]);
+        }elseif ($tipe == 'L') {
+            Katalog::where('id', $id)->update([
+                'detail_id_l' => $Detail_pakaian->id,
+            ]);
+        }elseif ($tipe == 'XL') {
+            Katalog::where('id', $id)->update([
+                'detail_id_xl' => $Detail_pakaian->id,
+            ]);
+        }
+        return redirect()->back();
+    }
+    public function vieweditdetailkatalog($id)
+    {
+        $detail=detail_pakaian::where('id','=', $id)->first();
+        $redirURL = str_replace(url('/'), '', url()->previous());
+        return view('katalog.admineditdetailkatalog',compact('detail','redirURL'));
+        //return $redirURL;
+    }
+    public function delkatalogukuran($id,$id_kat,$tipe)
+    {
+        if($tipe == 'S'){
+            Katalog::where('id', $id_kat)->update([
+                'detail_id_s' => null,
+            ]);
+        }elseif ($tipe == 'M') {
+            Katalog::where('id', $id_kat)->update([
+                'detail_id_m' => null,
+            ]);
+        }elseif ($tipe == 'L') {
+            Katalog::where('id', $id_kat)->update([
+                'detail_id_l' => null,
+            ]);
+        }elseif ($tipe == 'XL') {
+            Katalog::where('id', $id_kat)->update([
+                'detail_id_xl' => null,
+            ]);
+        }
+        $detail=detail_pakaian::where('id','=', $id)->delete();
+        return redirect()->back();
+        //return $Katalog;    
+    }
+    public function saveeditdetailkatalog(Request $request)
+    {
+        $this->validate($request, [
+            'nama_atasan' => 'required',
+            'jenis' => 'required',
+            'desc' => 'required'     
+        ]);
+        Detail_pakaian::where('id', $request->id)->update([
+            'nama_atasan' => $request->nama_atasan,
+            'nama_bawahan' => $request->nama_bawahan,
+            'jenis' => $request->jenis,
+            'desc' => $request->desc,
+            'ling_b' => $request->ling_b,
+            'ling_pgang' => $request->ling_pgang,
+            'ling_pingl' => $request->ling_pingl,
+            'ling_lh' => $request->ling_lh,
+            'leb_bahu' => $request->leb_bahu,
+            'pj_lengan' => $request->pj_lengan,
+            'ling_kr_leng' => $request->ling_kr_leng,
+            'ling_lengan' => $request->ling_lengan,
+            'ling_pergel' => $request->ling_pergel,
+            'leb_muka' => $request->leb_muka,
+            'leb_pungg' => $request->leb_pungg,
+            'panj_pungg' => $request->panj_pungg,
+            'panj_baju' => $request->panj_baju,
+            'tinggi_pingl' => $request->tinggi_pingl,
+            'ling_pinggang' => $request->ling_pinggang,
+            'ling_pesak' => $request->ling_pesak,
+            'ling_paha' => $request->ling_paha,
+            'ling_lutut' => $request->ling_lutut,
+            'ling_kaki' => $request->ling_kaki,
+            'panj_cln_rok' => $request->panj_cln_rok,
+            'tingg_dudk' => $request->tingg_dudk,
+        ]);
+    
+    return redirect($request->redirect);
+    }
+
     public function viewslotsampling()
     {
-        $slot=Slot_S::all();
+        $slot=Slot::where('jenis','=', '0')->get();
         return view('sampling.setslotsampling',compact('slot'));
+    }
+
+    public function viewslotproduksi()
+    {
+        $slot=Slot::where('jenis','=', '1')->get();
+        return view('produksi.setslotproduksi',compact('slot'));
     }
 
     public function saveslot(Request $request)
@@ -43,7 +222,8 @@ class AdminController extends Controller
             'selesai' => 'required'      
         ]);
 
-        $Slot_S= new Slot_S([
+        $Slot= new Slot([
+            'jenis' => $request->jenis,
             'title' => $request->title,
             'mulai' => $request->mulai,
             'selesai' => $request->selesai,
@@ -51,16 +231,16 @@ class AdminController extends Controller
             'status' => 1
             
         ]);
-        $Slot_S->save();
-        return redirect()->route('viewslotsampling');
+        $Slot->save();
+        return redirect()->back();
     }
-    public function vieweditslotsampling($id)
+    public function vieweditslot($id)
     {
-        $slot=Slot_S::where('id','=', $id)->first();
+        $slot=Slot::where('id','=', $id)->first();
         return view('sampling.editslotsampling',compact('slot'));
     }
 
-    public function saveeditslotS(Request $request)
+    public function saveeditslot(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -73,7 +253,7 @@ class AdminController extends Controller
         }else{
             $status=1;
         }
-        Slot_S::where('id', $request->id)->update([
+        Slot::where('id', $request->id)->update([
             'title' => $request->title,
             'mulai' => $request->mulai,
             'selesai' => $request->selesai,
@@ -81,45 +261,95 @@ class AdminController extends Controller
             'status' => $status
             
         ]);
-        return redirect()->route('viewslotsampling');
+
+        return redirect()->back();
        
         
     }
 
-    public function delslotS($id)
+    public function delslot($id)
     {
-        Slot_S::where('id', $id)->delete();
-        return redirect()->route('viewslotsampling');
+        Slot::where('id', $id)->delete();
+        return redirect()->back();
     }
 
-    public function viewslistsampling()
+    public function viewslistsampling(Request $request)
     {
-        $sampling=Sampling::where('status','!=','6')->get();
-        return view('sampling.listsampling',compact('sampling'));
+        $srt='created_at';
+        $status='All-on-going';
+        $ascdsc='desc';
+        $where=[['jenis_jasa','=', '0'],];
+        if($request->sort!=null){
+            if ($request->slot!='All'){
+            array_push($where,array('slot_id','=', $request->slot));
+            }
+            $status=$request->status;
+            $srt=$request->sort;
+            $ascdsc=$request->ascdesc;
+        }
+        if ($status=='All-on-going') {
+            array_push($where,array('status','!=', '5'));
+        }else if ($status!='All-on-going'){
+            array_push($where,array('status','=', $status));
+        }
+          
+        
+        $isislot=Slot::where('jenis','=', '0')->get();
+        $sampling=Jasa::where($where)->orderBy($srt, $ascdsc)->paginate(10);
+        if($request->sort==null){
+            $request=['sort' => $srt,'ascdesc' => $ascdsc,'slot' => 'All','status' => $status];
+            $request = (object)$request;
+        }
+        return view('sampling.listsampling',compact('sampling','isislot','request'));
+        //return $request;
     }
 
     public function delS($id)
     {
-        $sampling=Sampling::where('id','=', $id)->first();
-        $del=DetailFile::where('detail_id',$sampling->detail_id)->select('id','img')->get();
-        if($del != null){
-            foreach ($del as $row) {
-                $delpath='public/imgdetail/'.$row->img;
-                Storage::delete($delpath);
-                DetailFile::where('id', $row->id)->delete();
+        $sampling=Jasa::where('id','=', $id)->first();
+        $detail=Detail_pakaian::where('id',$sampling->detail_id)->first();
+        if($detail->public==1){
+            $del=DetailFile::where('detail_id',$sampling->detail_id)->select('id','img')->get();
+            if($del != null){
+                foreach ($del as $row) {
+                    $delpath='public/imgdetail/'.$row->img;
+                    Storage::delete($delpath);
+                    DetailFile::where('id', $row->id)->delete();
+                }
             }
+            Slot::where('id', $sampling->slot_id)->decrement('jml');
+            Jasa::where('id', $id)->delete();
+            Detail_pakaian::where('id',$sampling->detail_id)->delete();
+        }else{
+            Slot::where('id', $sampling->slot_id)->decrement('jml');
+            Jasa::where('id', $id)->delete(); 
         }
-        Slot_S::where('id', $sampling->slot_id)->decrement('jml');
-        Sampling::where('id', $id)->delete();
-        Detail_pakaian::where('id',$sampling->detail_id)->delete();
         return redirect()->back();
     }
 
     public function vieweditsampling($id)
     {
-        $sampling=Sampling::where('id','=', $id)->first();
-        $fileimg=DetailFile::where('detail_id','=', $sampling->detail_id)->get();
-        return view('sampling.admineditsampling',compact('sampling','fileimg'));
+        $sampling=Jasa::where('id','=', $id)->first();
+        $detail=detail_pakaian::where([
+            ['id','=', $sampling->detail_id],
+        ])->first();
+        if($detail->public==1){
+            $fileimg=DetailFile::where('detail_id','=', $sampling->detail_id)->get();
+        }else{
+            $file=detail_pakaian::where([
+                ['id','=', $sampling->detail_id],
+            ])->with('katalogs')->with('katalogm')->with('katalogl')->with('katalogxl')->first();
+            if(count($file->katalogs)!=0){
+                $fileimg=$file->katalogs; 
+            }elseif(count($file->katalogm)!=0){
+                $fileimg=$file->katalogm;
+            }elseif(count($file->katalogl)!=0){
+                $fileimg=$file->katalogl;
+            }elseif(count($file->katalogxl)!=0){
+                $fileimg=$file->katalogxl;
+            }
+        }
+        return view('sampling.admineditsampling',compact('sampling','fileimg','detail'));
     }
     public function uploadimg(Request $request)
     {
@@ -137,11 +367,17 @@ class AdminController extends Controller
             $Sampling->save();
             return redirect()->back()->with('success');
     }
-
+    public function delimg(Request $request)
+    {
+        $delpath='public/imgdetail/'.$request->file;
+        Storage::delete($delpath);
+        DetailFile::where('id', $request->id)->delete();
+        return redirect()->back();
+    }
     public function saveeditS(Request $request)
     {
         $id=Auth::user()->id;
-        $iddetail=Sampling::where('id','=', $request->id)->value('detail_id');
+        $iddetail=Jasa::where('id','=', $request->id)->value('detail_id');
             Detail_pakaian::where('id', $iddetail)->update([
                 'nama_atasan' => $request->nama_atasan,
                 'nama_bawahan' => $request->nama_bawahan,
@@ -175,86 +411,64 @@ class AdminController extends Controller
 
     public function statusSampling(Request $request)
     {
-        Sampling::where('id', $request->id)->update([
+        Jasa::where('id', $request->id)->update([
             'status' => $request->status
         ]);
-        return redirect()->route('viewslistsampling'); 
+        return redirect()->back(); 
     }    
 
-    public function viewslotproduksi()
+    public function viewslistproduksi(Request $request)
     {
-        $slot=Slot_P::all();
-        return view('produksi.setslotproduksi',compact('slot'));
-    }
-
-    public function saveslotP(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required',
-            'mulai' => 'required',
-            'kuota' => 'required',
-            'selesai' => 'required'      
-        ]);
-
-        $Slot_P= new Slot_P([
-            'title' => $request->title,
-            'mulai' => $request->mulai,
-            'selesai' => $request->selesai,
-            'kuota' => $request->kuota,
-            'status' => 1
-            
-        ]);
-        $Slot_P->save();
-        return redirect()->route('viewslotproduksi');
-    }
-
-    public function vieweditslotproduksi($id)
-    {
-        $slot=Slot_P::where('id','=', $id)->first();
-        return view('produksi.editslotproduksi',compact('slot'));
-    }
-
-    public function saveeditslotP(Request $request)
-    {
-        $this->validate($request, [
-            'title' => 'required',
-            'mulai' => 'required',
-            'kuota' => 'required',
-            'selesai' => 'required'      
-        ]);
-        if($request->status==null){
-            $status=0;
-        }else{
-            $status=1;
+        $srt='created_at';
+        $status='All-on-going';
+        $ascdsc='desc';
+        $where=[['jenis_jasa','=', '1'],];
+        if($request->sort!=null){
+            if ($request->slot!='All'){
+                array_push($where,array('slot_id','=', $request->slot));
+            }
+            $status=$request->status;
+            $srt=$request->sort;
+            $ascdsc=$request->ascdesc;
         }
-        Slot_P::where('id', $request->id)->update([
-            'title' => $request->title,
-            'mulai' => $request->mulai,
-            'selesai' => $request->selesai,
-            'kuota' => $request->kuota,
-            'status' => $status
-            
-        ]);
-        return redirect()->route('viewslotproduksi');
-       
-        
-    }
-
-    public function viewslistproduksi()
-    {
-        $produksi=Produksi::all();
-        return view('produksi.listproduksi',compact('produksi'));
+        if ($status=='All-on-going') {
+            array_push($where,array('status','!=', '5'));
+        }else if ($status!='All-on-going'){
+            array_push($where,array('status','=', $status));
+        }
+        $isislot=Slot::where('jenis','=', '1')->get();
+        $produksi=Jasa::where($where)->orderBy($srt, $ascdsc)->paginate(10);
+        if($request->sort==null){
+            $request=['sort' => $srt,'ascdesc' => $ascdsc,'slot' => 'All','status' => $status];
+            $request = (object)$request;
+        }
+        return view('produksi.listproduksi',compact('produksi','isislot','request'));
     }
 
     public function vieweditproduksi($id)
     {
-        $produksi=Produksi::where([
+        $produksi=Jasa::where([
             ['id','=', $id],
         ])->first();
         $detail=detail_pakaian::where([
             ['id','=', $produksi->detail_id],
         ])->first();
-        $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
+        if($detail->public==1){
+            $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
+        }else{
+            $file=detail_pakaian::where([
+                ['id','=', $produksi->detail_id],
+            ])->with('katalogs')->with('katalogm')->with('katalogl')->with('katalogxl')->first();
+            if(count($file->katalogs)!=0){
+                $fileimg=$file->katalogs; 
+            }elseif(count($file->katalogm)!=0){
+                $fileimg=$file->katalogm;
+            }elseif(count($file->katalogl)!=0){
+                $fileimg=$file->katalogl;
+            }elseif(count($file->katalogxl)!=0){
+                $fileimg=$file->katalogxl;
+            }
+        }
         return view('produksi.admineditproduksi',compact('produksi','detail','fileimg','id'));
     }
 
@@ -263,64 +477,82 @@ class AdminController extends Controller
         $this->validate($request,[
             'jml' => 'required' 
         ]);
-        Produksi::where('id',$request->id)->update([
+        Jasa::where('id',$request->id)->update([
             'jml' => $request->jml
         ]);
         return redirect()->route('viewslistproduksi');
     }
     public function statusProd(Request $request)
     {
-        Produksi::where('id', $request->id)->update([
+        Jasa::where('id', $request->id)->update([
             'status' => $request->status
         ]);
-        return redirect()->route('viewslistproduksi'); 
+        return redirect()->back(); 
+    }
+    public function vieweditdetailprod($id)
+    {
+        $detail=detail_pakaian::where('id','=', $id)->first();
+        $redirURL = str_replace(url('/'), '', url()->previous());
+        return view('produksi.admineditdetailprod',compact('detail','redirURL'));
+        //return $redirURL;
+    }
+    public function saveeditdetailprod(Request $request)
+    {
+        Detail_pakaian::where('id', $request->id)->update([
+            'nama_atasan' => $request->nama_atasan,
+            'nama_bawahan' => $request->nama_bawahan,
+            'jenis' => $request->jenis,
+            'desc' => $request->desc,
+            'ling_b' => $request->ling_b,
+            'ling_pgang' => $request->ling_pgang,
+            'ling_pingl' => $request->ling_pingl,
+            'ling_lh' => $request->ling_lh,
+            'leb_bahu' => $request->leb_bahu,
+            'pj_lengan' => $request->pj_lengan,
+            'ling_kr_leng' => $request->ling_kr_leng,
+            'ling_lengan' => $request->ling_lengan,
+            'ling_pergel' => $request->ling_pergel,
+            'leb_muka' => $request->leb_muka,
+            'leb_pungg' => $request->leb_pungg,
+            'panj_pungg' => $request->panj_pungg,
+            'panj_baju' => $request->panj_baju,
+            'tinggi_pingl' => $request->tinggi_pingl,
+            'ling_pinggang' => $request->ling_pinggang,
+            'ling_pesak' => $request->ling_pesak,
+            'ling_paha' => $request->ling_paha,
+            'ling_lutut' => $request->ling_lutut,
+            'ling_kaki' => $request->ling_kaki,
+            'panj_cln_rok' => $request->panj_cln_rok,
+            'tingg_dudk' => $request->tingg_dudk,
+        ]);
+    
+    return redirect($request->redirect);
     }
 
+    
     public function lihatinvoicesampling($id,$jns)
     {
-        if($jns==0){
-            $jasa=Sampling::where('id',$id)->first();
-            $dataD=User::where('id',$jasa->cus_id)->first();
-            $pemb=Pembayaran::where('samp_id',$jasa->id)->with('nota')->get();
-        }else{
-            $jasa=Produksi::where('id',$id)->first();
-            $dataD=User::where('id',$jasa->cus_id)->first();
-            $pemb=Pembayaran::where('prod_id',$jasa->id)->with('nota')->get();
-        }
-        //eturn $pemb[0]->nota;
+        $jasa=Jasa::where('id',$id)->first();
+        $dataD=User::where('id',$jasa->cus_id)->first();
+        $pemb=Pembayaran::where('jasa_id',$id)->with('nota')->get();
         return view('invoice.lihatinvoiceadm',compact('dataD','jasa','id','jns','pemb'));
     }
     public function tambahinvoice(Request $request)
     {
-        if($request->jns==0){
-            $bayar= new Pembayaran([
-                'samp_id' => $request->jasa_id,
-                'jenis_jasa' => $request->jns,
-            ]);
-            $bayar->save();
-        }else{
-            $bayar= new Pembayaran([
-                'prod_id' => $request->jasa_id,
-                'jenis_jasa' => $request->jns,
-            ]);
-            $bayar->save();
-        }
+        $bayar= new Pembayaran([
+            'jasa_id' => $request->jasa_id,
+            'jenis_jasa' => $request->jns,
+        ]);
+        $bayar->save();
         return redirect()->back();
     }
     public function lihatdetailinvoice($id,$jns)
     {
-            if($jns==0){
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Sampling::where('id',$nota->samp_id)->first();
-            }else{
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Produksi::where('id',$nota->prod_id)->first();
-            }
-            $dataD=User::where('id',$jasa->cus_id)->first();
-            $invoice=DetailInvoice::where('bayar_id',$id)->get();
-            $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
-        
-        //return
+        $nota=Pembayaran::where('id',$id)->first();
+        $jasa=Jasa::where('id',$nota->jasa_id)->first();
+        $dataD=User::where('id',$jasa->cus_id)->first();
+        $invoice=DetailInvoice::where('bayar_id',$id)->get();
+        $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
         return view('invoice.lihatdetailadm',compact('nota','dataD','jasa','id','jns','invoice','sum'));
     }
     
@@ -345,18 +577,19 @@ class AdminController extends Controller
         
         return redirect()->back();
     }
+    public function delinvoice(Request $request)
+    {     
+        DetailInvoice::where('id', $request->id)->delete();
+        return redirect()->back();
+        //return $request->id;
+    }
 
     public function generateinvoicesampling(Request $request)
     {
         $id=$request->id;
         $jns=$request->jns;
-        if($jns==0){
-            $nota=Pembayaran::where('id',$id)->first();
-            $jasa=Sampling::where('id',$nota->samp_id)->first();
-        }else{
-            $nota=Pembayaran::where('id',$id)->first();
-            $jasa=Produksi::where('id',$nota->prod_id)->first();
-        }
+        $nota=Pembayaran::where('id',$id)->first();
+        $jasa=Jasa::where('id',$nota->jasa_id)->first();
         $dataD=User::where('id',$jasa->cus_id)->first();
         $invoice=DetailInvoice::where('bayar_id',$id)->get();
         $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
@@ -369,13 +602,8 @@ class AdminController extends Controller
     {
         $id=$request->id;
         $jns=$request->jns;
-        if($jns==0){
-            $nota=Pembayaran::where('id',$id)->first();
-            $jasa=Sampling::where('id',$nota->samp_id)->first();
-        }else{
-            $nota=Pembayaran::where('id',$id)->first();
-            $jasa=Produksi::where('id',$nota->prod_id)->first();
-        }
+        $nota=Pembayaran::where('id',$id)->first();
+        $jasa=Jasa::where('id',$nota->jasa_id)->first();
         $dataD=User::where('id',$jasa->cus_id)->first();
         $invoice=DetailInvoice::where('bayar_id',$id)->get();
         $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
@@ -394,62 +622,35 @@ class AdminController extends Controller
     {
         $id=$request->id;
         $jns=$request->jns;
+        $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
         if($request->jp==0){
-            $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
             Pembayaran::where('id',$request->id)->update([
                 'status' => 2,
                 'terbayar' => $sum
             ]);
-            if($jns==0){
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Sampling::where('id',$nota->samp_id)->first();
-            }else{
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Produksi::where('id',$nota->prod_id)->first();
-            }
-            $dataD=User::where('id',$jasa->cus_id)->first();
-            $invoice=DetailInvoice::where('bayar_id',$id)->get();
-            $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
-            $content = $pdf->download()->getOriginalContent();
-            $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
-            $namanota=$jns.'_'.$jasa->id.'_'.$dataD->id.'_'.time().'.pdf';
-            Storage::put('public/invoice/'.$nama,$content);
-            Storage::put('public/nota/'.$namanota,$content);
-            Pembayaran::where('id',$id)->update([
-                'file_invoice' => $nama,
-            ]); 
-            Nota::where('bayar_id',$id)->orderBy('id','desc')->first()->update([
-                'file_nota' => $namanota,
-            ]);  
         }else if($request->jp==1){
             Pembayaran::where('id',$request->id)->update([
                 'status' => 3,
                 'terbayar' => $request->terbayar
             ]);
-            if($jns==0){
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Sampling::where('id',$nota->samp_id)->first();
-            }else{
-                $nota=Pembayaran::where('id',$id)->first();
-                $jasa=Produksi::where('id',$nota->prod_id)->first();
-            }
-            $sum=DetailInvoice::where('bayar_id',$id)->sum('total');
-            $dataD=User::where('id',$jasa->cus_id)->first();
-            $invoice=DetailInvoice::where('bayar_id',$id)->get();
-            $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
-            $content = $pdf->download()->getOriginalContent();
-            $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
-            $namanota=$jns.'_'.$jasa->id.'_'.$dataD->id.'_'.time().'.pdf';
-            Storage::put('public/invoice/'.$nama,$content);
-            Storage::put('public/nota/'.$namanota,$content);
-            
-            Pembayaran::where('id',$id)->update([
-                'file_invoice' => $nama,
-            ]);  
-            Nota::where('bayar_id',$id)->orderBy('id','desc')->first()->update([
-                'file_nota' => $namanota,
-            ]); 
         }
+        $nota=Pembayaran::where('id',$id)->first();
+        $jasa=Jasa::where('id',$nota->jasa_id)->first();
+        $dataD=User::where('id',$jasa->cus_id)->first();
+        $invoice=DetailInvoice::where('bayar_id',$id)->get();
+        $pdf = PDF::loadview('/pdf/invoice',compact('dataD','jasa','invoice','id','jns','sum','nota'))->setpaper('Legal','potrait');
+        $content = $pdf->download()->getOriginalContent();
+        $nama=$jns.'_'.$jasa->id.'_'.$dataD->id.'.pdf';
+        $namanota=$jns.'_'.$jasa->id.'_'.$dataD->id.'_'.time().'.pdf';
+        Storage::put('public/invoice/'.$nama,$content);
+        Storage::put('public/nota/'.$namanota,$content);
+        Pembayaran::where('id',$id)->update([
+            'file_invoice' => $nama,
+        ]); 
+        Nota::where('bayar_id',$id)->orderBy('id','desc')->first()->update([
+            'file_nota' => $namanota,
+        ]);  
+        
         return redirect()->back();
         //return $wow;
     }
@@ -487,15 +688,11 @@ class AdminController extends Controller
         $this->validate($request, [
             'tgl_jadi' => 'required',
         ]);
-        if($request->jns==0){
-            Sampling::where('id',$request->id)->update([
-                'tgl_jadi' => $request->tgl_jadi,
-            ]);
-        }else if($request->jns==1){
-            Produksi::where('id',$request->id)->update([
-                'tgl_jadi' => $request->tgl_jadi,
-            ]);
-        }
+        
+        Jasa::where('id',$request->id)->update([
+            'tgl_jadi' => $request->tgl_jadi,
+        ]);
+        
         return redirect()->back();
     }
 
@@ -506,4 +703,5 @@ class AdminController extends Controller
         ]);
         return redirect()->back();
     }
+    
 }

@@ -34,8 +34,9 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                    <form method="post" action="{{route('saveslotP')}}" enctype='multipart/form-data'>
+                    <form method="post" action="{{route('saveslot')}}" enctype='multipart/form-data'>
                         @csrf
+                        <input type="hidden" class="form-control" name="jenis" value="1">
                     <div class="form-group row">
                         <label class="control-label col-sm-2" for="nik">Title</label>
                         <div class="col-sm-10">
@@ -43,19 +44,19 @@
                         </div>
                     </div>
                     <div class="form-group row mt-2">
-                        <label class="control-label col-sm-2" for="nik">Mulai</label>
-                        <div class="col-sm-2 ">
-                            <input type="date" class="form-control" name="mulai" placeholder="">
-                        </div>
-                    </div>		
-                    <div class="form-group row mt-2">
-                        <label class="control-label col-sm-2" for="nik">Selesai</label>
+                        <label class="control-label col-sm-2" for="nik">Tanggal Slot Ditutup</label>
                         <div class="col-sm-2 ">
                             <input type="date" class="form-control" name="selesai" placeholder="">
                         </div>
+                    </div>		
+                    <div class="form-group row mt-2">
+                        <label class="control-label col-sm-2" for="nik">Mulai Pembuatan</label>
+                        <div class="col-sm-2 ">
+                            <input type="date" class="form-control" name="mulai" placeholder="">
+                        </div>
                     </div>
                     <div class="form-group row mt-2">
-                        <label class="control-label col-sm-2" for="nik">Kuota</label>
+                        <label class="control-label col-sm-2" for="nik">Kuota Max Pesanan</label>
                         <div class="col-sm-2 ">
                             <input type="number" class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" placeholder="">
                         </div>
@@ -80,8 +81,9 @@
                     <thead>
                         <tr>
                             <th class="text-center">Title</th>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Jumlah Pemesanan</th>
+                            <th class="text-center">Tanggal Slot Ditutup</th>
+                            <th class="text-center">Tanggal Mulai Pembuatan</th>
+                            <th class="text-center">Jumlah Customer</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -90,12 +92,13 @@
                        @foreach($slot as $row)
                         <tr>
                             <td class="text-center">{{$row->title}}</td>
-                            <td class="text-center">{{$row->mulai}} s/d {{$row->selesai}}</td>
+                            <td class="text-center">{{$row->selesai}}</td>
+                            <td class="text-center">{{$row->mulai}}</td>
                             <td class="text-center">{{$row->jml}} / {{$row->kuota}}</td>
                             <td class="text-center"> @if($row->status==1) Aktif @else Non-Aktif @endif</td>
                             <td class="text-center">
-                                <a type="button" class="btn btn-success" href="{{route('vieweditslotproduksi',['id' => $row->id])}}">Edit</a>
-                                <a type="button" class="btn btn-danger" href="{{route('delslotS',['id' => $row->id])}}">Delete</a>
+                                <a type="button" class="btn btn-success" href="{{route('vieweditslot',['id' => $row->id])}}">Edit</a>
+                                <a type="button" class="btn btn-danger" href="{{route('delslot',['id' => $row->id])}}">Delete</a>
                             </td>
                         </tr> 
                         @endforeach

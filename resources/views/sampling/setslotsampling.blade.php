@@ -34,8 +34,9 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                    <form method="post" action="{{route('saveslotS')}}" enctype='multipart/form-data'>
+                    <form method="post" action="{{route('saveslot')}}" enctype='multipart/form-data'>
                         @csrf
+                        <input type="hidden" class="form-control" name="jenis" value="0">
                     <div class="form-group row">
                         <label class="control-label col-sm-2" for="nik">Title</label>
                         <div class="col-sm-10">
@@ -97,8 +98,8 @@
                             <td class="text-center">{{$row->jml}} / {{$row->kuota}}</td>
                             <td class="text-center"> @if($row->status==1) Aktif @else Non-Aktif @endif</td>
                             <td class="text-center">
-                                <a type="button" class="btn btn-success" href="{{route('vieweditslotsampling',['id' => $row->id])}}">Edit</a>
-                                <a type="button" class="btn btn-danger" href="{{route('delslotS',['id' => $row->id])}}">Delete</a>
+                                <a type="button" class="btn btn-success" href="{{route('vieweditslot',['id' => $row->id])}}">Edit</a>
+                                <a type="button" class="btn btn-danger" href="{{route('delslot',['id' => $row->id])}}">Delete</a>
                             </td>
                         </tr>
                         @endforeach

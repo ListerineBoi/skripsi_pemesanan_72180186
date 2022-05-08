@@ -5413,6 +5413,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
   props: ["rooms", "jasas"],
@@ -5430,6 +5433,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("chooseroom", {
         room: value
       });
+    },
+    submitdel: function submitdel(rmid) {
+      this.$emit("dlroom", {
+        rm_id: rmid
+      }); //console.log(rmid)
     },
     submitroom: function submitroom(value) {
       switch (value) {
@@ -5592,7 +5600,7 @@ var app = new Vue({
     fetchRoom: function fetchRoom() {
       var _this3 = this;
 
-      axios.get('/room').then(function (response) {
+      axios.get('/room/' + this.$userId).then(function (response) {
         _this3.rooms = response.data;
       });
     },
@@ -5602,7 +5610,6 @@ var app = new Vue({
       axios.get('/jasa/' + this.$userId).then(function (response) {
         _this4.jasas = response.data;
         var wow = JSON.stringify(response.data);
-        console.log(wow);
       });
     },
     //Receives the message that was emitted from the ChatForm Vue component
@@ -5613,18 +5620,25 @@ var app = new Vue({
       axios.post('/messages', message).then(function (response) {
         console.log(response.data);
       });
+      this.fetchRoom();
     },
     getchosenroom: function getchosenroom(room) {
       this.roomchosen = room;
       this.fetchMessages();
     },
     createroom: function createroom(jenis, tipejasa, jasa_id) {
-      axios.get('/createroom/' + this.$userId + '/' + jenis.jenis + '/' + jenis.tipejasa + '/' + jenis.jasa_id).then(function (response) {
+      axios.get('/createroom/' + jenis.jenis + '/' + jenis.tipejasa + '/' + jenis.jasa_id).then(function (response) {
         //Save the response in the messages array to display on the chat view
         console.log(response.data);
       });
       this.fetchRoom(); //console.log(this.$userId)
       //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
+    },
+    delroom: function delroom(rm_id) {
+      axios.get('room/del/' + rm_id.rm_id).then(function (response) {
+        console.log(response.data);
+      });
+      this.fetchRoom(); //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
     }
   }
 });
@@ -34577,55 +34591,57 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "input-group" }, [
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.newMessage,
-          expression: "newMessage",
-        },
-      ],
-      staticClass: "form-control input-sm",
-      attrs: {
-        id: "btn-input",
-        type: "text",
-        name: "message",
-        placeholder: "Type your message here...",
-      },
-      domProps: { value: _vm.newMessage },
-      on: {
-        keyup: function ($event) {
-          if (
-            !$event.type.indexOf("key") &&
-            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-          ) {
-            return null
-          }
-          return _vm.sendMessage.apply(null, arguments)
-        },
-        input: function ($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.newMessage = $event.target.value
-        },
-      },
-    }),
-    _vm._v(" "),
-    _c("span", { staticClass: "input-group-btn " }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-sm ml-2",
-          attrs: { id: "btn-chat" },
-          on: { click: _vm.sendMessage },
-        },
-        [_vm._v("\n      Send\n    ")]
-      ),
-    ]),
-  ])
+  return this.roomchosen.room != null
+    ? _c("div", { staticClass: "input-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newMessage,
+              expression: "newMessage",
+            },
+          ],
+          staticClass: "form-control input-sm",
+          attrs: {
+            id: "btn-input",
+            type: "text",
+            name: "message",
+            placeholder: "Type your message here...",
+          },
+          domProps: { value: _vm.newMessage },
+          on: {
+            keyup: function ($event) {
+              if (
+                !$event.type.indexOf("key") &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              return _vm.sendMessage.apply(null, arguments)
+            },
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.newMessage = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "input-group-btn " }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-sm ml-2",
+              attrs: { id: "btn-chat" },
+              on: { click: _vm.sendMessage },
+            },
+            [_vm._v("\n      Send\n    ")]
+          ),
+        ]),
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -34722,21 +34738,27 @@ var render = function () {
           [
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-4" }, [
-                room.samp_id != null
+                room.jasa.detp.jenis == 0
                   ? _c("img", {
                       staticClass: "img-fluid mr-4",
-                      attrs: {
-                        src: "/storage/imgsampling/" + room.sampling.detp.img,
-                        alt: "image",
-                      },
+                      attrs: { src: "/img/tnb.png", alt: "image" },
                     })
-                  : _c("img", {
+                  : room.jasa.detp.jenis == 1
+                  ? _c("img", {
                       staticClass: "img-fluid mr-4",
-                      attrs: {
-                        src: "/storage/imgsampling/" + room.produksi.detp.img,
-                        alt: "image",
-                      },
-                    }),
+                      attrs: { src: "/img/top.png", alt: "image" },
+                    })
+                  : room.jasa.detp.jenis == 2
+                  ? _c("img", {
+                      staticClass: "img-fluid mr-4",
+                      attrs: { src: "/img/bottom.png", alt: "image" },
+                    })
+                  : room.jasa.detp.jenis == 3
+                  ? _c("img", {
+                      staticClass: "img-fluid mr-4",
+                      attrs: { src: "/img/dress.png", alt: "image" },
+                    })
+                  : _vm._e(),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-8" }, [
@@ -34744,32 +34766,68 @@ var render = function () {
                   "div",
                   { staticClass: "d-flex w-100 justify-content-between" },
                   [
-                    room.samp_id != null
+                    room.jasa.jenis_jasa == 0
                       ? _c("h5", { staticClass: "mb-1" }, [
+                          _c("strong", [_vm._v("Sampling")]),
                           _vm._v(
-                            "List group item heading " +
-                              _vm._s(room.sampling.detp.img)
+                            " : " +
+                              _vm._s(room.jasa.detp.nama_atasan) +
+                              " - " +
+                              _vm._s(room.jasa.detp.nama_bawahan)
                           ),
                         ])
-                      : _c("h5", { staticClass: "mb-1" }, [
-                          _vm._v(
-                            "List group item heading " +
-                              _vm._s(room.produksi.detp.img)
-                          ),
-                        ]),
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c("small", [_vm._v("3 days ago")]),
+                    room.jasa.jenis_jasa == 1
+                      ? _c("h5", { staticClass: "mb-1" }, [
+                          _c("strong", [_vm._v("Produksi")]),
+                          _vm._v(
+                            " : " +
+                              _vm._s(room.jasa.detp.nama_atasan) +
+                              " - " +
+                              _vm._s(room.jasa.detp.nama_bawahan)
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    room.messageslatest != null
+                      ? _c("small", [
+                          _vm._v(_vm._s(room.messageslatest.created_at)),
+                        ])
+                      : _vm._e(),
                   ]
                 ),
                 _vm._v(" "),
-                _c("p", { staticClass: "mb-1" }, [
-                  _vm._v(
-                    "Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit."
-                  ),
-                ]),
+                room.messageslatest != null
+                  ? _c("p", { staticClass: "mb-1 text-dark" }, [
+                      _vm._v(
+                        "New Message: " + _vm._s(room.messageslatest.message)
+                      ),
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
-                _c("small", [_vm._v("Donec id elit non mi porta.")]),
+                room.jenis == 0
+                  ? _c("small", [_vm._v("Konsultasi Produksi/Sampling")])
+                  : _vm._e(),
+                _vm._v(" "),
+                room.jenis == 1
+                  ? _c("small", [_vm._v("Konsultasi Paska-Produksi/Sampling")])
+                  : _vm._e(),
               ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger mt-3 ml-3",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.submitdel(room.id)
+                    },
+                  },
+                },
+                [_vm._v("Delete")]
+              ),
             ]),
           ]
         )
@@ -34829,10 +34887,6 @@ var render = function () {
                       _vm._v(" "),
                       _c("option", { attrs: { value: "1" } }, [
                         _vm._v("Komplain Paska-Produksi/Sampling"),
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "2" } }, [
-                        _vm._v("Konsultasi Pra-Pemesanan"),
                       ]),
                     ]
                   ),
@@ -34922,9 +34976,20 @@ var render = function () {
                           },
                         },
                         _vm._l(_vm.jasas.produksi, function (produksi) {
-                          return _c("option", { key: produksi.id }, [
-                            _vm._v(_vm._s(produksi.id)),
-                          ])
+                          return _c(
+                            "option",
+                            {
+                              key: produksi.id,
+                              domProps: { value: produksi.id },
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(produksi.detp.nama_atasan) +
+                                  " - " +
+                                  _vm._s(produksi.detp.nama_bawahan)
+                              ),
+                            ]
+                          )
                         }),
                         0
                       )
@@ -34961,9 +35026,20 @@ var render = function () {
                           },
                         },
                         _vm._l(_vm.jasas.sampling, function (sampling) {
-                          return _c("option", { key: sampling.id }, [
-                            _vm._v(_vm._s(sampling.id)),
-                          ])
+                          return _c(
+                            "option",
+                            {
+                              key: sampling.id,
+                              domProps: { value: sampling.id },
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(sampling.detp.nama_atasan) +
+                                  " - " +
+                                  _vm._s(sampling.detp.nama_bawahan)
+                              ),
+                            ]
+                          )
                         }),
                         0
                       )
@@ -34992,7 +35068,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes2")]
+                        [_vm._v("Save changes")]
                       )
                     : _vm.selectedJ == 0
                     ? _c(
@@ -35006,7 +35082,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes0")]
+                        [_vm._v("Save changes")]
                       )
                     : _vm.selectedJ == 1
                     ? _c(
@@ -35020,7 +35096,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes1")]
+                        [_vm._v("Save changes")]
                       )
                     : _vm._e(),
                 ]),

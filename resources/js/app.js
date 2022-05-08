@@ -68,7 +68,7 @@ const app = new Vue({
             //console.log('/messagesfetch/'+this.roomchosen.room);
         },
         fetchRoom() {
-            axios.get('/room').then(response => {
+            axios.get('/room/'+this.$userId).then(response => {
                 this.rooms = response.data;
                 
             });
@@ -77,7 +77,6 @@ const app = new Vue({
             axios.get('/jasa/'+this.$userId).then(response => {
                 this.jasas = response.data;
                 var wow= JSON.stringify(response.data);
-                 console.log(wow);
             });
         },
         //Receives the message that was emitted from the ChatForm Vue component
@@ -88,6 +87,7 @@ const app = new Vue({
             axios.post('/messages', message).then(response => {
                 console.log(response.data);
             });
+            this.fetchRoom();
         },
         getchosenroom(room) {
                 this.roomchosen = room;
@@ -95,13 +95,22 @@ const app = new Vue({
             
         },
         createroom(jenis,tipejasa,jasa_id) {
-            axios.get('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id).then(response => {
+            axios.get('/createroom/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id).then(response => {
                 //Save the response in the messages array to display on the chat view
                 console.log(response.data);
                 
             });
             this.fetchRoom();
             //console.log(this.$userId)
+            //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
+        },
+        delroom(rm_id) {
+            axios.get('room/del/'+rm_id.rm_id).then(response => {
+                console.log(response.data);
+                
+            });
+            this.fetchRoom();
+            
             //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
         },
         

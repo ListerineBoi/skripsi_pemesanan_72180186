@@ -17,12 +17,10 @@ class Room extends Migration
             $table->id();
             $table->char('jenis', 1);
             $table->unsignedBigInteger('user_id')->unsigned();
-            $table->unsignedBigInteger('samp_id')->nullable();
-            $table->unsignedBigInteger('prod_id')->nullable();
+            $table->unsignedBigInteger('jasa_id')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('prod_id')->references('id')->on('produksi');
-            $table->foreign('samp_id')->references('id')->on('sampling');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('jasa_id')->references('id')->on('jasa')->onDelete('cascade');
         });
     }
 

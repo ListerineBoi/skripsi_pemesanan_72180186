@@ -34,6 +34,62 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
+                        <p>
+                        <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#filtercollapse" aria-expanded="false" aria-controls="collapseExample">
+                            Filter
+                        </button>
+                    </p>
+                    <div class="collapse" id="filtercollapse">
+                        <div class="card card-body">
+                               <form action="{{route('viewslistproduksi')}}" method="get">
+                                <div class="form-row align-items-center">
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01">Diurutkan Dari</label>
+                                            <select class="custom-select" name='sort'>
+                                                <option value="created_at" @if($request->sort=='created_at') selected @endif>Tanggal Input</option>
+                                                <option value="status" @if($request->sort=='status') selected @endif>Status</option>
+                                                <option value="jml" @if($request->sort=='jml') selected @endif>Jumlah Pesanan</option>
+                                            </select>
+                                        </div>
+                                       
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01" >Ascending/descending</label>
+                                            <select class="custom-select" name='ascdesc'>
+                                                <option value="asc" @if($request->ascdesc=='asc') selected @endif>Ascending</option>
+                                                <option value="desc" @if($request->ascdesc=='desc') selected @endif>Descending</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01" >Status</label>
+                                            <select class="custom-select" name='status'>
+                                                <option @if($request->status=='All on-going') selected @endif>All-on-going</option>
+                                                <option value="0" @if($request->status=='0') selected @endif>Konsultasi</option>
+                                                <option value="1" @if($request->status=='1') selected @endif>Waiting list</option>
+                                                <option value="2" @if($request->status=='2') selected @endif>cutting</option>
+                                                <option value="3" @if($request->status=='3') selected @endif>sewing</option>
+                                                <option value="4" @if($request->status=='4') selected @endif>Finishing & QC</option>
+                                                <option value="5" @if($request->status=='5') selected @endif>Selesai</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01">Slot</label>
+                                            <select class="custom-select" name='slot'>
+                                                <option value="{{$request->slot}}" @if($request->slot==$request->slot) selected @endif>Pilihan Sebelumnya</option>
+                                                <option @if($request->slot=='All') selected @endif>All</option>
+                                                @foreach($isislot as $row)
+                                                <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->selesai}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        
+                                        
+                                        <div class="col-auto my-1">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>  
+                               </form>
+                        </div>
+                    </div>
                 <div class="single-table">
                         <div class="table-responsive">
                             <table class="table table-hover progress-table text-center">
@@ -51,7 +107,7 @@
                                 @foreach($produksi as $row)
                                     <tr>
                                         <th>{{DB::table('users')->where('id', $row->cus_id)->value('name')}}</th>
-                                        <td>Mulai Pembuatan: <strong> {{DB::table('slot_p')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
+                                        <td>Mulai Pembuatan: <strong> {{DB::table('slot')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
                                         <td>
                                             @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
                                                 {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}}
@@ -66,26 +122,31 @@
                                         <td>{{$row->jml}}</td>
                                         <td>
                                             @if($row->status == 0)
-                                            <span class="status-p bg-secondary mb-2">pending</span>
+                                            <span class="status-p bg-secondary mb-2">Konsultasi</span>
                                             <div class="progress" style="height: 8px;">
                                                 <div class="progress-bar bg-secondary" role="progressbar" style="width: 2%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             @elseif($row->status == 1)
                                             <span class="status-p bg-warning mb-2">Waiting list</span>
                                             <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             @elseif($row->status == 2)
-                                            <span class="status-p bg-info mb-2">Proses</span>
+                                            <span class="status-p bg-info mb-2">Cutting</span>
                                             <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             @elseif($row->status == 3)
-                                            <span class="status-p bg-primary mb-2">Finishing</span>
+                                            <span class="status-p bg-primary mb-2">Sewing</span>
                                             <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             @elseif($row->status == 4)
+                                            <span class="status-p bg-primary mb-2">Finishing & QC</span>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            @elseif($row->status == 5)
                                             <span class="status-p bg-success mb-2">Selesai</span>
                                             <div class="progress" style="height: 8px;">
                                                 <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -163,6 +224,7 @@
                                     @endforeach 
                                 </tbody>
                             </table>
+                            {{ $produksi->withQueryString()->links() }}
                         </div>
                     </div>
                     

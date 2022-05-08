@@ -4,6 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-12 mt-3">
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('viewproduksi')}}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Produksi Custom</li>
+            </ol>
+            </nav>
             <div class="card">
                     <div class="card-body">
 

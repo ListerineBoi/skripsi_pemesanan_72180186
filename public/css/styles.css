@@ -2512,7 +2512,7 @@ table.dataTable thead td {
 /* login-s3 */
 
 .login-bg {
-    background: url(../images/bg/singin-bg.jpg) center/cover no-repeat;
+    background: '/public/img/wallpaper.jpg';
     position: relative;
     z-index: 1;
 }

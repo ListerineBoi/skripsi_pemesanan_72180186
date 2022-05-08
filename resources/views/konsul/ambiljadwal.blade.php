@@ -5,7 +5,16 @@
             
             
             <div class="main-content-inner">
-                
+            
+                <div class="col-12 mt-3">
+                    <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('viewkonsul')}}">Konsul</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ambil Jadwal</li>
+                </ol>
+                </nav>
+                </div>
+           
                     
                             <!-- Textual inputs start -->
                             <div class="row">

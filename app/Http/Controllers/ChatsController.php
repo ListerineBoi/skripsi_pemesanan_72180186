@@ -6,7 +6,7 @@ use App\Models\Message;
 use App\Models\Room;
 use App\Models\Produksi;
 use App\Models\User;
-use App\Models\Sampling;
+use App\Models\Jasa;
 use App\Events\MessageSent;
 use Auth;
 
@@ -26,9 +26,13 @@ class ChatsController extends Controller
         
         //return Auth::guard('admin','web')->check();
     }
-    public function fetchRoom()
+    public function fetchRoom($id)
     {
-        return Room::with('sampling.detp')->with('produksi.detp')->get();
+        if(Auth::guard('admin')->check()){
+            return Room::with('jasa.detp')->with('messageslatest')->get(); 
+        }else{
+            return Room::where('user_id',$id)->with('jasa.detp')->with('messageslatest')->get();
+        }
     }
     public function fetchMessages($id)
     {
@@ -37,19 +41,28 @@ class ChatsController extends Controller
     public function fetchjasa($id)
     {
         $user=User::find($id);
-        $produksi=$user->produksis()->get();
-        $sampling=$user->samplings()->get();
+        $produksi=Jasa::where([
+            ['jenis_jasa','=', '1'],
+            ['cus_id','=', $id],
+        ])->with('detp')->get();
+        $sampling=Jasa::where([
+            ['jenis_jasa','=', '0'],
+            ['cus_id','=', $id],
+        ])->with('detp')->get();
         return compact('produksi','sampling');
     }
-    public function createRoom($user_id,$jenis,$tipejasa,$jasa_id)
+    public function createRoom($jenis,$tipejasa,$jasa_id)
     {
-        
+        $user_id2=Auth::user()->id;
+        $user_id=Jasa::where([
+            ['id','=', $jasa_id],
+        ])->value('cus_id');
         if($jenis!=2){
             if($tipejasa==0){
                 $room= new Room([
                     'jenis' => $jenis,
                     'user_id' => $user_id,
-                    'prod_id' => $jasa_id,
+                    'jasa_id' => $jasa_id,
                     
                 ]);
                 
@@ -57,7 +70,7 @@ class ChatsController extends Controller
                 $room= new Room([
                     'jenis' => $jenis,
                     'user_id' => $user_id,
-                    'samp_id' => $jasa_id,
+                    'jasa_id' => $jasa_id,
                     
                 ]);
                 
@@ -65,7 +78,7 @@ class ChatsController extends Controller
         }elseif ($jenis==2) {
             $room= new Room([
                 'jenis' => $jenis,
-                'user_id' => $user_id,
+                'user_id' => $user_id2,
                 
             ]);
             
@@ -75,7 +88,11 @@ class ChatsController extends Controller
         //return $room;
         return ['status' => 'room created!'];
     }
-
+    public function delRoom($room_id)
+    {
+        Room::where('id', $room_id)->delete();
+        return ['status' => 'room deleted!'];
+    }
     public function sendMessage(Request $request)
     {
         $type = '';

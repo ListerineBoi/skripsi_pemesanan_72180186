@@ -4,12 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 mt-5">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('viewproduksi')}}">Produksi</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Input Produksi</li>
-            </ol>
-            </nav>
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-12">
@@ -96,39 +90,12 @@
                     <h6 class="card-text mt-5 mb-2">Deskripsi</h6>
                     <p class="card-text text-dark">{{$detail->desc}}</p>
 
-                    @if($detail->public==1)
-                    <h4 class="header-title">File/Gambar Design
-                    <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="File/Gambar Design" 
-                        data-content="Anda dapat upload gambar maupun file yang dapat membantu kami memahami design pakaian pesanan anda. (Upload File/gambar hanya bisa dilakukan pada tahap konsultasi).">
-                            <i class="fa fa-info-circle text-info"></i>
-                    </a>
-                    </h4>
-                    <div class="row row-cols-1 row-cols-md-3 mb-3 pb-3 g-4 bg-light" >
-                        @foreach($fileimg as $row)
-                            <div class="col-lg-4 col-md-6 mt-3">
-                                <div class="card h-100 card-bordered">
-                                
-                                        <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
-                                
-                                    <div class="card-body">
-
-                                    </div>
-                                </div>
-                            </div> 
-                        @endforeach
-                    </div>
-                    <div class="alert alert-info" role="alert">
-                        <strong>Perhatian!</strong> Detail & file pakaian diatas masih bisa dirubah pada laman produksi setelah mengajukan pemesanan produksi ini.
-                    </div>
-                    @else
-                    
-                    @endif
                 </div>
                 </div>
             </div>
         </div>
         <div class="card">
-                <div class="card-header">Form Pengajuan Produksi</div>
+                <div class="card-header">Form Pengajuan Sampling</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -157,7 +124,7 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                    <form method="post" action="{{route('saveinputprod')}}" enctype='multipart/form-data'>
+                    <form method="post" action="{{route('saveinputsamp')}}" enctype='multipart/form-data'>
                         @csrf
                         <input type="hidden" class="form-control" name="detail_id" value="{{$detail->id}}">
                     <div class="form-group row">
@@ -170,12 +137,7 @@
                         </select>
                         </div>
                     </div>
-                    <div class="form-group row mt-2">
-                        <label class="control-label col-sm-2" for="nik">Jumlah Produksi</label>
-                        <div class="col-sm-10">
-                            <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" placeholder="">
-                        </div>
-                    </div>	
+                    
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
             </form>
                 </div>

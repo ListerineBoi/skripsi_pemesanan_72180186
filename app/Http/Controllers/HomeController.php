@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail_pakaian;
 use Illuminate\Http\Request;
+use App\Models\Katalog;
 
 class HomeController extends Controller
 {
@@ -20,10 +22,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $Katalog=Katalog::all();
+        return view('home',compact('Katalog'));
+        //return $Katalog;
     }
-    public function indexcoba()
+    public function viewdetailkatalogpublic($id)
     {
-        return view('coba');
+        $katalog=Katalog::where('id',$id)->first();
+        $details=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_s],
+        ])->first();
+        $detailm=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_m],
+        ])->first();
+        $detaill=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_l],
+        ])->first();
+        $detailxl=detail_pakaian::where([
+            ['id','=', $katalog->detail_id_xl],
+        ])->first();
+        return view('katalog.detailkatalogpublic',compact('katalog','details','detailm','detaill','detailxl'));
     }
 }

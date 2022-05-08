@@ -13,12 +13,24 @@ class Detail_pakaian extends Model
         'ling_paha','ling_lutut','ling_kaki','panj_cln_rok','tingg_dudk',
     ];
     protected $table="detail_pakaian";
-    public function samp()
+    public function jasa()
     {
-        return $this->hasMany(Sampling::class);
+        return $this->hasMany(Jasa::class);
     }
-    public function prod()
+    public function katalogs()
     {
-        return $this->hasMany(Produksi::class);
+        return $this->hasMany(Katalog::class,'detail_id_s');
+    }
+    public function katalogm()
+    {
+        return $this->hasMany(Katalog::class,'detail_id_m');
+    }
+    public function katalogl()
+    {
+        return $this->hasMany(Katalog::class,'detail_id_l');
+    }
+    public function katalogxl()
+    {
+        return $this->hasMany(Katalog::class,'detail_id_xl');
     }
 }

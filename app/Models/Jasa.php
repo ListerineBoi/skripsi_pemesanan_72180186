@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Produksi extends Model
+class Jasa extends Model
 {
     protected $fillable = [
-        'slot_id','detail_id','jml','cus_id','admin_id','status',
+        'jenis_jasa','slot_id','detail_id','jml','cus_id','admin_id','status',
     ];
-    protected $table="produksi";
+    protected $table="jasa";
     public function room()
     {
         return $this->hasMany(Room::class);

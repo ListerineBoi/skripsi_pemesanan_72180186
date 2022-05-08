@@ -37,13 +37,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
-    public function samplings()
+    public function jasas()
     {
-        return $this->hasMany(Sampling::class,'cus_id');
-    }
-    public function produksis()
-    {
-        return $this->hasMany(Produksi::class,'cus_id');
+        return $this->hasMany(Jasa::class,'cus_id');
     }
     
 

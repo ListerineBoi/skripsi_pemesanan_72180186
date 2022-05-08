@@ -9,7 +9,9 @@ class Message extends Model
 {
     protected $fillable = ['message','room_id'];
     use HasFactory;
-    
+    protected $casts = [
+        'created_at'  => 'date:Y-m-d H:i:s',
+    ];
     public function user()
     {
     return $this->belongsTo(User::class);

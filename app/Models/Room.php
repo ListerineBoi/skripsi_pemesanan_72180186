@@ -9,16 +9,16 @@ class Room extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'prod_id','samp_id','cus_id','user_id','jenis'
+        'jasa_id','cus_id','user_id','jenis'
     ];
     protected $table="room";
 
-    public function sampling()
+    public function jasa()
     {
-    return $this->belongsTo(Sampling::class, 'samp_id');
+    return $this->belongsTo(Jasa::class, 'jasa_id');
     }
-    public function produksi()
+    public function messageslatest()
     {
-    return $this->belongsTo(Produksi::class, 'prod_id');
+    return $this->hasOne(Message::class)->latestOfMany();
     }
 }

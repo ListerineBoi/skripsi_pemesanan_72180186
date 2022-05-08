@@ -49,7 +49,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-12 col-sm-12 clearfix center-block">
                             <div class="logo">
-                                <a href="index.html"><img src="{{ asset('images/logo_1.png') }}" alt="logo"></a>
+                                <a href="/"><img src="{{ asset('images/logo_1.png') }}" alt="logo"></a>
                             </div>
                         </div>   
                     </div>

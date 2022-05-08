@@ -76,10 +76,8 @@
                                     @foreach( $jadwal as $jdwl)
                                     <tr>
                                         <td>
-                                            @if($jdwl->samp_id != null)
-                                            {{DB::table('users')->where('id', DB::table('sampling')->where('id', $jdwl->samp_id)->value('cus_id'))->value('name')}}
-                                            @elseif($jdwl->prod_id != null)
-                                            {{DB::table('users')->where('id', DB::table('produksi')->where('id', $jdwl->prod_id)->value('cus_id'))->value('name')}}
+                                            @if($jdwl->jasa_id != null)
+                                            {{DB::table('users')->where('id', DB::table('jasa')->where('id', $jdwl->jasa_id)->value('cus_id'))->value('name')}}
                                             @else
                                             Belum Ada
                                             @endif

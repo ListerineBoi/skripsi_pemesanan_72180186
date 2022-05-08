@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSlotP extends Migration
+class CreateSlot extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateSlotP extends Migration
      */
     public function up()
     {
-        Schema::create('slot_p', function (Blueprint $table) {
+        Schema::create('slot', function (Blueprint $table) {
             $table->id();
+            $table->char('jenis', 1);
             $table->string('title');
             $table->date('mulai');
             $table->date('selesai');
@@ -22,6 +23,7 @@ class CreateSlotP extends Migration
             $table->tinyInteger('kuota');
             $table->char('status', 1);
             $table->timestamps();
+            
         });
     }
 
@@ -33,6 +35,6 @@ class CreateSlotP extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('slot_p');
+        Schema::dropIfExists('slot');
     }
 }

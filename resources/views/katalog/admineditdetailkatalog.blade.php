@@ -1,16 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.appadmin')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-12 mt-3">
             <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('viewproduksi')}}">Produksi</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit Produksi</li>
-                <li class="breadcrumb-item active" aria-current="page">Edit Detail</li>
-            </ol>
-            </nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('homeadmin')}}">Katalog</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                </ol>
+                </nav>
             <div class="card">
                     <div class="card-body">
 
@@ -40,7 +40,7 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                        <form method="post" action="{{route('saveeditdetailprod')}}" enctype='multipart/form-data'>
+                        <form method="post" action="{{route('adminsaveeditdetailkatalog')}}" enctype='multipart/form-data'>
                             @csrf
                             <input type="hidden" name="id" value="{{$detail->id}}">
                             <input type="hidden" name="redirect" value="{{$redirURL}}">
@@ -54,12 +54,13 @@
                                     <i class="fa fa-info-circle text-info"></i>
                                 </a>
                                 
-                                <select class="custom-select" name="jenis" id=disparent1>
+                                <select class="custom-select" id=disparent1 disabled>
                                     <option value="0" @if($detail->jenis==0) selected @endif>Atasan + Bawahan</option>
                                     <option value="1" @if($detail->jenis==1) selected @endif>Atasan</option>
                                     <option value="2" @if($detail->jenis==2) selected @endif>Bawahan</option>
                                     <option value="3" @if($detail->jenis==3) selected @endif>Dress</option>
                                 </select>
+                                <input type="hidden" value="{{$detail->jenis}}" name="jenis">
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Nama Pakaian</label>

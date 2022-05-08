@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Sign up - srtdash</title>
+    <title>Sign up - Amoora</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -76,11 +76,11 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="submit-btn-area">
-                            <button id="form_submit" type="submit">Submit <i class="ti-arrow-right"></i></button>
+                            <button id="form_submit" type="submit">Register <i class="ti-arrow-right"></i></button>
                             
                         </div>
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted">Don't have an account? <a href="login.html">Sign in</a></p>
+                            <p class="text-muted">Don't have an account? <a href="{{ route('login') }}">Sign in</a></p>
                         </div>
                     </div>
                 </form>

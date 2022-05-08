@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="submit-btn-area">
-                            <button id="form_submit" type="submit">Submit <i class="ti-arrow-right"></i></button>
+                            <button id="form_submit" type="submit">Login <i class="ti-arrow-right"></i></button>
                         </div>
                         <div class="form-footer text-center mt-5">
                             <p class="text-muted">Don't have an account? <a href="{{ route('register') }}">Sign up</a></p>

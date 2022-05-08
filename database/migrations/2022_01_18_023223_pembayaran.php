@@ -15,15 +15,13 @@ class Pembayaran extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('samp_id')->nullable();
-            $table->unsignedBigInteger('prod_id')->nullable();
+            $table->unsignedBigInteger('jasa_id')->nullable();
             $table->char('jenis_jasa', 1);
             $table->mediumInteger('terbayar')->nullable();
             $table->text('file_invoice')->nullable();
             $table->char('status', 1)->default('0');
             $table->timestamps();
-            $table->foreign('samp_id')->references('id')->on('sampling');
-            $table->foreign('prod_id')->references('id')->on('produksi');
+            $table->foreign('jasa_id')->references('id')->on('jasa');
             
     });
     }

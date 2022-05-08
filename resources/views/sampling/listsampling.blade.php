@@ -13,6 +13,62 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <p>
+                        <button class="btn btn-secondary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#filtercollapse" aria-expanded="false" aria-controls="collapseExample">
+                            Filter
+                        </button>
+                    </p>
+                    <div class="collapse" id="filtercollapse">
+                        <div class="card card-body">
+                               <form action="{{route('viewslistsampling')}}" method="get">
+                                <div class="form-row align-items-center">
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01">Diurutkan Dari</label>
+                                            <select class="custom-select" name='sort'>
+                                                <option value="created_at" @if($request->sort=='created_at') selected @endif>Tanggal Input</option>
+                                                <option value="status" @if($request->sort=='status') selected @endif>Status</option>
+                                            </select>
+                                        </div>
+                                       
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01" >Ascending/descending</label>
+                                            <select class="custom-select" name='ascdesc'>
+                                                <option value="asc" @if($request->ascdesc=='asc') selected @endif>Ascending</option>
+                                                <option value="desc" @if($request->ascdesc=='desc') selected @endif>Descending</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01" >Status</label>
+                                            <select class="custom-select" name='status'>
+                                                <option @if($request->status=='All') selected @endif>All-on-going</option>
+                                                <option value="0" @if($request->status=='0') selected @endif>Konsultasi</option>
+                                                <option value="1" @if($request->status=='1') selected @endif>Waiting list</option>
+                                                <option value="2" @if($request->status=='2') selected @endif>cutting</option>
+                                                <option value="3" @if($request->status=='3') selected @endif>sewing</option>
+                                                <option value="4" @if($request->status=='4') selected @endif>Finishing & QC</option>
+                                                <option value="5" @if($request->status=='5') selected @endif>Selesai</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01">Slot</label>
+                                            <select class="custom-select" name='slot'>
+                                                <option value="{{$request->slot}}" @if($request->slot==$request->slot) selected @endif>Pilihan Sebelumnya</option>
+                                                <option @if($request->slot=='All') selected @endif>All</option>
+                                                @foreach($isislot as $row)
+                                                <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->selesai}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        
+                                        
+                                        <div class="col-auto my-1">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>  
+                               </form>
+                        </div>
+                    </div>
+
                     <div class="single-table">
                         <div class="table-responsive">
                             <table class="table table-hover progress-table text-center">
@@ -29,7 +85,7 @@
                                 @foreach($sampling as $row)
                                     <tr>
                                         <th>{{DB::table('users')->where('id', $row->cus_id)->value('name')}}</th>
-                                        <td> Mulai Pembuatan: <strong> {{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
+                                        <td> Mulai Pembuatan: <strong> {{DB::table('slot')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
                                         <td>
                                             @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
                                                 {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}}
@@ -145,6 +201,7 @@
                                     @endforeach 
                                 </tbody>
                             </table>
+                            {{ $sampling->withQueryString()->links() }}
                         </div>
                     </div>
                     

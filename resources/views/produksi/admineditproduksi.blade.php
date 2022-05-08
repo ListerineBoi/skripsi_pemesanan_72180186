@@ -13,7 +13,7 @@
                         @if($detail->jenis==0)
                             <h5 > {{$detail->nama_atasan}} + {{$detail->nama_bawahan}} </h5>
                         @elseif($detail->jenis==1)
-                            <h5 > {$detail->nama_atasan}} </h5>
+                            <h5 > {{$detail->nama_atasan}} </h5>
                         @elseif($detail->jenis==2)
                             <h5 > {{$detail->nama_bawahan}} </h5>
                         @elseif($detail->jenis==3)
@@ -97,8 +97,9 @@
                         </div>
                         <textarea class="form-control" aria-label="With textarea" name="desc" disabled>{{$detail->desc}}</textarea>
                     </div>
-
-                    <a href="{{route('vieweditdetailprod',['id' => $detail->id])}}" class="btn btn-primary">Edit Detail Pakaian</a>
+                    @if($detail->public==1)
+                    <a href="{{route('adminvieweditdetailprod',['id' => $detail->id])}}" class="btn btn-primary">Edit Detail Pakaian</a>
+                    @endif
                     <h4 class="header-title mt-5">File/Gambar Design
                     <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="File/Gambar Design" 
                         data-content="Anda dapat upload gambar maupun file yang dapat membantu kami memahami design pakaian pesanan anda. (Upload File/gambar hanya bisa dilakukan pada tahap konsultasi).">
@@ -106,21 +107,88 @@
                     </a>
                     </h4>
                     <div class="row row-cols-1 row-cols-md-3 mb-3 pb-3 g-4 bg-light" >
-                        @foreach($fileimg as $row)
-                            <div class="col-lg-4 col-md-6 mt-3">
-                                <div class="card h-100 card-bordered">
-                                
-                                        <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
-                                
-                                    <div class="card-body">
-
+                        @if($detail->public==1)
+                            @foreach($fileimg as $row)
+                                <div class="col-lg-4 col-md-6 mt-3">
+                                    <div class="card h-100 card-bordered">
+                                    
+                                            <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
+                                    
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <a type="button" class="btn btn-primary mr-1" href="{{url('/')}}/storage/imgdetail/{{$row->img}}">Lihat File</a>
+                                                
+                                                @if($produksi->status==0)
+                                                <form method="post" action="{{route('delimg')}}">
+                                                    @csrf
+                                                    <input type="hidden" name="file" value="{{$row->img}}">
+                                                    <input type="hidden" name="id" value="{{$row->id}}">
+                                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                                </form>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            @endforeach
+                        @else
+                            @if($fileimg[0]->img_depan!=null)
+                                <div class="col-lg-4 col-md-6 mt-3">
+                                    <div class="card h-100 card-bordered">
+                                    
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_depan}}" class="card-img-top" alt="Belum Ada">
+                                    
+                                        <div class="card-body">
+                                            Tampak Depan
+                                            
+                                        </div>
                                     </div>
                                 </div>
-                            </div> 
-                        @endforeach
+                                @endif
+                                @if($fileimg[0]->img_belakang!=null)
+                                <div class="col-lg-4 col-md-6 mt-3">
+                                    <div class="card h-100 card-bordered">
+                                    
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_belakang}}" class="card-img-top" alt="Belum Ada">
+                                    
+                                        <div class="card-body">
+                                            Tampak Belakang
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if($fileimg[0]->img_dll1!=null)
+                                <div class="col-lg-4 col-md-6 mt-3">
+                                    <div class="card h-100 card-bordered">
+                                    
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll1}}" class="card-img-top" alt="Belum Ada">
+                                    
+                                        <div class="card-body">
+                                            Detail Lainnya
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if($fileimg[0]->img_dll2!=null)
+                                <div class="col-lg-4 col-md-6 mt-3">
+                                    <div class="card h-100 card-bordered">
+                                    
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll2}}" class="card-img-top" alt="Belum Ada">
+                                    
+                                        <div class="card-body">
+                                            Detail Lainnya
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                        @endif
                     </div>
-                    <div class="input-group mb-3">
-                            @if($produksi->status==0)
+                    </div>
+                    <div class="input-group mb-3 ml-4">
+                            @if($produksi->status==0 AND $detail->public==1)
                                 <div class="row col-12">
                                     <h4 class="header-title">Upload File/Gambar Design</h4>
                                 </div>
@@ -136,16 +204,17 @@
                                         <div class="input-group-append">
                                             <button class="btn btn-Primary" type="submit">Simpan</button>
                                         </div>
-                                    </div>
-                            </div>
+                                </div>
+                            
                             </form>
                             @endif
+                            </div>
                 </div>
                 </div>
-            </div>
-        </div>
+                </div>
 
-        <div class="card">
+
+            <div class="card">
                 <div class="card-header">Form Pengajuan Produksi</div>
 
                 <div class="card-body">
@@ -183,7 +252,7 @@
                         <div class="col-sm-10">
                         <select class="form-control" name="slot_id" disabled>
                    
-                            <option value="">{{DB::table('slot_p')->where('id', $produksi->slot_id)->value('mulai')}} s/d {{DB::table('slot_p')->where('id', $produksi->slot_id)->value('selesai')}}</option>
+                            <option value="">{{DB::table('slot')->where('id', $produksi->slot_id)->value('mulai')}} s/d {{DB::table('slot')->where('id', $produksi->slot_id)->value('selesai')}}</option>
 
                         </select>
                         </div>
@@ -195,10 +264,15 @@
                         </div>
                     </div>	
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
-            </form>
+                    </form>
                 </div>
                 
             </div>
+
+            </div>
+        </div>
+
+            
             
         </div>
         </div>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12 mt-5">
             <div class="card">
                 <div class="card-header">Edit Set Slot</div>
 
@@ -34,7 +34,7 @@
                                 <p>{{\Session::get('Forbidden')}}</p>
                             </div>
                         @endif
-                    <form method="post" action="{{route('saveeditslotS')}}" enctype='multipart/form-data'>
+                    <form method="post" action="{{route('saveeditslot')}}" enctype='multipart/form-data'>
                         @csrf
                         <input type="hidden" name="id" value="{{$slot->id}}">
                     <div class="form-group row">

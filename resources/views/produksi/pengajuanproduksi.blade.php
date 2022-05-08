@@ -4,6 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Produksi</li>
+            </ol>
+            </nav>
             <div class="card">
                 <div class="card-body">
                 <h4 class="header-title">Detail Sampling yang Sudah Selesai.</h4>
@@ -80,7 +85,7 @@
                 <h4 class="header-title">Produksi On-Going</h4>
                     <div class="row row-cols-1 row-cols-md-3 g-4">
                         @foreach($produksi as $row2)
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6 mt-1">
                             <div class="card h-100 card-bordered">
                             @if(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==0)
                                         <img src="\img\tnb.png" class="card-img-top" alt="...">
@@ -101,7 +106,7 @@
                                     @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==3)
                                         <h5 > {{DB::table('detail_pakaian')->where('id',  $row2->detail_id)->value('nama_atasan')}} </h5>
                                     @endif
-                                <h5 class="card-title">Pembuatan dimulai {{DB::table('slot_s')->where('id', $row2->slot_id)->value('mulai')}} 
+                                <h5 class="card-title">Pembuatan dimulai {{DB::table('slot')->where('id', $row2->slot_id)->value('mulai')}} 
                                         @if($row2->status == 0)
                                         <a href="#" class="badge badge-secondary">Konsultasi</a>
                                         <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Konsultasi" 
@@ -140,7 +145,18 @@
                                 </h5>
                                 <h5 class="card-title">Jumlah Produksi : <strong> {{$row2->jml}} </strong> </h5>
                                 <p class="card-text">{{$row2->desc}}</p>
-                                <a href="{{route('editproduksi',['id' => $row2->id])}}" class="btn btn-primary">Detail</a>
+                                <div class="row">
+                                    <a href="{{route('editproduksi',['id' => $row2->id])}}" class="btn btn-primary mr-2">Detail</a>
+                                    @if($row2->status == 0)
+                                    <form action="{{route('delprod')}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="slot_id" value="{{$row2->slot_id}}">
+                                        <input type="hidden" name="id" value="{{$row2->id}}">
+                                        <input type="hidden" name="detail_id" value="{{$row2->detail_id}}">
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                    @endif
+                                </div>
                             </div>
                             </div>
                         </div> 

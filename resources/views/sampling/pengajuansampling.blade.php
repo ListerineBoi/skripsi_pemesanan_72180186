@@ -4,6 +4,30 @@
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-12 mt-5">
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Sampling</li>
+            </ol>
+            </nav>
+            @if(\Session::has('success'))
+                <input type="hidden" id='popupif' value='1'>
+            @endif
+            <div class="modal fade" id="popup">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                    
+                        <div class="modal-body">
+                            
+                            <div class="alert alert-success" role="alert">
+                                <h4 class="alert-heading">Pesanan Anda Sudah Diterima!</h4>
+                                <p class="text-dark"> <strong>Silahkan masuk ke halaman detail pemesanan untuk cek kembali detail pesanan anda, dan untuk upload lampiran file ataupun gambar pada pesanan anda. Terimakasih</strong> </p>
+                                <hr>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Sampling Aktif
@@ -35,7 +59,7 @@
                                     @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
                                         <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
                                     @endif
-                                    <h5 class="title">Pembuatan dimulai {{DB::table('slot_s')->where('id', $row->slot_id)->value('mulai')}} 
+                                    <h5 class="title">Pembuatan dimulai {{DB::table('slot')->where('id', $row->slot_id)->value('mulai')}} 
                                         @if($row->status == 0)
                                         <a href="#" class="badge badge-secondary">Konsultasi</a>
                                         <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Konsultasi" 
@@ -125,7 +149,9 @@
                                     </h5>
                                     <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
                                     <p class="card-text text-dark"> <strong>{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</strong></p>
+                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('public')==1)
                                     <a href="{{route('revisisampling',['id' => $row->id])}}" class="btn btn-primary">Ajukan Revisi</a>
+                                    @endif
                                     <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
                                 </div>
                                 </div>

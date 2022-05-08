@@ -31,8 +31,8 @@
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Status</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <h5 class="modal-title" id="exampleModalLabel">List bukti bayar</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="single-table">
@@ -57,9 +57,9 @@
                                                                                 Full
                                                                                 @endif
                                                                             </td>
-                                                                            <td><a href="/storage/buktibayar/{{$nota->img_bukti}}" class="btn btn-primary">{{$nota->img_bukti}}</a></td>
+                                                                            <td><a href="{{url('/')}}/storage/buktibayar/{{$nota->img_bukti}}" target="_blank" class="btn btn-primary">{{$nota->img_bukti}}</a></td>
                                                                             @if($nota->file_nota!=null)
-                                                                            <td><a href="/storage/nota/{{$nota->file_nota}}" class="btn btn-primary">{{$nota->file_nota}}</a></td>
+                                                                            <td><a href="{{url('/')}}/storage/nota/{{$nota->file_nota}}" target="_blank" class="btn btn-primary">{{$nota->file_nota}}</a></td>
                                                                             @else
                                                                             <td>Menunggu Verifikasi Admin.</td>
                                                                             @endif
@@ -99,7 +99,7 @@
                                                     <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Verifikasi Pembayaran</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                     </div>
                                                     <div class="modal-body">
                                                     <label for="example-time-input" class="col-form-label">Jenis Pembayaran</label>

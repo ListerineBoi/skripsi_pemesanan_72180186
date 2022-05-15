@@ -251,8 +251,8 @@
                         <label class="control-label col-sm-2" for="nik">Slot</label>
                         <div class="col-sm-10">
                         <select class="form-control" name="slot_id" disabled>
-                   
-                            <option value="">{{DB::table('slot')->where('id', $produksi->slot_id)->value('mulai')}} s/d {{DB::table('slot')->where('id', $produksi->slot_id)->value('selesai')}}</option>
+                        
+                            <option value="">{{DB::table('slot')->where('id', $produksi->slot_id)->value('title')}} Pembuatan Dimulai {{DB::table('slot')->where('id', $produksi->slot_id)->value('mulai')}}</option>
 
                         </select>
                         </div>

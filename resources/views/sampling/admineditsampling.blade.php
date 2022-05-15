@@ -123,7 +123,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Slot</label>
                                         <select class="custom-select" name="slot_id" disabled>
-                                            <option value="{{$sampling->slot_id}}">{{DB::table('slot')->where('id', $sampling->slot_id)->value('mulai')}} sampai {{DB::table('slot')->where('id', $sampling->slot_id)->value('selesai')}}</option>
+                                            <option value="{{$sampling->slot_id}}">{{DB::table('slot')->where('id', $sampling->slot_id)->value('title')}} Pembuatan Dimulai: {{DB::table('slot')->where('id', $sampling->slot_id)->value('mulai')}}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">

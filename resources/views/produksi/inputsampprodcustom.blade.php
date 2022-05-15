@@ -45,18 +45,7 @@
                             <p class="text-muted font-14 mb-4"></p>
                             <div class="form-group">
                             
-                                <label class="col-form-label">Slot/Batch Pembuatan</label> 
-                                <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Slot/Batch Pembuatan" 
-                                data-content="Slot/Batch adalah kelompok pesanan yang akan dibuat pada tanggal tertentu,pilih Slot/Batch dengan tanggal pembuatan yang anda inginkan,
-                                 pendaftaran slot akan ditutup paling lambat 1 minggu sebelum tanggal pembuatan yang tertera. 
-                                 Satu minggu sebelum tanggal pembuatan ditujukan sebagai waktu konsultasi desain/harga dll.">
-                                    <i class="fa fa-info-circle text-info"></i>
-                                </a>
-                                <select class="custom-select" name="slot_id">
-                                    @foreach($slot as $row)
-                                        <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->selesai}}</option>
-                                    @endforeach
-                                </select>
+                                
                             </div>
                             <div class="form-group">
                             

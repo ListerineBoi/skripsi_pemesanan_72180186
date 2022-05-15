@@ -37,6 +37,7 @@ class UserController extends Controller
         User::where('id', $id)->update([
             'name' => $request->name,
             'email' => $request->email,
+            'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
         ]);
         return redirect()->back();
@@ -63,7 +64,8 @@ class UserController extends Controller
         $id=Auth::user()->id;
         $slot=Slot::where([
             ['jenis','=', '0'],
-            ['status','=', '1']
+            ['status','=', '1'],
+            ['selesai','>', date("Y-m-d")],
         ])->get();
         $sampling=Jasa::where([
             ['jenis_jasa','=', '0'],
@@ -127,7 +129,7 @@ class UserController extends Controller
             $Sampling->save();
 
             Slot::where('id', $request->slot_id)->increment('jml');
-            return redirect()->back()->with('success','wwwwwwwwwwwwwww');
+            return redirect()->back()->with('success','Sampling tersimpan');
         }else{
             return redirect()->back()->with('Forbidden','Maaf, kuota untuk slot ini sudah penuh. Silahkan memilih slot lain');
         }
@@ -248,7 +250,8 @@ class UserController extends Controller
         $detail=Detail_pakaian::where('id',$sampling->detail_id)->first();
         $slot=Slot::where([
             ['jenis','=', '0'],
-            ['status','=', '1']
+            ['status','=', '1'],
+            ['selesai','>', date("Y-m-d")],
         ])->get();
         //return $sampling;
         return view('sampling.revisisampling',compact('sampling','slot','detail'));
@@ -257,7 +260,8 @@ class UserController extends Controller
     {
         $slot=Slot::where([
             ['jenis','=', '0'],
-            ['status','=', '1']
+            ['status','=', '1'],
+            ['selesai','>', date("Y-m-d")],
         ])->get();
         $detail=Detail_pakaian::where('id',$id)->first();
         $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
@@ -265,25 +269,34 @@ class UserController extends Controller
     }
     public function saveinputsamp(Request $request)
     {
-        $id=Auth::user()->id;
-        $this->validate($request,[
-            'slot_id' => 'required',
-            'detail_id' => 'required',
-        ]);
+        $jml=Slot::where('id', $request->slot_id)->value('jml');
+        $kuota=Slot::where('id', $request->slot_id)->value('kuota');
+        if($jml < $kuota){
+            $id=Auth::user()->id;
+            $this->validate($request,[
+                'slot_id' => 'required',
+                'detail_id' => 'required',
+            ]);
 
-        $sampling= new Jasa([
-            'jenis_jasa' => '0',
-            'cus_id' => $id,
-            'slot_id' => $request->slot_id,
-            'detail_id' => $request->detail_id,
-            'status' => 0,
-        ]);
+            $sampling= new Jasa([
+                'jenis_jasa' => '0',
+                'cus_id' => $id,
+                'slot_id' => $request->slot_id,
+                'detail_id' => $request->detail_id,
+                'status' => 0,
+            ]);
         $sampling->save();
         Slot::where('id', $request->slot_id)->increment('jml');
         return redirect()->route('viewsampling');
+        }else{
+            return redirect()->back()->with('Forbidden','Maaf, kuota untuk slot ini sudah penuh. Silahkan memilih slot lain');
+        }
     }
     public function saverevisiS(Request $request)
     {
+        $jml=Slot::where('id', $request->slot_id)->value('jml');
+        $kuota=Slot::where('id', $request->slot_id)->value('kuota');
+        if($jml < $kuota){
         $id=Auth::user()->id;
         $this->validate($request, [
             'slot_id' => 'required',
@@ -328,18 +341,22 @@ class UserController extends Controller
 
         Slot::where('id', $request->slot_id)->increment('jml');
         return redirect()->route('viewsampling');
+        }else{
+            return redirect()->back()->with('Forbidden','Maaf, kuota untuk slot ini sudah penuh. Silahkan memilih slot lain');
+        }
     }
     public function viewproduksi()
     {
         $id=Auth::user()->id;
         $slot=Slot::where([
             ['jenis','=', '1'],
-            ['status','=', '1']
+            ['status','=', '1'],
+            ['selesai','>', date("Y-m-d")],
         ])->get();
         $produksi=Jasa::where([
             ['jenis_jasa','=', '1'],
             ['cus_id','=', $id],
-            ['status','!=', '4'],
+            ['status','!=', '5'],
         ])->get();
         $sampling=Jasa::where([
             ['jenis_jasa','=', '0'],
@@ -348,8 +365,13 @@ class UserController extends Controller
         ])->whereNotIn('detail_id',  $produksi->pluck('detail_id'))
         ->with('detp')->get();
         $detail= $sampling->pluck('detp');
+        $produksiS=Jasa::where([
+            ['jenis_jasa','=', '1'],
+            ['cus_id','=', $id],
+            ['status','=', '5'],
+        ])->whereNotIn('detail_id',  $sampling->pluck('detail_id'))->get();
         
-        return view('produksi.pengajuanproduksi',compact('slot','detail','produksi'));
+        return view('produksi.pengajuanproduksi',compact('slot','detail','produksi','produksiS'));
         //return $produksi->detail_id;
     }
     public function delprod(Request $request)
@@ -387,7 +409,8 @@ class UserController extends Controller
     {
         $slot=Slot::where([
             ['jenis','=', '1'],
-            ['status','=', '1']
+            ['status','=', '1'],
+            ['selesai','>', date("Y-m-d")],
         ])->get();
         $detail=Detail_pakaian::where('id',$id)->first();
         $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
@@ -395,30 +418,35 @@ class UserController extends Controller
     }
     public function saveinputprod(Request $request)
     {
-        $id=Auth::user()->id;
-        $this->validate($request,[
-            'slot_id' => 'required',
-            'detail_id' => 'required',
-            'jml' => 'required' 
-        ]);
+        $jml=Slot::where('id', $request->slot_id)->value('jml');
+        $kuota=Slot::where('id', $request->slot_id)->value('kuota');
+        if($jml < $kuota){
+            $id=Auth::user()->id;
+            $this->validate($request,[
+                'slot_id' => 'required',
+                'detail_id' => 'required',
+                'jml' => 'required' 
+            ]);
 
-        $produksi= new Jasa([
-            'jenis_jasa' => '1',
-            'cus_id' => $id,
-            'slot_id' => $request->slot_id,
-            'detail_id' => $request->detail_id,
-            'desc' => $request->desc,
-            'status' => 0,
-            'jml' => $request->jml 
-        ]);
-        $produksi->save();
-        Slot::where('id', $request->slot_id)->increment('jml');
-        return redirect()->route('viewproduksi');
+            $produksi= new Jasa([
+                'jenis_jasa' => '1',
+                'cus_id' => $id,
+                'slot_id' => $request->slot_id,
+                'detail_id' => $request->detail_id,
+                'desc' => $request->desc,
+                'status' => 0,
+                'jml' => $request->jml 
+            ]);
+            $produksi->save();
+            Slot::where('id', $request->slot_id)->increment('jml');
+            return redirect()->route('viewproduksi');
+        }else{
+            return redirect()->back()->with('Forbidden','Maaf, kuota untuk slot ini sudah penuh. Silahkan memilih slot lain');
+        }
     }
     public function viewcussampproduksi()
     {
-        $slot=Slot::where('status','=', '1')->get();
-        return view('produksi.inputsampprodcustom',compact('slot'));
+        return view('produksi.inputsampprodcustom');
     }
     public function savesamplingcustom(Request $request)
     {
@@ -543,18 +571,22 @@ class UserController extends Controller
         $srt='created_at';
         $id=Auth::user()->id;
         $Kategori='All';
+        $AS='!=';
         $ascdsc='desc';
-        $where=[['cus_id',$id],['status','!=', '5'],];
+        $where=[['cus_id',$id],];
         if($request->sort!=null){
                 if ($request->Kategori!='All'){
                     array_push($where,array('jenis_jasa','=', $request->Kategori));
                 }
                 $srt=$request->sort;
                 $ascdsc=$request->ascdesc;
+                $Kategori=$request->Kategori;
+                $AS=$request->AS;
         }else{
-            $request=['sort' => $srt,'Kategori' => $Kategori,'ascdesc' => $ascdsc];
+            $request=['sort' => $srt,'Kategori' => $Kategori,'ascdesc' => $ascdsc,'AS' => $AS];
             $request = (object)$request;
         }
+        array_push($where,array('status',$AS, '5'));
         $jasa = Jasa::where($where)->get();
         $pemba =Pembayaran::wherein('jasa_id',$jasa->pluck('id'))->with('nota')->with('jasa')->orderBy($srt, $ascdsc)->paginate(10);
         //return $pemba_samp[0]->sampling->detail_id;
@@ -563,37 +595,20 @@ class UserController extends Controller
     public function inputbuktibyr(Request $request)
     {
         $id=Auth::user()->id;
-        $this->validate($request, [
-            'jenis_pembayaran' => 'required',   
+        $this->validate($request, [   
             'img_bukti' => 'required', 
         ]);
-        if($request->jns==0){
-                $fullname = $request->file('img_bukti')->getClientOriginalName();
-                $extn =$request->file('img_bukti')->getClientOriginalExtension();
-                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'_'.time().'.'.$extn;
-                $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
-                Pembayaran::where('id',$request->id)->update([
-                    'status' => 1,
-                ]);
-                Nota::create([
-                    'bayar_id' => $request->id,
-                    'jenis_pembayaran' => $request->jenis_pembayaran,
-                    'img_bukti' => $finalS,
-                ]); 
-        }elseif ($request->jns==1) {
-                $fullname = $request->file('img_bukti')->getClientOriginalName();
-                $extn =$request->file('img_bukti')->getClientOriginalExtension();
-                $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'_'.time().'.'.$extn;
-                $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
-                Pembayaran::where('id',$request->id)->update([
-                    'status' => 1,
-                ]);
-                Nota::create([
-                    'bayar_id' => $request->id,
-                    'jenis_pembayaran' => $request->jenis_pembayaran,
-                    'img_bukti' => $finalS,
-                ]); 
-        }
+        $fullname = $request->file('img_bukti')->getClientOriginalName();
+        $extn =$request->file('img_bukti')->getClientOriginalExtension();
+        $finalS=$request->jns.'buktibayar'.'_'.$request->id.'_'.$id.'_'.time().'.'.$extn;
+        $path = $request->file('img_bukti')->storeAs('public/buktibayar', $finalS);
+        Pembayaran::where('id',$request->id)->update([
+            'status' => 1,
+        ]);
+        Nota::create([
+            'bayar_id' => $request->id,
+            'img_bukti' => $finalS,
+        ]); 
         return redirect()->back();
          //return $request->file('img_bukti')->getClientOriginalName();
     }

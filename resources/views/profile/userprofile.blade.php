@@ -44,14 +44,19 @@
                                 <input class="form-control" type="text" value="{{Auth::user()->name}}" name="name">
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label">email</label>
+                                <label class="col-form-label">Alamat</label>
+                                
+                                <input class="form-control" type="text" value="{{Auth::user()->alamat}}" name="alamat">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Email</label>
                                 
                                 <input class="form-control" type="text" value="{{Auth::user()->email}}" name="email">
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">No telp</label>
                                 
-                                <input class="form-control" type="text" value="{{Auth::user()->no_telp}}" name="no_telp">
+                                <input class="form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="{{Auth::user()->no_telp}}" name="no_telp">
                             </div>
                 
                             

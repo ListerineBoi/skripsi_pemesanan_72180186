@@ -85,6 +85,31 @@
                                         <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
                                         <td>{{$jdwl->tgl}}/{{$jdwl->mulai}}</td>
                                         <td>
+                                            @if($jdwl->tgl<date("Y-m-d") OR $jdwl->jasa_id==null )
+                                            <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                            Delete
+                                            </button>
+                                            <div class="modal fade" id="del{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                            <a type="button" class="btn btn-danger" href="/admin/setjadwal/delete/{{$jdwl->id}}">Delete</a>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            @endif
                                             @if($jdwl->jenis!=0)
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalnota{{$loop->iteration}}">Set link</button>
                                             @endif
@@ -94,7 +119,7 @@
                                                     <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Link</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                     </div>
                                                     <div class="modal-body">
                                                     <form method="post" action="{{route('addlink')}}" enctype='multipart/form-data'>

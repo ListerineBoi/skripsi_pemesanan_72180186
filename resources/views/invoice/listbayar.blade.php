@@ -65,6 +65,13 @@
                                                 <option value="1" @if($request->Kategori=='Produksi') selected @endif>Produksi</option>
                                             </select>
                                         </div>
+                                        <div class="col-sm-3 my-1">
+                                            <label for="validationCustom01">Pesanan Aktif/Selesai</label>
+                                            <select class="custom-select" name='AS'>
+                                            <option value="!=" @if($request->AS=='!=') selected @endif>Aktif</option>
+                                                <option value="=" @if($request->AS=='=') selected @endif>Selesai</option>
+                                            </select>
+                                        </div>
                                         <div class="col-auto mt-4">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -127,7 +134,9 @@
                                                                             <td>
                                                                                 @if($nota->jenis_pembayaran==1)
                                                                                 Deposit
-                                                                                @else
+                                                                                @elseif($nota->jenis_pembayaran==null)
+                                                                                Pending
+                                                                                @elseif($nota->jenis_pembayaran==0)
                                                                                 Full
                                                                                 @endif
                                                                             </td>
@@ -164,20 +173,14 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Status</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Upload Bukti Bayar</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         Input Bukti Bayar
                                                     <form method="post" action="{{route('inputbuktibyr')}}" enctype='multipart/form-data'>
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{$row->id}}">
-                                                    <input type="hidden" name="jns" value="{{$row->jenis_jasa}}">
-                                                    <select class="custom-select" name="jenis_pembayaran">
-                                                        <option value="1">Transfer Bank</option>
-                                                        <option value="2">Lainnya</option>
-                                                        <option value="3">Cash</option>
-                                                    </select>
                                                     <div class="col-sm-10 mt-2">
                                                     <input type="file" class="form-control-file" name="img_bukti">
                                                     </div>
@@ -200,10 +203,35 @@
                     
                 </div>
             </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4 class="header-title">Cara Membayar
+                    </h4>
+                    <p class="text-muted font-14 mb-4">Jika anda memiliki tagihan dari jasa yang anda pesan maka tagihan tersebut akan muncul diatas.
+                    
+                    </p>
+                    <div id="accordion4" class="according accordion-s3 ">
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link" data-toggle="collapse" href="#SKatalog">Cara Membayar</a>
+                            </div>
+                            <div id="SKatalog" class="collapse" data-parent="#SKatalog">
+                                <div class="card-body">
+                                    1. Klik Tombol Lihat invoice, maka invoice berbentuk pdf akan tampil. <br>
+                                    2. Bayar Tagihan tersebut dengan cara transfer dari akun bank anda. <br>
+                                    3. Setelah itu klik upload bukti bayar, dan upload bukti bayar berupa foto/file pdf. <br>
+                                    4. Tunggulah konfirmasi dari admin. Konfirmasi dapat dilihat dari tombol "Nota Terbayar" yang akan menampilkan history bayar. <br>
+                                    5. Dalam histori bayar tersebut ada kolom bukti bayar yang anda upload dan ada kolom nota yang akan terisi saat admin telah mengkonfirmasi pembayaran anda.<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-
-        
-
     </div>
 </div>
 @endsection

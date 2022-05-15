@@ -93,11 +93,12 @@
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-table"></i><span> Menu
                                     </span></a>
                                 <ul class="collapse">
+                                    <li><a href="{{route('home')}}">Katalog</a></li>
                                     <li><a href="{{route('viewsampling')}}">Sampling</a></li>
                                     <li><a href="{{route('viewproduksi')}}">Produksi</a></li>
                                     <li><a href="#" aria-expanded="true">Konsultasi & Livechat</a>
                                         <ul class="collapse">
-                                            <li><a href="{{route('viewkonsul')}}">Set Konsul</a></li>
+                                            <li><a href="{{route('viewkonsul')}}">Konsultasi</a></li>
                                             <li><a href="/chat">Chat</a></li>
                                         </ul>
                                     </li>
@@ -149,8 +150,7 @@
                             <img class="avatar user-thumb" src="{{ asset('images/author/avatar.png') }}" alt="avatar">
                             <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }} <i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Message</a>
-                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" href="{{route('viewprofile')}}">Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

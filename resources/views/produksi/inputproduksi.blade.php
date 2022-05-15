@@ -14,7 +14,7 @@
             <div class="row g-0">
                 <div class="col-md-12">
                 <div class="card-body">
-                    <h3 class="card-title">Detail Yang Dipakai</h3>
+                    <h3 class="card-title">Detail Yang Dipakai {{$detail->public}}</h3>
                     <h6>
                         @if($detail->jenis==0)
                             <h5 > {{$detail->nama_atasan}} + {{$detail->nama_bawahan}} </h5>
@@ -95,7 +95,7 @@
                     </div>
                     <h6 class="card-text mt-5 mb-2">Deskripsi</h6>
                     <p class="card-text text-dark">{{$detail->desc}}</p>
-
+                    
                     @if($detail->public==1)
                     <h4 class="header-title">File/Gambar Design
                     <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="File/Gambar Design" 
@@ -165,7 +165,7 @@
                         <div class="col-sm-10">
                         <select class="form-control" name="slot_id">
                         @foreach($slot as $row)
-                            <option value="{{$row->id}}">{{$row->mulai}} sampai {{$row->selesai}}</option>
+                            <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->mulai}}</option>
                         @endforeach
                         </select>
                         </div>

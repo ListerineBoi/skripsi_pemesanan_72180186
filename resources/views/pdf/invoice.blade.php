@@ -119,6 +119,28 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   @endforeach
   </td>
  </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=57 valign=top style='width:42.5pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=261 valign=top style='width:195.7pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
+  </td>
+  <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>Total Bayar</p>
+  </td>
+  <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum}}</p>
+  </td>
+ </tr>
  @if($nota->terbayar!=null)
  <tr>
   <td width=56 valign=top style='width:42.3pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
@@ -142,7 +164,6 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$nota->terbayar}}</p>
   </td>
  </tr>
- @endif
  <tr>
   <td width=56 valign=top style='width:42.3pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>&nbsp;</p>
@@ -165,6 +186,8 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum - $nota->terbayar}}</p>
   </td>
  </tr>
+ @endif
+ 
  
  
 </table>

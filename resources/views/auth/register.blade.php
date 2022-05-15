@@ -52,6 +52,12 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
+                            <label for="alamat">Alamat</label>
+                            <input id="alamat" type="text" class="form-control @error('alamat') is-invalid @enderror" name="alamat" value="{{ old('alamat') }}" required autocomplete="alamat" autofocus>
+                            <i class="ti-home"></i>
+                            <div class="text-danger"></div>
+                        </div>
+                        <div class="form-gp row">
                             <label for="exampleInputEmail1">No Telp</label>
                             <input id="no_telp" type="nama" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="no_telp" autofocus>
                             <i class="ti-mobile"></i>

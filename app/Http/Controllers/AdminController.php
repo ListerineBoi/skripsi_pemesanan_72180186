@@ -629,9 +629,11 @@ class AdminController extends Controller
                 'terbayar' => $sum
             ]);
         }else if($request->jp==1){
+            $terbayar=Pembayaran::where('id',$request->id)->value('terbayar');
+            $sumbayar=$terbayar+$request->terbayar;
             Pembayaran::where('id',$request->id)->update([
                 'status' => 3,
-                'terbayar' => $request->terbayar
+                'terbayar' => $sumbayar
             ]);
         }
         $nota=Pembayaran::where('id',$id)->first();
@@ -648,6 +650,7 @@ class AdminController extends Controller
             'file_invoice' => $nama,
         ]); 
         Nota::where('bayar_id',$id)->orderBy('id','desc')->first()->update([
+            'jenis_pembayaran' =>$request->jp,
             'file_nota' => $namanota,
         ]);  
         
@@ -681,6 +684,11 @@ class AdminController extends Controller
             'status' =>'0'
         ]);
         $konsul->save();
+        return redirect()->back();
+    }
+    public function delkonsul($id)
+    { 
+        Konsul::where('id','=', $id)->delete();
         return redirect()->back();
     }
     public function tgljadi(Request $request)

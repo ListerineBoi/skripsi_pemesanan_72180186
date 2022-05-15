@@ -70,6 +70,7 @@ Route::post('/admin/produksi/edit/save', [App\Http\Controllers\AdminController::
 Route::post('/admin/editproduksi/statusProduksi', [App\Http\Controllers\AdminController::class, 'statusprod'])->name('statusprod');
     //konsul//
 Route::get('/admin/setjadwal', [App\Http\Controllers\AdminController::class, 'viewformtambahkonsul'])->name('viewformtambahkonsul');
+Route::get('/admin/setjadwal/delete/{id}', [App\Http\Controllers\AdminController::class, 'delkonsul'])->name('delkonsul');
 Route::post('/admin/setjadwal/save', [App\Http\Controllers\AdminController::class, 'tambahkonsul'])->name('tambahkonsul');
 Route::post('/admin/addlink/save', [App\Http\Controllers\AdminController::class, 'addlink'])->name('addlink');
     //invoice//

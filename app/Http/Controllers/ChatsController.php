@@ -40,15 +40,24 @@ class ChatsController extends Controller
     }
     public function fetchjasa($id)
     {
-        $user=User::find($id);
-        $produksi=Jasa::where([
-            ['jenis_jasa','=', '1'],
-            ['cus_id','=', $id],
-        ])->with('detp')->get();
-        $sampling=Jasa::where([
-            ['jenis_jasa','=', '0'],
-            ['cus_id','=', $id],
-        ])->with('detp')->get();
+        if(Auth::guard('admin')->check()){
+            $produksi=Jasa::where([
+                ['jenis_jasa','=', '1'],
+            ])->with('detp')->get();
+            $sampling=Jasa::where([
+                ['jenis_jasa','=', '0'],
+            ])->with('detp')->get();
+        }else{
+            $user=User::find($id);
+            $produksi=Jasa::where([
+                ['jenis_jasa','=', '1'],
+                ['cus_id','=', $id],
+            ])->with('detp')->get();
+            $sampling=Jasa::where([
+                ['jenis_jasa','=', '0'],
+                ['cus_id','=', $id],
+            ])->with('detp')->get();
+        }
         return compact('produksi','sampling');
     }
     public function createRoom($jenis,$tipejasa,$jasa_id)

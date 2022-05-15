@@ -56,7 +56,7 @@
                                     </a>
                                     <select class="custom-select" name="slot_id">
                                         @foreach($slot as $row)
-                                            <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->selesai}}</option>
+                                            <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->mulai}}</option>
                                         @endforeach
                                     </select>
                                 </div>

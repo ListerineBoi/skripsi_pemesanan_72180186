@@ -164,6 +164,48 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mt-5">
+                <div class="card-body">
+                <h4 class="header-title">Histori Produksi Custom</h4>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        @foreach($produksiS as $row2)
+                        <div class="col-lg-4 col-md-6 mt-1">
+                            <div class="card h-100 card-bordered">
+                            @if(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==0)
+                                        <img src="\img\tnb.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==1)
+                                        <img src="\img\top.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==2)
+                                        <img src="\img\bottom.png" class="card-img-top" alt="...">
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==3)
+                                        <img src="\img\dress.png" class="card-img-top" alt="...">
+                                    @endif
+                            <div class="card-body">
+                                    @if(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==0)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==1)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row2->detail_id)->value('nama_atasan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==2)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row2->detail_id)->value('nama_bawahan')}} </h5>
+                                    @elseif(DB::table('detail_pakaian')->where('id', $row2->detail_id)->value('jenis')==3)
+                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row2->detail_id)->value('nama_atasan')}} </h5>
+                                    @endif
+                                <h5 class="card-title">Pembuatan dimulai {{DB::table('slot')->where('id', $row2->slot_id)->value('mulai')}}      
+                                </h5>
+                                <h5 class="card-title">Jumlah Produksi : <strong> {{$row2->jml}} </strong> </h5>
+                                <p class="card-text">{{$row2->desc}}</p>
+                                <div class="row">
+                                    <a href="{{route('editproduksi',['id' => $row2->id])}}" class="btn btn-primary mr-2">Detail</a>
+                                    <a href="{{route('viewinputproduksi',['id' => $row2->detail_id])}}" class="btn btn-primary">Produksi Kembali</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

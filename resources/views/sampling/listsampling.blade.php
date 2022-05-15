@@ -84,7 +84,43 @@
                                 <tbody>
                                 @foreach($sampling as $row)
                                     <tr>
-                                        <th>{{DB::table('users')->where('id', $row->cus_id)->value('name')}}</th>
+                                        <th>
+                                            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#profil{{$loop->iteration}}">
+                                              <strong> {{DB::table('users')->where('id', $row->cus_id)->value('name')}} </strong> 
+                                            </button>
+                                            <div class="modal fade" id="profil{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Profil Pemesan</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Nama</label>
+                                                                
+                                                                <input class="form-control" type="text" value="{{DB::table('users')->where('id', $row->cus_id)->value('name')}}" name="name" disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Alamat</label>
+                                                                
+                                                                <input class="form-control" type="text" value="{{DB::table('users')->where('id', $row->cus_id)->value('alamat')}}" name="alamat" disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">Email</label>
+                                                                
+                                                                <input class="form-control" type="text" value="{{DB::table('users')->where('id', $row->cus_id)->value('email')}}" name="email" disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label">No telp</label>
+                                                                
+                                                                <input class="form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="{{DB::table('users')->where('id', $row->cus_id)->value('no_telp')}}" name="no_telp" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th>
                                         <td> Mulai Pembuatan: <strong> {{DB::table('slot')->where('id', $row->slot_id)->value('mulai')}}</strong> <br> Selesai/Deadline: <strong> {{$row->tgl_jadi}}</strong></td>
                                         <td>
                                             @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
@@ -134,7 +170,29 @@
                                         <td>
                                             <a href="{{route('adminvieweditsampling',['id' => $row->id])}}" class="btn btn-primary mb-1">Detail</a>
                                             <a href="{{route('lihatinvoicesampling',['id' => $row->id,'jns' => '0'])}}" class="btn btn-primary mb-1">Invoice</a>
-                                            <a type="button" class="btn btn-danger mb-1" href="{{route('admindelS',['id' => $row->id])}}">Delete</a>
+                                            <button type="button" class="btn btn-danger mb-1" data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                            Delete
+                                            </button>
+                                            <div class="modal fade" id="del{{$loop->iteration}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                            <a type="button" class="btn btn-danger" href="{{route('admindelS',['id' => $row->id])}}">Delete</a>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                             <br>
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong{{$loop->iteration}}">
                                                 Set Status
@@ -147,7 +205,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">Status</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             Ubah Status Sampling
@@ -176,7 +234,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">Tanggal Jadi</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             Set Tanggal Jadi

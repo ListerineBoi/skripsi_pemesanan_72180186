@@ -10,6 +10,9 @@
                 <li class="breadcrumb-item"><a href="{{route('viewsampling')}}">Sampling</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detail Sampling</li>
             </ol>
+            <div class="alert alert-info" role="alert">
+                <strong>Perhatian!</strong> Barang akan otomatis kami kirim sesuai alamat pada profil anda jika tidak ada permintaan pengambilan mandiri dari anda. Permintaan pengambilan dapat dilakukan via livechat atau saat konsultasi.
+            </div>
             </nav>
                 <div class="card">
                     <div class="card-body">
@@ -142,7 +145,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Slot</label>
                                         <select class="custom-select" name="slot_id" disabled>
-                                            <option value="{{$sampling->slot_id}}">{{DB::table('slot')->where('id', $sampling->slot_id)->value('mulai')}} sampai {{DB::table('slot')->where('id', $sampling->slot_id)->value('selesai')}}</option>
+                                            <option value="{{$sampling->slot_id}}">{{DB::table('slot')->where('id', $sampling->slot_id)->value('title')}} Pembuatan Dimulai: {{DB::table('slot')->where('id', $sampling->slot_id)->value('mulai')}}</option>
                                         </select>
                                     </div>
                             <div class="form-group">
@@ -328,6 +331,7 @@
             </div>
         </div>
         @else
+        
         <div class="col-12 mt-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -335,6 +339,9 @@
                 <li class="breadcrumb-item active" aria-current="page">Detail Sampling</li>
             </ol>
             </nav>
+            <div class="alert alert-info" role="alert">
+                <strong>Perhatian!</strong> Barang akan otomatis kami kirim sesuai alamat pada profil anda jika tidak ada permintaan pengambilan mandiri dari anda. Permintaan pengambilan dapat dilakukan via livechat atau saat konsultasi.
+            </div>
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-12">

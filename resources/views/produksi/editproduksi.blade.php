@@ -10,6 +10,9 @@
                 <li class="breadcrumb-item active" aria-current="page">Edit Produksi</li>
             </ol>
             </nav>
+            <div class="alert alert-info" role="alert">
+                <strong>Perhatian!</strong> Barang akan otomatis kami kirim sesuai alamat pada profil anda jika tidak ada permintaan pengambilan mandiri dari anda. Permintaan pengambilan dapat dilakukan via livechat atau saat konsultasi.
+            </div>
     <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-12">
@@ -258,7 +261,7 @@
                         <div class="col-sm-10">
                         <select class="form-control" name="slot_id" disabled>
                    
-                            <option value="">{{DB::table('slot')->where('id', $produksi->slot_id)->value('mulai')}} s/d {{DB::table('slot')->where('id', $produksi->slot_id)->value('selesai')}}</option>
+                            <option value="">{{DB::table('slot')->where('id', $produksi->slot_id)->value('title')}} Pembuatan Dimulai: {{DB::table('slot')->where('id', $produksi->slot_id)->value('mulai')}}</option>
 
                         </select>
                         </div>
@@ -269,7 +272,9 @@
                             <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" value="{{$produksi->jml}}">
                         </div>
                     </div>	
+                    @if($produksi->status==0)
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
+                    @endif
                     </form>
                 </div>
                 

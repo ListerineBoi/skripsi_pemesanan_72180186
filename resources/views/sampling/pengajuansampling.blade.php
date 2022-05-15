@@ -197,7 +197,7 @@
                         @endif
                         <form method="post" action="{{route('savesampling')}}" enctype='multipart/form-data'>
                             @csrf
-                            <h4 class="header-title">Form Pengajuan Sampling</h4>
+                            <h4 class="header-title">Form Pengajuan Sampling Custom</h4>
                             <p class="text-muted font-14 mb-4"></p>
                             <div class="form-group">
                             
@@ -210,7 +210,7 @@
                                 </a>
                                 <select class="custom-select" name="slot_id">
                                     @foreach($slot as $row)
-                                        <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->selesai}}</option>
+                                        <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->mulai}}</option>
                                     @endforeach
                                 </select>
                             </div>

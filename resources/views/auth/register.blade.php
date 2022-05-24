@@ -41,52 +41,52 @@
                 <form method="POST" action="{{ route('register') }}">
                         @csrf
                     <div class="login-form-head">
-                        <h4>Sign up</h4>
-                        <p>Hello there, Sign up and Join with Us</p>
+                        <h4>Daftar</h4>
+                        <p>Halo, Silahkan Mendaftar Melalui Form Ini.</p>
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp row">
-                            <label for="exampleInputName1">Full Name</label>
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <label for="exampleInputName1">Nama</label>
+                            <input id="name" type="text" maxlength="190" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                             <i class="ti-user"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
                             <label for="alamat">Alamat</label>
-                            <input id="alamat" type="text" class="form-control @error('alamat') is-invalid @enderror" name="alamat" value="{{ old('alamat') }}" required autocomplete="alamat" autofocus>
+                            <input id="alamat" type="text" maxlength="190" class="form-control @error('alamat') is-invalid @enderror" name="alamat" value="{{ old('alamat') }}" required autocomplete="alamat" autofocus>
                             <i class="ti-home"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
                             <label for="exampleInputEmail1">No Telp</label>
-                            <input id="no_telp" type="nama" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="no_telp" autofocus>
+                            <input id="no_telp" type="nama"  maxlength="15" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="no_telp" autofocus>
                             <i class="ti-mobile"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                            <label for="exampleInputEmail1">Alamat Email</label>
+                            <input id="email" type="email" maxlength="190" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                             <i class="ti-email"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
                             <label for="exampleInputPassword1">Password</label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                            <input id="password" type="password" maxlength="190" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                             <i class="ti-lock"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp row">
-                            <label for="exampleInputPassword2">Confirm Password</label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            <label for="exampleInputPassword2">Konfirmasi Password</label>
+                            <input id="password-confirm" maxlength="190" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             <i class="ti-lock"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="submit-btn-area">
-                            <button id="form_submit" type="submit">Register <i class="ti-arrow-right"></i></button>
+                            <button id="form_submit" type="submit">Daftar<i class="ti-arrow-right"></i></button>
                             
                         </div>
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted">Don't have an account? <a href="{{ route('login') }}">Sign in</a></p>
+                            <p class="text-muted">Sudah Punya Akun? <a href="{{ route('login') }}">Sign in</a></p>
                         </div>
                     </div>
                 </form>

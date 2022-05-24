@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>srtdash - Ecommerce Dashboard</title>
+    <title>Amoora Admin</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
@@ -91,7 +91,7 @@
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>Amoora E-commerce</span></a>
                                 <ul class="collapse">
-                                    
+                                    <li><a href="{{route('homeadmin')}}">Katalog</a></li>
                                     <li><a href="#" aria-expanded="true">Sampling</a>
                                         <ul class="collapse">
                                             <li><a href="{{route('viewslotsampling')}}">Slot Sampling</a></li>
@@ -159,8 +159,7 @@
                             <img class="avatar user-thumb" src="{{ asset('images/author/avatar.png') }}" alt="avatar">
                             <h4 class="user-name dropdown-toggle" data-toggle="dropdown">{{ Auth::guard('admin')->user()->name }} <i class="fa fa-angle-down"></i></h4>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Message</a>
-                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" href="{{ route('viewprofileadmin')}}">Settings</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -20,6 +20,11 @@
                                     <i class="fa fa-info-circle text-info"></i>
                             </a>
                         </h4>
+                        @if(\Session::has('Forbidden'))
+                            <div class="alert alert-danger" role="alert">
+                                {{\Session::get('Forbidden')}}
+                            </div>
+                        @endif
                         <div class="row row-cols-1 row-cols-md-3 g-4">
                         @foreach($Katalog as $row)
                             <div class="col-lg-4 col-md-6 mt-3">
@@ -33,20 +38,45 @@
                                     
                                     <h5 class="title">Harga: 
                                     </h5>
-                                    <h6 class="card-title">{{$row->harga}}</h6>
-                                    <div class="row">
+                                    <textarea class="form-control" aria-label="With textarea" style="background-color: #fff;" name="desc" readonly>{{$row->harga}}</textarea>
+                                    <div class="row mt-1">
                                         <a href="{{route('viewadmindetailkatalog',['id' => $row->id])}}" class="btn btn-primary mr-1">Detail</a>
-                                        <form action="{{route('delkatalog')}}" method="post">
-                                            @csrf
-                                            <input type="hidden" value="{{$row->id}}" name="id">
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                        Delete
+                                        </button>
+                                        <div class="modal fade" id="del{{$loop->iteration}}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <strong>Harap menghapus detail ukuran dan file/gambar terlebih dahulu!.</strong>  Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                        <form action="{{route('delkatalog')}}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" value="{{$row->id}}" name="id">
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                    
                                 </div>
                                 </div>
                             </div> 
                         @endforeach    
+                    </div>
+                    <div class="mt-3">
+                    {{ $Katalog->links() }}
                     </div>
                     </div>
                 </div>
@@ -80,12 +110,12 @@
 
                         @if(\Session::has('Forbidden'))
                             <div class="alert alert-danger">
-                                <p>{{\Session::get('Forbidden')}}</p>
+                                <Strong><p>{{\Session::get('Forbidden')}}</p></Strong>
                             </div>
                         @endif
                         <form method="post" action="{{route('setkatalog')}}" enctype='multipart/form-data'>
                             @csrf
-                            <h4 class="header-title">Form Pengajuan Sampling</h4>
+                            <h4 class="header-title">Form Add Katalog</h4>
                             <div class="form-group">
                                 <label class="col-form-label">Nama Pakaian</label>
                                 <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Nama Pakaian" 

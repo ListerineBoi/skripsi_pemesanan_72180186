@@ -58,7 +58,7 @@
                     <div class="form-group row mt-2">
                         <label class="control-label col-sm-2" for="nik">Kuota Max Pesanan</label>
                         <div class="col-sm-2 ">
-                            <input type="number" class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" placeholder="">
+                            <input type="number" min='1' max='100' class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" placeholder="">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-danger" class="text-right" style="float: right;">Save</button>

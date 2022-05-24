@@ -98,6 +98,15 @@
                                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                         </div>
                                         <div class="modal-body">
+                                            @if(count($errors) > 0)
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                @foreach($errors->all() as $error)
+                                                <li>{{$error}}</li>
+                                                @endforeach
+                                                </ul>
+                                                </div>
+                                            @endif
                                             <form method="post" action="{{route('addinvoice')}}" enctype='multipart/form-data'>
                                             <input class="form-control" type="hidden" value="{{$id}}" name="id">
                                             @csrf
@@ -107,15 +116,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-date-input" class="col-form-label">QTY</label>
-                                                <input class="form-control" id="qty" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="qty">
+                                                <input class="form-control" id="qty" min="0" max="60000" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="qty">
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-time-input" class="col-form-label">Harga Satuan</label>
-                                                <input class="form-control" id="harga" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="harga">
+                                                <input class="form-control" id="harga" min="0" max="1000000000" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="harga">
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-time-input" class="col-form-label">Total</label>
-                                                <input class="form-control" id="total" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="total" readonly>
+                                                <input class="form-control" id="total" min="0" max="1000000000" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="total" readonly>
                                             </div>
                                             
                                         </div>

@@ -22,13 +22,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $Katalog=Katalog::all();
+        $Katalog=Katalog::where('aktif', 1)->paginate(6);
         return view('home',compact('Katalog'));
         //return $Katalog;
     }
     public function viewdetailkatalogpublic($id)
     {
-        $katalog=Katalog::where('id',$id)->first();
+        $katalog=Katalog::where('id',$id)->firstorfail();
         $details=detail_pakaian::where([
             ['id','=', $katalog->detail_id_s],
         ])->first();

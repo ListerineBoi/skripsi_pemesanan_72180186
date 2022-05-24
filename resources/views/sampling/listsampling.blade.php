@@ -45,7 +45,7 @@
                                                 <option value="1" @if($request->status=='1') selected @endif>Waiting list</option>
                                                 <option value="2" @if($request->status=='2') selected @endif>cutting</option>
                                                 <option value="3" @if($request->status=='3') selected @endif>sewing</option>
-                                                <option value="4" @if($request->status=='4') selected @endif>Finishing & QC</option>
+                                                <option value="4" @if($request->status=='4') selected @endif>Finishing & QC + Shipping</option>
                                                 <option value="5" @if($request->status=='5') selected @endif>Selesai</option>
                                             </select>
                                         </div>
@@ -155,7 +155,7 @@
                                                 <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             @elseif($row->status == 4)
-                                            <span class="status-p bg-primary mb-2">Finishing & QC</span>
+                                            <span class="status-p bg-primary mb-2">Finishing & QC + Shipping</span>
                                             <div class="progress" style="height: 8px;">
                                                 <div class="progress-bar bg-primary" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
@@ -216,7 +216,7 @@
                                                             <option value="1">Waiting list</option>
                                                             <option value="2">cutting</option>
                                                             <option value="3">sewing</option>
-                                                            <option value="4">Finishing & QC</option>
+                                                            <option value="4">Finishing & QC + Shipping</option>
                                                             <option value="5">Selesai</option>
                                                         </select>
                                                         </div>

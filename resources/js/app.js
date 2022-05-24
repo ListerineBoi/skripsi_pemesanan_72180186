@@ -52,6 +52,7 @@ const app = new Vue({
                     message: e.message.message,
                     user: e.user
                 });
+                this.fetchRoom();
             }
         });
         

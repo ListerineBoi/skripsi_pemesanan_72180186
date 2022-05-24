@@ -38,6 +38,9 @@
                             </div> 
                         @endforeach    
                     </div>
+                    <div class="mt-3">
+                    {{ $Katalog->links() }}
+                    </div>
                     </div>
                 </div>
 

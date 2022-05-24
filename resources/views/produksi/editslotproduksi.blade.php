@@ -58,7 +58,7 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-2" for="nik">Kuota</label>
                         <div class="col-sm-2 ">
-                            <input type="number" class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" value="{{$slot->kuota}}">
+                            <input type="number" min='1' max='100' class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <=57" name="kuota" value="{{$slot->kuota}}">
                         </div>
                     </div>
                     <div class="form-check form-switch">

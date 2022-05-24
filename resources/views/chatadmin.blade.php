@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">Chats</div>
             <div class="card-body scroll">
-                <chat-room v-on:chooseroom="getchosenroom" v-on:newroom="createroom" v-on:dlroom="delroom" :rooms="rooms" :jasas="jasas"></chat-room>
+                <chat-room v-on:chooseroom="getchosenroom" v-on:newroom="createroom" v-on:dlroom="delroom" :admin ="1" :rooms="rooms" :jasas="jasas"></chat-room>
             </div>
             <div class="card-footer">
             </div>

@@ -87,10 +87,11 @@
                                         
                                         <td>@if($row->status==0) Belum Lunas @elseif($row->status==1) Menunggu @elseif($row->status==2) Lunas @elseif($row->status==3) Deposit @endif</td>
                                         <td>
-                                            
+                                                @if(count($row->nota)!=0)
                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalLong{{$loop->iteration}}">
                                                 Verifikasi Bukti Bayar
                                                 </button>
+                                                @endif
                                                 <a href="{{route('lihatdetailinvoice',['id' => $row->id,'jns' => $jns])}}" class="btn btn-primary" disabled>Detail</a>
                                             
 
@@ -113,7 +114,7 @@
                                                     </select>
                                                     <div class="form-group">
                                                         <label for="example-time-input" class="col-form-label">Nominal Yang Terbayar</label>
-                                                        <input class="form-control" id="dischild1" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="terbayar">
+                                                        <input class="form-control" id="dischild1" max="10000000" type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" value="" name="terbayar">
                                                     </div>
                                                     </div>
                                                     <div class="modal-footer">

@@ -21,30 +21,29 @@
                         @foreach($detail as $row)
                         <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
-                                    @if($row->jenis==0)
+                                    @if($row->detp->jenis==0)
                                         <img src="\img\tnb.png" class="card-img-top" alt="...">
-                                    @elseif($row->jenis==1)
+                                    @elseif($row->detp->jenis==1)
                                         <img src="\img\top.png" class="card-img-top" alt="...">
-                                    @elseif($row->jenis==2)
+                                    @elseif($row->detp->jenis==2)
                                         <img src="\img\bottom.png" class="card-img-top" alt="...">
-                                    @elseif($row->jenis==3)
+                                    @elseif($row->detp->jenis==3)
                                         <img src="\img\dress.png" class="card-img-top" alt="...">
                                     @endif
                                 <div class="card-body">
-                                    @if($row->jenis==0)
-                                        <h5 > {{$row->nama_atasan}} + {{$row->nama_bawahan}} </h5>
-                                    @elseif($row->jenis==1)
-                                        <h5 > {{$row->nama_atasan}} </h5>
-                                    @elseif($row->jenis==2)
-                                        <h5 > {{$row->nama_bawahan}} </h5>
-                                    @elseif($row->jenis==3)
-                                        <h5 > {{$row->nama_atasan}} </h5>
+                                    @if($row->detp->jenis==0)
+                                        <h5 > {{$row->detp->nama_atasan}} + {{$row->detp->nama_bawahan}} </h5>
+                                    @elseif($row->detp->jenis==1)
+                                        <h5 > {{$row->detp->nama_atasan}} </h5>
+                                    @elseif($row->detp->jenis==2)
+                                        <h5 > {{$row->detp->nama_bawahan}} </h5>
+                                    @elseif($row->detp->jenis==3)
+                                        <h5 > {{$row->detp->nama_atasan}} </h5>
                                     @endif
-                                    <h5 class="title">Pembuatan Selesai {{$row->tgl_jadi}} 
+                                    <h5 class="title">Pembuatan Selesai {{$row->detp->tgl_jadi}} 
                                     </h5>
-                                    <h6 class="card-title">@if($row->jenis==0) Atasan+Bawahan @elseif($row->jenis==1) Atasan @elseif($row->jenis==2) Bawahan @else Dress @endif</h6>
-                                    <p class="card-text">{{$row->desc}}</p>
-                                    <a href="{{route('viewinputproduksi',['id' => $row->id])}}" class="btn btn-primary">Produksi Dengan Sampling ini</a>
+                                    <h6 class="card-title">@if($row->detp->jenis==0) Atasan+Bawahan @elseif($row->detp->jenis==1) Atasan @elseif($row->detp->jenis==2) Bawahan @else Dress @endif</h6>
+                                    <a href="{{route('viewinputproduksi',['id' => $row->detp->id])}}" class="btn btn-primary">Produksi Dengan Sampling ini</a>
                                 </div>
                                 </div>
                             </div> 
@@ -59,6 +58,9 @@
                             </a>
                         </div>
                         @endif
+                    </div>
+                    <div class="mt-3">
+                    {{ $detail->withQueryString()->links() }}
                     </div>
                 </div>
             </div>
@@ -136,31 +138,54 @@
                                             <i class="fa fa-info-circle text-info"></i>
                                         </a>
                                         @elseif($row2->status == 4)
-                                        <a href="#" class="badge badge-info">Finishing & QC</a>
-                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sewing" 
-                                        data-content="Fase pembuatan dimana sewer kami memasang accessories pakaian dll, serta mengemas pakaian yang sudah jadi.">
+                                        <a href="#" class="badge badge-info">Finishing & QC + Shipping</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Finishing & QC + Shipping" 
+                                        data-content="Fase pembuatan dimana sewer kami memasang accessories pakaian dll, serta mengemas pakaian yang sudah jadi dan shipping ke alamat anda.">
                                             <i class="fa fa-info-circle text-info"></i>
                                         </a>
                                         @endif
                                 </h5>
                                 <h5 class="card-title">Jumlah Produksi : <strong> {{$row2->jml}} </strong> </h5>
-                                <p class="card-text">{{$row2->desc}}</p>
                                 <div class="row">
                                     <a href="{{route('editproduksi',['id' => $row2->id])}}" class="btn btn-primary mr-2">Detail</a>
                                     @if($row2->status == 0)
-                                    <form action="{{route('delprod')}}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="slot_id" value="{{$row2->slot_id}}">
-                                        <input type="hidden" name="id" value="{{$row2->id}}">
-                                        <input type="hidden" name="detail_id" value="{{$row2->detail_id}}">
-                                        <button class="btn btn-danger" type="submit">Delete</button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                        Delete
+                                    </button>
+                                    <div class="modal fade" id="del{{$loop->iteration}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                    <form action="{{route('delprod')}}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="slot_id" value="{{$row2->slot_id}}">
+                                                        <input type="hidden" name="id" value="{{$row2->id}}">
+                                                        <input type="hidden" name="detail_id" value="{{$row2->detail_id}}">
+                                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                                    </form>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @endif
                                 </div>
                             </div>
                             </div>
                         </div> 
                         @endforeach
+                    </div>
+                    <div class="mt-3">
+                    {{ $produksi->withQueryString()->links() }}
                     </div>
                 </div>
             </div>
@@ -194,7 +219,6 @@
                                 <h5 class="card-title">Pembuatan dimulai {{DB::table('slot')->where('id', $row2->slot_id)->value('mulai')}}      
                                 </h5>
                                 <h5 class="card-title">Jumlah Produksi : <strong> {{$row2->jml}} </strong> </h5>
-                                <p class="card-text">{{$row2->desc}}</p>
                                 <div class="row">
                                     <a href="{{route('editproduksi',['id' => $row2->id])}}" class="btn btn-primary mr-2">Detail</a>
                                     <a href="{{route('viewinputproduksi',['id' => $row2->detail_id])}}" class="btn btn-primary">Produksi Kembali</a>
@@ -203,6 +227,9 @@
                             </div>
                         </div> 
                         @endforeach
+                    </div>
+                    <div class="mt-3">
+                    {{ $produksiS->withQueryString()->links() }}
                     </div>
                 </div>
             </div>

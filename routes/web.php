@@ -33,9 +33,13 @@ Route::get('/admin/home', [App\Http\Controllers\AdminController::class, 'index']
 
 
 //Admin//
+  //profile//
+Route::get('/admin/profile', [App\Http\Controllers\AdminController::class, 'viewprofile'])->name('viewprofileadmin'); 
+Route::post('/admin/add', [App\Http\Controllers\AdminController::class, 'addadmin'])->name('addadmin');
     //katalog//
 Route::post('/admin/katalog/save', [App\Http\Controllers\AdminController::class, 'setkatalog'])->name('setkatalog');
 Route::post('/admin/katalog/img/add', [App\Http\Controllers\AdminController::class, 'addimgkatalog'])->name('addimgkatalog');
+Route::get('/admin/katalog/img/del/{id}/{img}', [App\Http\Controllers\AdminController::class, 'delimgkatalog'])->name('delimgkatalog');
 Route::post('/admin/katalog/edit', [App\Http\Controllers\AdminController::class, 'editkatalog'])->name('editkatalog');
 Route::post('/admin/katalog/del', [App\Http\Controllers\AdminController::class, 'delkatalog'])->name('delkatalog');
 Route::get('/admin/katalog/detail/{id}', [App\Http\Controllers\AdminController::class, 'viewadmindetailkatalog'])->name('viewadmindetailkatalog');
@@ -53,6 +57,7 @@ Route::get('/admin/listsampling/', [App\Http\Controllers\AdminController::class,
 Route::get('/admin/listsampling/del/{id}', [App\Http\Controllers\AdminController::class, 'delS'])->name('admindelS');
 Route::get('/admin/editsampling/{id}', [App\Http\Controllers\AdminController::class, 'vieweditsampling'])->name('adminvieweditsampling');
 Route::post('/admin/editsampling/saveedit', [App\Http\Controllers\AdminController::class, 'saveeditS'])->name('adminsaveeditS');
+Route::post('/admin/sampling/edit/save', [App\Http\Controllers\AdminController::class, 'saveeditsampkat'])->name('adminsaveeditsampkat');
 Route::post('/admin/editsampling/uploadimg', [App\Http\Controllers\AdminController::class, 'uploadimg'])->name('adminuploadimg');
 Route::post('/admin/editsampling/delimg', [App\Http\Controllers\AdminController::class, 'delimg'])->name('admindelimg');
 Route::post('/admin/editsampling/statusSampling', [App\Http\Controllers\AdminController::class, 'statusSampling'])->name('statusSampling');
@@ -96,6 +101,7 @@ Route::get('/sampling/input/{id}', [App\Http\Controllers\UserController::class, 
 Route::post('/sampling/input/save', [App\Http\Controllers\UserController::class, 'saveinputsamp'])->name('saveinputsamp');
 Route::get('/editsampling/{id}', [App\Http\Controllers\UserController::class, 'vieweditsampling'])->name('vieweditsampling');
 Route::post('/editsampling/saveedit', [App\Http\Controllers\UserController::class, 'saveeditS'])->name('saveeditS');
+Route::post('/sampling/edit/save', [App\Http\Controllers\UserController::class, 'saveeditsampkat'])->name('saveeditsampkat');
 Route::get('/reviewsampling/{id}', [App\Http\Controllers\UserController::class, 'revisisampling'])->name('revisisampling');
 Route::post('/reviewsampling/saveedit', [App\Http\Controllers\UserController::class, 'saverevisiS'])->name('saverevisiS');
 Route::post('/editsampling/uploadimg', [App\Http\Controllers\UserController::class, 'uploadimg'])->name('uploadimg');
@@ -110,11 +116,11 @@ Route::post('/produksi/edit/detail/save', [App\Http\Controllers\UserController::
 Route::post('/produksi/input/save', [App\Http\Controllers\UserController::class, 'saveinputprod'])->name('saveinputprod');
 Route::post('/produksi/edit/save', [App\Http\Controllers\UserController::class, 'saveeditprod'])->name('saveeditprod');
 Route::get('/produksi/custom/samp', [App\Http\Controllers\UserController::class, 'viewcussampproduksi'])->name('viewcussampproduksi');
-Route::post('/produksi/custom/samp/save', [App\Http\Controllers\UserController::class, 'savesamplingcustom'])->name('savesamplingcustom');
+Route::post('/produksi/custom/samp/save', [App\Http\Controllers\UserController::class, 'saveprodcustom'])->name('saveprodcustom');
 Route::post('/produksi/del', [App\Http\Controllers\UserController::class, 'delprod'])->name('delprod');
     //konsul//
 Route::get('/konsul', [App\Http\Controllers\UserController::class, 'viewkonsul'])->name('viewkonsul');
-Route::get('/konsul/input/{id}/{jns}', [App\Http\Controllers\UserController::class, 'viewpilihkonsul'])->name('viewpilihkonsul');
+Route::get('/konsul/input/{id}', [App\Http\Controllers\UserController::class, 'viewpilihkonsul'])->name('viewpilihkonsul');
 Route::post('/konsul/input/save', [App\Http\Controllers\UserController::class, 'pilihkonsul'])->name('pilihkonsul');   
     //invoice//
 Route::post('/listbayar/bukti', [App\Http\Controllers\UserController::class, 'inputbuktibyr'])->name('inputbuktibyr');   

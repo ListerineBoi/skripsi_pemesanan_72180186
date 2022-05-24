@@ -14,9 +14,13 @@
               <h5 class="mb-1" v-if="room.jasa.jenis_jasa== 1"> <strong>Produksi</strong> : {{room.jasa.detp.nama_atasan}} - {{room.jasa.detp.nama_bawahan}}</h5>
               <small v-if="room.messageslatest!=null">{{room.messageslatest.created_at}}</small>
           </div>
-          <p class="mb-1 text-dark"  v-if="room.messageslatest!=null">New Message: {{room.messageslatest.message}}</p>
+          <p class="mb-1 text-dark"  v-if="room.messageslatest!=null"> {{room.messageslatest.message}} </p>
           <small v-if="room.jenis==0">Konsultasi Produksi/Sampling</small>
           <small v-if="room.jenis==1">Konsultasi Paska-Produksi/Sampling</small>
+          <div class="text-right" v-if="room.messageslatest!=null">
+            <i class="fa fa-lg fa-exclamation-circle text-danger" v-if="admin==0 && room.messageslatest.admin_id!=null"> New</i>
+            <i class="fa fa-lg fa-exclamation-circle text-danger" v-if="admin==1 && room.messageslatest.user_id!=null"> New</i>
+          </div>
         </div>
         <button type="submit" class="btn btn-danger mt-3 ml-3" @click="submitdel(room.id)">Delete</button>
       </div>
@@ -58,9 +62,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" v-if="selectedJ==2" @click="submitroom(2)">Save changes</button>
-                    <button type="submit" class="btn btn-primary" v-else-if="selectedJ==0" @click="submitroom(0)">Save changes</button>
-                    <button type="submit" class="btn btn-primary" v-else-if="selectedJ==1" @click="submitroom(1)">Save changes</button>
+                    <button type="submit" class="btn btn-primary" v-if="selectedJ==2" @click="submitroom(2)">Save</button>
+                    <button type="submit" class="btn btn-primary" v-else-if="selectedJ==0" @click="submitroom(0)">Save</button>
+                    <button type="submit" class="btn btn-primary" v-else-if="selectedJ==1" @click="submitroom(1)">Save</button>
                     
                   
                 </div>
@@ -73,7 +77,7 @@
 <script>
 export default {
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-  props: ["rooms","jasas"],
+  props: ["rooms","jasas","admin"],
   data() {
     return {
       room: "",
@@ -88,7 +92,7 @@ export default {
       this.$emit("chooseroom", {
         room: value,
       });
-      
+      console.log(this.admin)
       
     },
     submitdel(rmid) {

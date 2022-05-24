@@ -8,7 +8,7 @@
             <div class="row g-0">
                 <div class="col-md-12">
                 <div class="card-body">
-                    <h3 class="card-title">Detail Yang Dipakai</h3>
+                    <h3 class="card-title">Detail Katalog</h3>
                     <h6>
                             <h5 class="mb-3"> {{$katalog->title}} </h5>
                     </h6>
@@ -352,11 +352,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_depan}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_depan!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_depan}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Tampak Depan
-                                        
+                                        <div class="row col-12">
+                                            @if($katalog->img_depan!=null)
+                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_depan}}">Lihat File</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -365,11 +373,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_belakang}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_belakang!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_belakang}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Tampak Belakang
-                                        
+                                        <div class="row col-12">
+                                            @if($katalog->img_belakang!=null)
+                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_belakang}}">Lihat File</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -378,11 +394,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_dll1}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_dll1!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_dll1}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Detail Lainnya
-                                        
+                                        <div class="row col-12">
+                                            @if($katalog->img_dll1!=null)
+                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_dll1}}">Lihat File</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -391,11 +415,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_dll2}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_dll2!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_dll2}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Detail Lainnya
-                                        
+                                        <div class="row col-12">
+                                            @if($katalog->img_dll2!=null)
+                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_dll2}}">Lihat File</a>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>

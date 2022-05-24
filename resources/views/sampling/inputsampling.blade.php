@@ -121,22 +121,36 @@
 
                         @if(\Session::has('Forbidden'))
                             <div class="alert alert-danger">
-                                <p>{{\Session::get('Forbidden')}}</p>
+                                {{\Session::get('Forbidden')}}
                             </div>
                         @endif
                     <form method="post" action="{{route('saveinputsamp')}}" enctype='multipart/form-data'>
                         @csrf
                         <input type="hidden" class="form-control" name="detail_id" value="{{$detail->id}}">
-                    <div class="form-group row">
-                        <label class="control-label col-sm-2" for="nik">Slot</label>
-                        <div class="col-sm-10">
-                        <select class="form-control" name="slot_id">
-                        @foreach($slot as $row)
-                            <option value="{{$row->id}}">{{$row->mulai}} sampai {{$row->selesai}}</option>
-                        @endforeach
-                        </select>
+                        <div class="form-group row">
+                            <label class="control-label col-md-1" for="nik">Slot</label>
+                            <div class="col-md-10">
+                                <select class="custom-select" name="slot_id">
+                                @foreach($slot as $row)
+                                    <option value="{{$row->id}}">{{$row->mulai}} sampai {{$row->selesai}}</option>
+                                @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                        <div class="row col-sm-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Permintaan <br>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Deskripsi Lebih Lanjut" 
+                                        data-content="Berisi warna atau permintaan lainya dari katalog.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                    </span>
+                                    
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea" name="permintn"></textarea>
+                            </div>
+                        </div>
                     
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
             </form>

@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $Katalog=Katalog::all();
+        $Katalog=Katalog::where('aktif', 1)->paginate(6);
         return view('homeuser',compact('Katalog'));
     }
     public function viewprofile()
@@ -44,17 +44,17 @@ class UserController extends Controller
     }
     public function viewdetailkatalog($id)
     {
-        $katalog=Katalog::where('id',$id)->first();
-        $details=detail_pakaian::where([
+        $katalog=Katalog::where('id',$id)->firstorfail();
+        $details=Detail_pakaian::where([
             ['id','=', $katalog->detail_id_s],
         ])->first();
-        $detailm=detail_pakaian::where([
+        $detailm=Detail_pakaian::where([
             ['id','=', $katalog->detail_id_m],
         ])->first();
-        $detaill=detail_pakaian::where([
+        $detaill=Detail_pakaian::where([
             ['id','=', $katalog->detail_id_l],
         ])->first();
-        $detailxl=detail_pakaian::where([
+        $detailxl=Detail_pakaian::where([
             ['id','=', $katalog->detail_id_xl],
         ])->first();
         return view('katalog.detailkatalog',compact('katalog','details','detailm','detaill','detailxl'));
@@ -71,12 +71,12 @@ class UserController extends Controller
             ['jenis_jasa','=', '0'],
             ['cus_id','=', $id],
             ['status','!=', '5'],
-        ])->get();
+        ])->paginate($perPage = 6, $columns = ['*'], $pageName = 'on-going');
         $samplingS=Jasa::where([
             ['jenis_jasa','=', '0'],
             ['cus_id','=', $id],
             ['status','=', '5'],
-        ])->get();
+        ])->paginate($perPage = 6, $columns = ['*'], $pageName = 'selesai');
         return view('sampling.pengajuansampling',compact('slot','sampling','samplingS'));
     }
     public function savesampling(Request $request)
@@ -88,7 +88,28 @@ class UserController extends Controller
             $this->validate($request, [
                 'slot_id' => 'required',
                 'jenis' => 'required',
-                'desc' => 'required', 
+                'desc' => 'required',
+                'ling_b' => 'max:5',
+                'ling_pgang' => 'max:5',
+                'ling_pingl' => 'max:5',
+                'ling_lh' => 'max:5',
+                'leb_bahu' => 'max:5',
+                'pj_lengan' => 'max:5',
+                'ling_kr_leng' => 'max:5',
+                'ling_lengan' => 'max:5',
+                'ling_pergel' => 'max:5',
+                'leb_muka' => 'max:5',
+                'leb_pungg' => 'max:5',
+                'panj_pungg' => 'max:5',
+                'panj_baju' => 'max:5',
+                'tinggi_pingl' => 'max:5',
+                'ling_pinggang' => 'max:5',
+                'ling_pesak' => 'max:5',
+                'ling_paha' => 'max:5',
+                'ling_lutut' => 'max:5',
+                'ling_kaki' => 'max:5',
+                'panj_cln_rok' => 'max:5',
+                'tingg_dudk' => 'max:5',    
             ]);
             $Detail_pakaian= Detail_pakaian::create([
                 'public' => '1',
@@ -136,7 +157,11 @@ class UserController extends Controller
     }
     public function vieweditsampling($id)
     {
-        $sampling=Jasa::where('id','=', $id)->first();
+        $UsId=Auth::user()->id;
+        $sampling=Jasa::where([
+            ['id','=', $id],
+            ['cus_id','=', $UsId]
+            ])->firstorfail();
         $detail=detail_pakaian::where([
             ['id','=', $sampling->detail_id],
         ])->first();
@@ -184,6 +209,31 @@ class UserController extends Controller
     }
     public function saveeditS(Request $request)
     {
+        $this->validate($request, [
+            'jenis' => 'required',
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
+        ]);
         $id=Auth::user()->id;
         $iddetail=Jasa::where('id','=', $request->id)->value('detail_id');
             Detail_pakaian::where('id', $iddetail)->update([
@@ -243,10 +293,12 @@ class UserController extends Controller
 
     public function revisisampling($id)
     {
+        $UsId=Auth::user()->id;
         $sampling=Jasa::where([
             ['id','=', $id],
             ['jenis_jasa','=', '0'],
-            ])->first();
+            ['cus_id','=', $UsId],
+            ])->firstorfail();
         $detail=Detail_pakaian::where('id',$sampling->detail_id)->first();
         $slot=Slot::where([
             ['jenis','=', '0'],
@@ -263,9 +315,11 @@ class UserController extends Controller
             ['status','=', '1'],
             ['selesai','>', date("Y-m-d")],
         ])->get();
-        $detail=Detail_pakaian::where('id',$id)->first();
-        $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
-        return view('sampling.inputsampling',compact('slot','detail','fileimg'));
+        $detail=Detail_pakaian::where([
+            ['id',$id],
+            ['public','0']
+            ])->firstorfail();
+        return view('sampling.inputsampling',compact('slot','detail'));
     }
     public function saveinputsamp(Request $request)
     {
@@ -283,6 +337,7 @@ class UserController extends Controller
                 'cus_id' => $id,
                 'slot_id' => $request->slot_id,
                 'detail_id' => $request->detail_id,
+                'permintn' => $request->permintn,
                 'status' => 0,
             ]);
         $sampling->save();
@@ -301,7 +356,29 @@ class UserController extends Controller
         $this->validate($request, [
             'slot_id' => 'required',
             'jenis' => 'required',
-            'desc' => 'required',  
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
+             
         ]);
         $Detail_pakaian= Detail_pakaian::create([
             'public' => '1',
@@ -331,7 +408,8 @@ class UserController extends Controller
             'panj_cln_rok' => $request->panj_cln_rok,
             'tingg_dudk' => $request->tingg_dudk,
         ]);
-        $Sampling = new Sampling([
+        $Sampling = new Jasa([
+            'jenis_jasa' => 0,
             'detail_id' => $Detail_pakaian->id,
             'slot_id' => $request->slot_id,
             'cus_id' => $id,
@@ -348,30 +426,30 @@ class UserController extends Controller
     public function viewproduksi()
     {
         $id=Auth::user()->id;
-        $slot=Slot::where([
-            ['jenis','=', '1'],
-            ['status','=', '1'],
-            ['selesai','>', date("Y-m-d")],
-        ])->get();
         $produksi=Jasa::where([
             ['jenis_jasa','=', '1'],
             ['cus_id','=', $id],
             ['status','!=', '5'],
-        ])->get();
+        ])->paginate($perPage = 6, $columns = ['*'], $pageName = 'on-going');
         $sampling=Jasa::where([
             ['jenis_jasa','=', '0'],
             ['cus_id','=', $id],
             ['status','=', '5'],
         ])->whereNotIn('detail_id',  $produksi->pluck('detail_id'))
         ->with('detp')->get();
-        $detail= $sampling->pluck('detp');
+        $detail= Jasa::where([
+            ['jenis_jasa','=', '0'],
+            ['cus_id','=', $id],
+            ['status','=', '5'],
+        ])->whereNotIn('detail_id',  $produksi->pluck('detail_id'))
+        ->with('detp')->paginate($perPage = 6, $columns = ['*'], $pageName = 'detail');
         $produksiS=Jasa::where([
             ['jenis_jasa','=', '1'],
             ['cus_id','=', $id],
             ['status','=', '5'],
-        ])->whereNotIn('detail_id',  $sampling->pluck('detail_id'))->get();
+        ])->whereNotIn('detail_id',  $sampling->pluck('detail_id'))->paginate($perPage = 6, $columns = ['*'], $pageName = 'selesai');
         
-        return view('produksi.pengajuanproduksi',compact('slot','detail','produksi','produksiS'));
+        return view('produksi.pengajuanproduksi',compact('detail','produksi','produksiS'));
         //return $produksi->detail_id;
     }
     public function delprod(Request $request)
@@ -384,13 +462,26 @@ class UserController extends Controller
             ['cus_id','=', $iduser],
             ['status','=', '5'],
         ])->pluck('detail_id')->toArray();
+        $samp=Jasa::where([
+            ['jenis_jasa','=', '0'],
+            ['cus_id','=', $iduser],
+            ['status','=', '5'],
+        ])->get();
+        $produksiS=Jasa::where([
+            ['jenis_jasa','=', '1'],
+            ['cus_id','=', $iduser],
+            ['status','=', '5'],
+        ])->whereNotIn('detail_id',  $samp->pluck('detail_id'))->pluck('detail_id')->toArray();
         if(in_array($request->detail_id,$sampling)){
-            Slot_P::where('id', $request->slot_id)->decrement('jml');
+            Slot::where('id', $produksi->slot_id)->decrement('jml');
             Jasa::where('id', $request->id)->delete();
-        }else if($detail->public==1){
-            Slot_P::where('id', $request->slot_id)->decrement('jml');
+        }else if(in_array($request->detail_id,$produksiS)){
+            Slot::where('id', $produksi->slot_id)->decrement('jml');
             Jasa::where('id', $request->id)->delete();
-        }else {
+        }else if($detail->public==0){
+            Slot::where('id', $produksi->slot_id)->decrement('jml');
+            Jasa::where('id', $request->id)->delete();
+        }else{
             $del=DetailFile::where('detail_id',$produksi->detail_id)->select('id','img')->get();
             if($del != null){
                 foreach ($del as $row) {
@@ -412,7 +503,9 @@ class UserController extends Controller
             ['status','=', '1'],
             ['selesai','>', date("Y-m-d")],
         ])->get();
-        $detail=Detail_pakaian::where('id',$id)->first();
+        $detail=Detail_pakaian::where([
+            ['id',$id],
+            ])->firstorfail();
         $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
         return view('produksi.inputproduksi',compact('slot','detail','fileimg'));
     }
@@ -433,7 +526,7 @@ class UserController extends Controller
                 'cus_id' => $id,
                 'slot_id' => $request->slot_id,
                 'detail_id' => $request->detail_id,
-                'desc' => $request->desc,
+                'permintn' => $request->permintn,
                 'status' => 0,
                 'jml' => $request->jml 
             ]);
@@ -448,11 +541,33 @@ class UserController extends Controller
     {
         return view('produksi.inputsampprodcustom');
     }
-    public function savesamplingcustom(Request $request)
+    public function saveprodcustom(Request $request)
     {
         $id=Auth::user()->id;
         $this->validate($request, [
-            'desc' => 'required',  
+            'jenis' => 'required',
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
         ]);
         $detail= Detail_pakaian::create([
             'public' => '1',
@@ -482,17 +597,17 @@ class UserController extends Controller
             'panj_cln_rok' => $request->panj_cln_rok,
             'tingg_dudk' => $request->tingg_dudk,
         ]);
-        $detailid=detail_pakaian::where([
-            ['id','=', $detail->id],
-        ])->latest()->first();
-        return redirect()->route('viewinputproduksi',['id' => $detailid->id]);
+        return redirect()->route('viewinputproduksi',['id' => $detail->id]);
         // return $id;
     }
     public function vieweditproduksi($id)
     {
+        $UsId=Auth::user()->id;
         $produksi=Jasa::where([
             ['id','=', $id],
-        ])->first();
+            ['jenis_jasa','=', '1'],
+            ['cus_id','=', $UsId],
+        ])->firstorfail();
         $detail=detail_pakaian::where([
             ['id','=', $produksi->detail_id],
         ])->first();
@@ -523,19 +638,52 @@ class UserController extends Controller
             'jml' => 'required' 
         ]);
         Jasa::where('id',$request->id)->update([
-            'jml' => $request->jml
+            'jml' => $request->jml,
+            'permintn' => $request->permintn
         ]);
         return redirect()->route('viewproduksi');
     }
+    public function saveeditsampkat(Request $request)
+    {
+        Jasa::where('id',$request->id)->update([
+            'permintn' => $request->permintn
+        ]);
+        return redirect()->back();
+    }
     public function vieweditdetailprod($id)
     {
-        $detail=detail_pakaian::where('id','=', $id)->first();
+        $detail=detail_pakaian::where('id','=', $id)->firstorfail();
         $redirURL = str_replace(url('/'), '', url()->previous());
         return view('produksi.editdetailprod',compact('detail','redirURL'));
         //return $redirURL;
     }
     public function saveeditdetailprod(Request $request)
     {
+        $this->validate($request, [
+            'jenis' => 'required',
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
+        ]);
         Detail_pakaian::where('id', $request->id)->update([
             'nama_atasan' => $request->nama_atasan,
             'nama_bawahan' => $request->nama_bawahan,
@@ -620,12 +768,12 @@ class UserController extends Controller
             ['jenis_jasa','=', '1'],
             ['cus_id','=', $id],
             ['status','!=', '5'],
-        ])->get();
+        ])->paginate($perPage = 6, $columns = ['*'], $pageName = 'prod');
         $sampling=Jasa::where([
             ['jenis_jasa','=', '0'],
             ['cus_id','=', $id],
             ['status','!=', '5'],
-        ])->get();
+        ])->paginate($perPage = 6, $columns = ['*'], $pageName = 'samp');
         
             $jadwal = Konsul::where([
                 ['status','1'],
@@ -639,8 +787,13 @@ class UserController extends Controller
         return view('konsul.pengajuankonsul',compact('sampling','produksi'));
     }
 
-    public function viewpilihkonsul($id,$jns)
+    public function viewpilihkonsul($id)
     {
+        $UsId=Auth::user()->id;
+        $valid=Jasa::where([
+            ['id',$id],
+            ['cus_id',$UsId],
+            ])->firstorfail();
         $jadwal = Konsul::where('status','0')->get();
         $jadwal1 = Konsul::where([
             ['status','1'],

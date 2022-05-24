@@ -89,23 +89,47 @@
                                             <i class="fa fa-info-circle text-info"></i>
                                         </a>
                                         @elseif($row->status == 4)
-                                        <a href="#" class="badge badge-info">Finishing & QC</a>
-                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sewing" 
-                                        data-content="Fase pembuatan dimana sewer kami memasang accessories pakaian dll, serta mengemas pakaian yang sudah jadi.">
+                                        <a href="#" class="badge badge-info">Finishing & QC + Shipping</a>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Finishing & QC + Shipping" 
+                                        data-content="Fase pembuatan dimana sewer kami memasang accessories pakaian dll, serta mengemas pakaian yang sudah jadi dan shipping ke alamat anda.">
                                             <i class="fa fa-info-circle text-info"></i>
                                         </a>
                                         @endif
                                     </h5>
                                     <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
-                                    <p class="card-text text-dark"> <strong>{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</strong> </p>
                                     <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
                                     @if($row->status == 0)
-                                    <a type="button" class="btn btn-danger" href="{{route('delS',['id' => $row->id])}}">Delete</a>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                        Delete
+                                    </button>
+                                    <div class="modal fade" id="del{{$loop->iteration}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                    <a type="button" class="btn btn-danger" href="{{route('delS',['id' => $row->id])}}">Delete</a>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     @endif
                                 </div>
                                 </div>
                             </div> 
                             @endforeach
+                    </div>
+                    <div class="mt-3">
+                    {{ $sampling->withQueryString()->links() }}
                     </div>
                     </div>
                 </div>
@@ -135,29 +159,33 @@
                                     @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
                                         <img src="\img\dress.png" class="card-img-top" alt="...">
                                     @endif
-                                <div class="card-body">
-                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} </h5>
-                                    @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
-                                        <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
-                                    @endif
-                                    <h5 class="title">Pembuatan Selesai {{$row->tgl_jadi}} 
-                                    </h5>
-                                    <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
-                                    <p class="card-text text-dark"> <strong>{{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('desc')}}</strong></p>
-                                    @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('public')==1)
-                                    <a href="{{route('revisisampling',['id' => $row->id])}}" class="btn btn-primary">Ajukan Revisi</a>
-                                    @endif
-                                    <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
-                                </div>
+                                    <div class="card-body">
+                                        @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0)
+                                            <h5 > {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_atasan')}} + {{DB::table('detail_pakaian')->where('id', $row->detail_id)->value('nama_bawahan')}} </h5>
+                                        @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1)
+                                            <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                        @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2)
+                                            <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_bawahan')}} </h5>
+                                        @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==3)
+                                            <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
+                                        @endif
+                                        <h5 class="title">Pembuatan Selesai {{$row->tgl_jadi}} 
+                                        </h5>
+                                        <h6 class="card-title">@if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==0) Atasan+Bawahan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==1) Atasan @elseif(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('jenis')==2) Bawahan @else Dress @endif</h6>
+                                        @if(DB::table('detail_pakaian')->where('id', $row->detail_id)->value('public')==1)
+                                        <a href="{{route('revisisampling',['id' => $row->id])}}" class="btn btn-primary">Ajukan Revisi</a>
+                                        @endif
+                                        <a href="{{route('vieweditsampling',['id' => $row->id])}}" class="btn btn-primary">Detail</a>
+                                    </div>
                                 </div>
                             </div> 
+                            
                             @endforeach
+                            
                            
+                    </div>
+                    <div class="mt-3">
+                    {{ $samplingS->withQueryString()->links() }}
                     </div>
                     </div>
                 </div>
@@ -255,117 +283,117 @@
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Badan</label>
-                                    <input class="form-control" type="text" value="" name="ling_b" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_b" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggang</label>
-                                    <input class="form-control" type="text" value="" name="ling_pgang" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5'  value="" name="ling_pgang" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggul</label>
-                                    <input class="form-control" type="text" value="" name="ling_pingl" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_pingl" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar leher</label>
-                                    <input class="form-control" type="text" value="" name="ling_lh" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_lh" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Bahu</label>
-                                    <input class="form-control" type="text" value="" name="leb_bahu" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="leb_bahu" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Lengan</label>
-                                    <input class="form-control" type="text" value="" name="pj_lengan" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="pj_lengan" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Kerung Lengan</label>
-                                    <input class="form-control" type="text" value="" name="ling_kr_leng" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_kr_leng" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Lengan</label>
-                                    <input class="form-control" type="text" value="" name="ling_lengan" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_lengan" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pergelangan</label>
-                                    <input class="form-control" type="text" value="" name="ling_pergel" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_pergel" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Muka</label>
-                                    <input class="form-control" type="text" value="" name="leb_muka" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="leb_muka" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Punggung</label>
-                                    <input class="form-control" type="text" value="" name="leb_pungg" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="leb_pungg" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Punggung</label>
-                                    <input class="form-control" type="text" value="" name="panj_pungg" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="panj_pungg" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Baju</label>
-                                    <input class="form-control" type="text" value="" name="panj_baju" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="panj_baju" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Tinggi pinggul</label>
-                                    <input class="form-control" type="text" value="" name="tinggi_pingl" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="tinggi_pingl" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggang celana rok</label>
-                                    <input class="form-control" type="text" value="" name="ling_pinggang" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_pinggang" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pesak</label>
-                                    <input class="form-control" type="text" value="" name="ling_pesak" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_pesak" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Paha</label>
-                                    <input class="form-control" type="text" value="" name="ling_paha" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_paha" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Lutut</label>
-                                    <input class="form-control" type="text" value="" name="ling_lutut" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_lutut" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Kaki</label>
-                                    <input class="form-control" type="text" value="" name="ling_kaki" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="ling_kaki" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Celana</label>
-                                    <input class="form-control" type="text" value="" name="panj_cln_rok" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="panj_cln_rok" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Tinggi Duduk</label>
-                                    <input class="form-control" type="text" value="" name="tingg_dudk" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="" name="tingg_dudk" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <!-- <div class="form-group col-sm-6">
                                 <label class="control-label" for="ftktp">Upload Image *</label>

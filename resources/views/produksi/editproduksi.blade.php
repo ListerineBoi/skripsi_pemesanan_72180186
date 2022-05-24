@@ -121,9 +121,10 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
+                                            <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
                                     
                                         <div class="card-body">
+                                            <p>{{$row->img}}</p>
                                             <div class="row">
                                                 <a type="button" class="btn btn-primary mr-1" href="{{url('/')}}/storage/imgdetail/{{$row->img}}">Lihat File</a>
                                                 
@@ -145,11 +146,19 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_depan}}" class="card-img-top" alt="Belum Ada">
+                                        @if($fileimg[0]->img_depan!=null)
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_depan}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                            @else
+                                            Belum Ada
+                                            @endif
                                     
                                         <div class="card-body">
                                             Tampak Depan
-                                            
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_depan!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_depan}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -158,11 +167,19 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_belakang}}" class="card-img-top" alt="Belum Ada">
-                                    
+                                    @if($fileimg[0]->img_belakang!=null)
+                                        <img src="/storage/katalog/{{$fileimg[0]->img_belakang}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
+                                
                                         <div class="card-body">
                                             Tampak Belakang
-                                            
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_belakang!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_belakang}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -171,11 +188,19 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll1}}" class="card-img-top" alt="Belum Ada">
-                                    
+                                    @if($fileimg[0]->img_dll1!=null)
+                                        <img src="/storage/katalog/{{$fileimg[0]->img_dll1}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
+                                
                                         <div class="card-body">
                                             Detail Lainnya
-                                            
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_dll1!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll1}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -184,10 +209,18 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll2}}" class="card-img-top" alt="Belum Ada">
-                                    
+                                    @if($fileimg[0]->img_dll2!=null)
+                                        <img src="/storage/katalog/{{$fileimg[0]->img_dll2}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
+                                
                                         <div class="card-body">
-                                            Detail Lainnya
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_dll2!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll2}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                             
                                         </div>
                                     </div>
@@ -269,9 +302,25 @@
                     <div class="form-group row mt-2">
                         <label class="control-label col-sm-2" for="nik">Jumlah Produksi</label>
                         <div class="col-sm-10">
-                            <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" value="{{$produksi->jml}}">
+                            <input type="number" min="12" max="20000" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" value="{{$produksi->jml}}">
                         </div>
-                    </div>	
+                    </div>
+                    @if($detail->public==0)
+                    <div class="row col-sm-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Permintaan <br>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Deskripsi Lebih Lanjut" 
+                                        data-content="Berisi warna atau permintaan lainya dari katalog.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                    </span>
+                                    
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea" name="permintn">{{$produksi->permintn}}</textarea>
+                            </div>
+                        </div>
+                    @endif	
                     @if($produksi->status==0)
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
                     @endif

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Login - srtdash</title>
+    <title>Login - Amoora</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -41,11 +41,11 @@
                         @csrf
                     <div class="login-form-head">
                         <h4>Sign In</h4>
-                        <p>Hello there, Sign in and start ordering</p>
+                        <p>Halo, Selamat Datang Kembali</p>
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp row">
-                                <label for="exampleInputEmail1">Email address</label>
+                                <label for="exampleInputEmail1">Alamat Email</label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" >
                                 <i class="ti-email"></i>
                             <div class="text-danger"></div>
@@ -56,16 +56,11 @@
                             <i class="ti-lock"></i>
                             <div class="text-danger"></div>
                         </div>
-                        <div class="row mb-4 rmber-area">
-                            <div class="col-6 text-right">
-                                <a href="#">Forgot Password?</a>
-                            </div>
-                        </div>
                         <div class="submit-btn-area">
                             <button id="form_submit" type="submit">Login <i class="ti-arrow-right"></i></button>
                         </div>
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted">Don't have an account? <a href="{{ route('register') }}">Sign up</a></p>
+                            <p class="text-muted">Belum punya akun? <a href="{{ route('register') }}">Daftar</a></p>
                         </div>
                     </div>
                 </form>

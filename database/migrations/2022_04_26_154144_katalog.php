@@ -22,6 +22,7 @@ class Katalog extends Migration
             $table->text('img_dll2')->nullable();
             $table->text('harga');
             $table->text('desc');
+            $table->char('aktif',1);
             $table->unsignedBigInteger('detail_id_s')->nullable();
             $table->unsignedBigInteger('detail_id_m')->nullable();
             $table->unsignedBigInteger('detail_id_l')->nullable();

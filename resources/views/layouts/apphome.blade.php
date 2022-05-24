@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>srtdash - Ecommerce Dashboard</title>
+    <title>Amoora Couture</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
@@ -61,25 +61,29 @@
                 <div class="row align-items-center py-3">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">Dashboard</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="index.html">Home</a></li>
-                                <li><span>Dashboard</span></li>
-                            </ul>
+                            <h4 class="page-title pull-left">KATALOG</h4>
+                            
                         </div>
                     </div>
                     <div class="col-sm-6 ">
                         <div class="pull-right">
-                        @guest
-                            @if (Route::has('login'))
-                                    <a class="btn btn-success" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            @endif
+                        @guest('web')
+                            @guest('admin')
+                                @if (Route::has('login'))
+                                        <a class="btn btn-success" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                @endif
 
-                            @if (Route::has('register'))
-                                    <a class="btn btn-primary" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            @endif
-                        @else
+                                @if (Route::has('register'))
+                                        <a class="btn btn-primary" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                @endif
+                                @else
+                            @endguest
                         @endguest
+                        @if(Auth::guard('admin')->check())
+                        <a class="btn btn-success" href="{{ route('homeadmin') }}">Home</a>
+                        @elseif(Auth::guard('web')->check())
+                        <a class="btn btn-success" href="{{ route('home') }}">Home</a>
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -93,7 +97,7 @@
         <!-- footer area start-->
         <footer>
             <div class="footer-area">
-                <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
+                
             </div>
         </footer>
         <!-- footer area end-->

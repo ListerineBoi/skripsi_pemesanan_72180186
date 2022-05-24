@@ -13,6 +13,8 @@ use App\Models\Katalog;
 use App\Models\User;
 use App\Models\DetailInvoice;
 use App\Models\Nota;
+use Illuminate\Support\Facades\Hash;
+use App\Models\admin;
 use PDF;
 use Auth;
 use Illuminate\Support\Facades\Storage;
@@ -25,10 +27,31 @@ class AdminController extends Controller
     }
     public function index()
     {
-        $Katalog=Katalog::all();
+        $Katalog=Katalog::paginate(6);
         return view('homeAdmin',compact('Katalog'));
     }
+    public function viewprofile()
+    {
+        $admin=admin::all();
+        return view('profile.adminprofile',compact('admin'));
+    }
 
+    public function addadmin(Request $request)
+    {
+        $this->validate($request, [
+            'email' => ['required','max:190','unique:admins'],
+            'name' => 'required',
+            'password' => ['required','min:8','max:190']    
+        ]);
+        
+        $admin= new admin([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        $admin->save();
+        return redirect()->back();
+    }
     public function setkatalog(Request $request)
     {
         $this->validate($request, [
@@ -41,6 +64,7 @@ class AdminController extends Controller
             'title' => $request->title,
             'desc' => $request->desc,
             'harga' => $request->harga,
+            'aktif' => '1',
         ]);
         $Katalog->save();
         return redirect()->back();
@@ -49,21 +73,36 @@ class AdminController extends Controller
     public function delkatalog(Request $request)
     {
         $Katalog=Katalog::where('id',$request->id)->first();
-        $delpath='public/katalog/'.$Katalog->img;
-        Storage::delete($delpath);
-        Katalog::where('id', $request->id)->delete();
-        return redirect()->back();
-        //return $Katalog;    
+        if($Katalog->img_depan == null && $Katalog->img_belakang == null && $Katalog->img_dll1 == null 
+        && $Katalog->img_dll2 == null && $Katalog->detail_id_s == null && $Katalog->detail_id_m == null 
+        && $Katalog->detail_id_l == null && $Katalog->detail_id_xl == null)
+        {
+            $delpath='public/katalog/'.$Katalog->img;
+            Storage::delete($delpath);
+            Katalog::where('id', $request->id)->delete();
+            return redirect()->back();
+        }else{
+            return redirect()->back()->with('Forbidden','Pastikan Isi Produk Katalog Sudah Kosong');
+        } 
     }
     public function editkatalog(Request $request)
     {
+        if($request->aktif==null){
+            $aktif=0;
+        }else{
+            $aktif=1;
+        }
         Katalog::where('id', $request->id)->update([
             'desc' => $request->desc,
+            'aktif' => $aktif,
         ]);
         return redirect()->back();
     }
     public function addimgkatalog(Request $request)
     {
+        $this->validate($request, [
+            'img' => 'required',  
+        ]);
         $fullname = $request->file('img')->getClientOriginalName();
         $extn =$request->file('img')->getClientOriginalExtension();
         $finalS='katalog'.'_'.$request->jenis.'_'.$request->id.'.'.$extn;
@@ -85,6 +124,16 @@ class AdminController extends Controller
                 'img_dll2' => $finalS,   
             ]);
         }
+        return redirect()->back();
+    }
+    public function delimgkatalog($id,$img)
+    {
+        $kat=Katalog::where('id', $id)->first();
+        $delpath='public/katalog/'.$kat->$img;
+        Storage::delete($delpath);
+        Katalog::where('id', $id)->update([
+            $img => null
+        ]);
         return redirect()->back();
     }
 
@@ -142,33 +191,60 @@ class AdminController extends Controller
     }
     public function delkatalogukuran($id,$id_kat,$tipe)
     {
-        if($tipe == 'S'){
-            Katalog::where('id', $id_kat)->update([
-                'detail_id_s' => null,
-            ]);
-        }elseif ($tipe == 'M') {
-            Katalog::where('id', $id_kat)->update([
-                'detail_id_m' => null,
-            ]);
-        }elseif ($tipe == 'L') {
-            Katalog::where('id', $id_kat)->update([
-                'detail_id_l' => null,
-            ]);
-        }elseif ($tipe == 'XL') {
-            Katalog::where('id', $id_kat)->update([
-                'detail_id_xl' => null,
-            ]);
+        $cek=Jasa::where('detail_id',$id)->get();
+        if(count($cek)==0){
+            if($tipe == 'S'){
+                Katalog::where('id', $id_kat)->update([
+                    'detail_id_s' => null,
+                ]);
+            }elseif ($tipe == 'M') {
+                Katalog::where('id', $id_kat)->update([
+                    'detail_id_m' => null,
+                ]);
+            }elseif ($tipe == 'L') {
+                Katalog::where('id', $id_kat)->update([
+                    'detail_id_l' => null,
+                ]);
+            }elseif ($tipe == 'XL') {
+                Katalog::where('id', $id_kat)->update([
+                    'detail_id_xl' => null,
+                ]);
+            }
+            $detail=detail_pakaian::where('id','=', $id)->delete();
+            return redirect()->back();
+        }else{
+            return redirect()->back()->with('Forbidden','Pastikan Detail ini Belum Pernah Dipakai');
         }
-        $detail=detail_pakaian::where('id','=', $id)->delete();
-        return redirect()->back();
-        //return $Katalog;    
+        
+        //return $cek;    
     }
     public function saveeditdetailkatalog(Request $request)
     {
         $this->validate($request, [
             'nama_atasan' => 'required',
             'jenis' => 'required',
-            'desc' => 'required'     
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
         ]);
         Detail_pakaian::where('id', $request->id)->update([
             'nama_atasan' => $request->nama_atasan,
@@ -269,8 +345,13 @@ class AdminController extends Controller
 
     public function delslot($id)
     {
-        Slot::where('id', $id)->delete();
-        return redirect()->back();
+        $cek=Slot::where('id', $id)->value('jml');
+        if($cek=='0'){
+            Slot::where('id', $id)->delete();
+            return redirect()->back();
+        }else{
+            return redirect()->back()->with('Forbidden','Pastikan Slot Kosong');
+        }
     }
 
     public function viewslistsampling(Request $request)
@@ -376,6 +457,31 @@ class AdminController extends Controller
     }
     public function saveeditS(Request $request)
     {
+        $this->validate($request, [
+            'jenis' => 'required',
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
+        ]);
         $id=Auth::user()->id;
         $iddetail=Jasa::where('id','=', $request->id)->value('detail_id');
             Detail_pakaian::where('id', $iddetail)->update([
@@ -411,8 +517,10 @@ class AdminController extends Controller
 
     public function statusSampling(Request $request)
     {
+        $id_admin=Auth::user()->id;
         Jasa::where('id', $request->id)->update([
-            'status' => $request->status
+            'status' => $request->status,
+            'admin_id' => $id_admin
         ]);
         return redirect()->back(); 
     }    
@@ -478,14 +586,24 @@ class AdminController extends Controller
             'jml' => 'required' 
         ]);
         Jasa::where('id',$request->id)->update([
-            'jml' => $request->jml
+            'jml' => $request->jml,
+            'permintn' => $request->permintn
         ]);
         return redirect()->route('viewslistproduksi');
     }
+    public function saveeditsampkat(Request $request)
+    {
+        Jasa::where('id',$request->id)->update([
+            'permintn' => $request->permintn
+        ]);
+        return redirect()->back();
+    }
     public function statusProd(Request $request)
     {
+        $id_admin=Auth::user()->id;
         Jasa::where('id', $request->id)->update([
-            'status' => $request->status
+            'status' => $request->status,
+            'admin_id' => $id_admin
         ]);
         return redirect()->back(); 
     }
@@ -498,6 +616,31 @@ class AdminController extends Controller
     }
     public function saveeditdetailprod(Request $request)
     {
+        $this->validate($request, [
+            'jenis' => 'required',
+            'desc' => 'required',
+            'ling_b' => 'max:5',
+            'ling_pgang' => 'max:5',
+            'ling_pingl' => 'max:5',
+            'ling_lh' => 'max:5',
+            'leb_bahu' => 'max:5',
+            'pj_lengan' => 'max:5',
+            'ling_kr_leng' => 'max:5',
+            'ling_lengan' => 'max:5',
+            'ling_pergel' => 'max:5',
+            'leb_muka' => 'max:5',
+            'leb_pungg' => 'max:5',
+            'panj_pungg' => 'max:5',
+            'panj_baju' => 'max:5',
+            'tinggi_pingl' => 'max:5',
+            'ling_pinggang' => 'max:5',
+            'ling_pesak' => 'max:5',
+            'ling_paha' => 'max:5',
+            'ling_lutut' => 'max:5',
+            'ling_kaki' => 'max:5',
+            'panj_cln_rok' => 'max:5',
+            'tingg_dudk' => 'max:5',    
+        ]);
         Detail_pakaian::where('id', $request->id)->update([
             'nama_atasan' => $request->nama_atasan,
             'nama_bawahan' => $request->nama_bawahan,
@@ -559,10 +702,10 @@ class AdminController extends Controller
     public function addinvoice(Request $request)
     {
         $this->validate($request, [
-            'qty' => 'required',
+            'qty' => ['required','max:5'],
             'ket' => 'required',
-            'harga' => 'required',
-            'total' => 'required'      
+            'harga' => ['required','max:10'],
+            'total' => ['required','max:10']      
         ]);
        
             $invoice= new DetailInvoice([
@@ -656,11 +799,6 @@ class AdminController extends Controller
         
         return redirect()->back();
         //return $wow;
-    }
-    public function viewjadwalkonsul()
-    {
-        $jadwal = Konsul::where('status','1')->get();
-        //return view('');
     }
     public function viewformtambahkonsul()
     {

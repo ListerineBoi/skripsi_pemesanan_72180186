@@ -16,7 +16,7 @@ class CreateSlot extends Migration
         Schema::create('slot', function (Blueprint $table) {
             $table->id();
             $table->char('jenis', 1);
-            $table->string('title');
+            $table->string('title',30);
             $table->date('mulai');
             $table->date('selesai');
             $table->tinyInteger('jml')->default('0');

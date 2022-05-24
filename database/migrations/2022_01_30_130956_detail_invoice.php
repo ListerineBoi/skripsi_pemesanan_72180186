@@ -18,8 +18,8 @@ class DetailInvoice extends Migration
             $table->unsignedBigInteger('bayar_id')->nullable();
             $table->unsignedSmallInteger('qty');
             $table->text('ket');
-            $table->mediumInteger('harga');
-            $table->mediumInteger('total');
+            $table->unsignedInteger('harga');
+            $table->unsignedInteger('total');
             $table->timestamps();
             $table->foreign('bayar_id')->references('id')->on('pembayaran');
     });

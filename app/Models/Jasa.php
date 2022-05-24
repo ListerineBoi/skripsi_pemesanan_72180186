@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Jasa extends Model
 {
     protected $fillable = [
-        'jenis_jasa','slot_id','detail_id','jml','cus_id','admin_id','status',
+        'jenis_jasa','slot_id','detail_id','jml','cus_id','admin_id','status','permintn',
     ];
     protected $table="jasa";
     public function room()

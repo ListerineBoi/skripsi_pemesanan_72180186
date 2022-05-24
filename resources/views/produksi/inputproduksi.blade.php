@@ -148,13 +148,13 @@
 
                         @if(\Session::has('success'))
                             <div class="alert alert-success">
-                                <p>{{\Session::get('success')}}</p>
+                                {{\Session::get('success')}}
                             </div>
                         @endif
 
                         @if(\Session::has('Forbidden'))
                             <div class="alert alert-danger">
-                                <p>{{\Session::get('Forbidden')}}</p>
+                                {{\Session::get('Forbidden')}}
                             </div>
                         @endif
                     <form method="post" action="{{route('saveinputprod')}}" enctype='multipart/form-data'>
@@ -163,19 +163,35 @@
                     <div class="form-group row">
                         <label class="control-label col-sm-2" for="nik">Slot</label>
                         <div class="col-sm-10">
-                        <select class="form-control" name="slot_id">
-                        @foreach($slot as $row)
-                            <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->mulai}}</option>
-                        @endforeach
-                        </select>
+                            <select class="custom-select" name="slot_id">
+                            @foreach($slot as $row)
+                                <option value="{{$row->id}}">{{$row->title}}, Pembuatan Dimulai {{$row->mulai}}</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row mt-2">
                         <label class="control-label col-sm-2" for="nik">Jumlah Produksi</label>
                         <div class="col-sm-10">
-                            <input type="number" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" placeholder="">
+                            <input type="number" min="12" max="20000" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control" name="jml" placeholder="">
                         </div>
-                    </div>	
+                    </div>
+                    @if($detail->public==0)
+                    <div class="row col-sm-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Permintaan <br>
+                                        <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Deskripsi Lebih Lanjut" 
+                                        data-content="Berisi warna atau permintaan lainya dari katalog.">
+                                            <i class="fa fa-info-circle text-info"></i>
+                                        </a>
+                                    </span>
+                                    
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea" name="permintn"></textarea>
+                            </div>
+                        </div>
+                    @endif
                     <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
             </form>
                 </div>

@@ -18,7 +18,6 @@ class adminFactory extends Factory
         return [
             'name' => 'Admin',
             'email' => 'Admin@amoora.com',
-            'email_verified_at' => now(),
             'password' => hash::make('Admin1234'), // password
         ];
     }

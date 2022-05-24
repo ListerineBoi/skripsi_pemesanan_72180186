@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appadmin')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,12 @@
             <div class="row g-0">
                 <div class="col-md-12">
                 <div class="card-body">
-                    <h3 class="card-title">Detail Yang Dipakai</h3>
+                @if(\Session::has('Forbidden'))
+                            <div class="alert alert-danger">
+                                {{\Session::get('Forbidden')}}
+                            </div>
+                        @endif
+                    <h3 class="card-title">Detail Katalog</h3>
                     <h6>
                             <h5 class="mb-3"> {{$katalog->title}} </h5>
                     </h6>
@@ -321,9 +326,12 @@
                         
                         <input type="hidden" name="id" value="{{$katalog->id}}">
                         <textarea class="form-control" aria-label="With textarea" name="desc">{{$katalog->desc}}</textarea>
-                        <button class="btn btn-Primary" type="submit">Ubah</button>
-                        
                     </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" name='aktif' id="flexSwitchCheckChecked" @if($katalog->aktif==1) checked @endif>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Aktif/Non-Aktif</label>
+                    </div>
+                    <button class="btn btn-Primary" type="submit">Ubah</button>
                     
                     </form>
                     
@@ -340,11 +348,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_depan}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_depan!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_depan}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Tampak Depan
                                         <div class="row col-12">
+                                        @if($katalog->img_depan!=null)
+                                        <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_depan}}">Lihat File</a>
+                                        <a type="button" class="btn btn-danger mr-1 mb-2" href="/admin/katalog/img/del/{{$katalog->id}}/img_depan">Delete</a>
+                                        @endif
                                             <div class="custom-file col-12">
                                                 <form method="post" action="{{route('addimgkatalog')}}" enctype='multipart/form-data'>
                                                 @csrf
@@ -364,11 +380,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_belakang}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_belakang!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_belakang}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        belum ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Tampak Belakang
                                         <div class="row col-12">
+                                        @if($katalog->img_belakang!=null)
+                                        <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_belakang}}">Lihat File</a>
+                                        <a type="button" class="btn btn-danger mr-1 mb-2" href="/admin/katalog/img/del/{{$katalog->id}}/img_belakang">Delete</a>
+                                        @endif
                                             <div class="custom-file col-12">
                                                 <form method="post" action="{{route('addimgkatalog')}}" enctype='multipart/form-data'>
                                                 @csrf
@@ -387,12 +411,19 @@
                             </div>
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
-                                
-                                        <img src="/storage/katalog/{{$katalog->img_dll1}}" class="card-img-top" alt="Belum Ada">
-                                
+
+                                        @if($katalog->img_dll1!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_dll1}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        belum ada
+                                        @endif
                                     <div class="card-body">
                                         Detail Lainnya
                                         <div class="row col-12">
+                                        @if($katalog->img_dll1!=null)
+                                        <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_dll1}}">Lihat File</a>
+                                        <a type="button" class="btn btn-danger mr-1 mb-2" href="/admin/katalog/img/del/{{$katalog->id}}/img_dll1">Delete</a>
+                                        @endif
                                             <div class="custom-file col-12">
                                                 <form method="post" action="{{route('addimgkatalog')}}" enctype='multipart/form-data'>
                                                 @csrf
@@ -412,11 +443,19 @@
                             <div class="col-lg-4 col-md-6 mt-3">
                                 <div class="card h-100 card-bordered">
                                 
-                                        <img src="/storage/katalog/{{$katalog->img_dll2}}" class="card-img-top" alt="Belum Ada">
+                                        @if($katalog->img_dll2!=null)
+                                        <img src="/storage/katalog/{{$katalog->img_dll2}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        belum ada
+                                        @endif
                                 
                                     <div class="card-body">
                                         Detail Lainnya
                                         <div class="row col-12">
+                                        @if($katalog->img_dll2!=null)
+                                        <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$katalog->img_dll2}}">Lihat File</a>
+                                        <a type="button" class="btn btn-danger mr-1 mb-2" href="/admin/katalog/img/del/{{$katalog->id}}/img_dll2">Delete</a>
+                                        @endif
                                             <div class="custom-file col-12">
                                                 <form method="post" action="{{route('addimgkatalog')}}" enctype='multipart/form-data'>
                                                 @csrf

@@ -22,6 +22,7 @@ class CreateJasa extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->date('tgl_jadi')->nullable();
             $table->unsignedSmallInteger('jml')->nullable();
+            $table->text('permintn')->nullable();
             $table->char('status', 1);
             $table->timestamps();
             $table->foreign('slot_id')->references('id')->on('slot');

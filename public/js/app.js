@@ -5416,9 +5416,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   //Takes the "user" props from <chat-form> … :user="{{ Auth::user() }}"></chat-form> in the parent chat.blade.php.
-  props: ["rooms", "jasas"],
+  props: ["rooms", "jasas", "admin"],
   data: function data() {
     return {
       room: "",
@@ -5433,6 +5437,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit("chooseroom", {
         room: value
       });
+      console.log(this.admin);
     },
     submitdel: function submitdel(rmid) {
       this.$emit("dlroom", {
@@ -5583,6 +5588,8 @@ var app = new Vue({
           message: e.message.message,
           user: e.user
         });
+
+        _this.fetchRoom();
       }
     });
   },
@@ -34606,6 +34613,7 @@ var render = function () {
           attrs: {
             id: "btn-input",
             type: "text",
+            min: "1",
             name: "message",
             placeholder: "Type your message here...",
           },
@@ -34800,9 +34808,7 @@ var render = function () {
                 _vm._v(" "),
                 room.messageslatest != null
                   ? _c("p", { staticClass: "mb-1 text-dark" }, [
-                      _vm._v(
-                        "New Message: " + _vm._s(room.messageslatest.message)
-                      ),
+                      _vm._v(" " + _vm._s(room.messageslatest.message) + " "),
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -34812,6 +34818,32 @@ var render = function () {
                 _vm._v(" "),
                 room.jenis == 1
                   ? _c("small", [_vm._v("Konsultasi Paska-Produksi/Sampling")])
+                  : _vm._e(),
+                _vm._v(" "),
+                room.messageslatest != null
+                  ? _c("div", { staticClass: "text-right" }, [
+                      _vm.admin == 0 && room.messageslatest.admin_id != null
+                        ? _c(
+                            "i",
+                            {
+                              staticClass:
+                                "fa fa-lg fa-exclamation-circle text-danger",
+                            },
+                            [_vm._v(" New")]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.admin == 1 && room.messageslatest.user_id != null
+                        ? _c(
+                            "i",
+                            {
+                              staticClass:
+                                "fa fa-lg fa-exclamation-circle text-danger",
+                            },
+                            [_vm._v(" New")]
+                          )
+                        : _vm._e(),
+                    ])
                   : _vm._e(),
               ]),
               _vm._v(" "),
@@ -35068,7 +35100,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes")]
+                        [_vm._v("Save")]
                       )
                     : _vm.selectedJ == 0
                     ? _c(
@@ -35082,7 +35114,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes")]
+                        [_vm._v("Save")]
                       )
                     : _vm.selectedJ == 1
                     ? _c(
@@ -35096,7 +35128,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Save changes")]
+                        [_vm._v("Save")]
                       )
                     : _vm._e(),
                 ]),

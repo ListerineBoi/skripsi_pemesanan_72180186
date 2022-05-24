@@ -53,9 +53,10 @@
                                     <div class="col-lg-4 col-md-6 mt-3">
                                         <div class="card h-100 card-bordered">
                                         
-                                                <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" alt="...">
-                                        
+                                                <img src="/storage/imgdetail/{{$row->img}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                                
                                             <div class="card-body">
+                                            <p>{{$row->img}}</p>
                                                 <div class="row">
                                                     <a type="button" class="btn btn-primary mr-1" target="_blank" href="{{url('/')}}/storage/imgdetail/{{$row->img}}">Lihat File</a>
                                                     
@@ -189,123 +190,118 @@
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Badan</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_b')}}" name="ling_b" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_b')}}" name="ling_b" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggang</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pgang')}}" name="ling_pgang" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pgang')}}" name="ling_pgang" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggul</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pingl')}}" name="ling_pingl" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pingl')}}" name="ling_pingl" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar leher</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lh')}}" name="ling_lh" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lh')}}" name="ling_lh" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Bahu</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_bahu')}}" name="leb_bahu" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_bahu')}}" name="leb_bahu" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Lengan</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('pj_lengan')}}" name="pj_lengan" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('pj_lengan')}}" name="pj_lengan" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Kerung Lengan</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_kr_leng')}}" name="ling_kr_leng" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_kr_leng')}}" name="ling_kr_leng" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Lengan</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lengan')}}" name="ling_lengan" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lengan')}}" name="ling_lengan" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pergelangan</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pergel')}}" name="ling_pergel" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pergel')}}" name="ling_pergel" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Muka</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_muka')}}" name="leb_muka" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_muka')}}" name="leb_muka" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lebar Punggung</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_pungg')}}" name="leb_pungg" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('leb_pungg')}}" name="leb_pungg" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Punggung</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_pungg')}}" name="panj_pungg" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_pungg')}}" name="panj_pungg" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Baju</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_baju')}}" name="panj_baju" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_baju')}}" name="panj_baju" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Tinggi pinggul</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('tinggi_pingl')}}" name="tinggi_pingl" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('tinggi_pingl')}}" name="tinggi_pingl" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pinggang celana rok</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pinggang')}}" name="ling_pinggang" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pinggang')}}" name="ling_pinggang" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Pesak</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pesak')}}" name="ling_pesak" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_pesak')}}" name="ling_pesak" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Paha</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_paha')}}" name="ling_paha" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_paha')}}" name="ling_paha" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Lutut</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lutut')}}" name="ling_lutut" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_lutut')}}" name="ling_lutut" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Lingkar Kaki</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_kaki')}}" name="ling_kaki" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('ling_kaki')}}" name="ling_kaki" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Panjang Celana</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_cln_rok')}}" name="panj_cln_rok" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('panj_cln_rok')}}" name="panj_cln_rok" placeholder="Ukuran Dalam Cm">
                                 </div>
 
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
                                     <label for="example-text-input" class="col-form-label">Tinggi Duduk</label>
-                                    <input class="form-control" type="text" value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('tingg_dudk')}}" name="tingg_dudk" placeholder="Ukuran Dalam Cm">
+                                    <input class="form-control" type="text" maxlength='5' value="{{DB::table('detail_pakaian')->where('id', $sampling->detail_id)->value('tingg_dudk')}}" name="tingg_dudk" placeholder="Ukuran Dalam Cm">
                                 </div>
-                                <!-- <div class="form-group col-sm-6">
-                                <label class="control-label" for="ftktp">Upload Image *</label>
-                                <div class="col-sm-10">
-                                <input type="file" class="form-control-file" name="img_model">
-                                </div> -->
                             </div>
                             <div class="row col-sm-12">
                                 <div class="input-group mb-3">
@@ -473,12 +469,19 @@
                             @if($fileimg[0]->img_depan!=null)
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
-                                    
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_depan}}" class="card-img-top" alt="Belum Ada">
+                                        @if($fileimg[0]->img_depan!=null)
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_depan}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                            @else
+                                            Belum Ada
+                                            @endif
                                     
                                         <div class="card-body">
                                             Tampak Depan
-                                            
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_depan!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_depan}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -487,11 +490,19 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_belakang}}" class="card-img-top" alt="Belum Ada">
+                                        @if($fileimg[0]->img_belakang!=null)
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_belakang}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                            @else
+                                            Belum Ada
+                                            @endif
                                     
                                         <div class="card-body">
                                             Tampak Belakang
-                                            
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_belakang!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_belakang}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -500,11 +511,18 @@
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
                                     
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll1}}" class="card-img-top" alt="Belum Ada">
-                                    
-                                        <div class="card-body">
-                                            Detail Lainnya
-                                            
+                                    @if($fileimg[0]->img_dll1!=null)
+                                        <img src="/storage/katalog/{{$fileimg[0]->img_dll1}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                        @else
+                                        Belum Ada
+                                        @endif
+                                
+                                    <div class="card-body">
+                                        Detail Lainnya
+                                        <div class="row col-12">
+                                            @if($fileimg[0]->img_dll1!=null)
+                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll1}}">Lihat File</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -512,11 +530,18 @@
                                 @if($fileimg[0]->img_dll2!=null)
                                 <div class="col-lg-4 col-md-6 mt-3">
                                     <div class="card h-100 card-bordered">
-                                    
-                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll2}}" class="card-img-top" alt="Belum Ada">
+                                        @if($fileimg[0]->img_dll2!=null)
+                                            <img src="/storage/katalog/{{$fileimg[0]->img_dll2}}" class="card-img-top" onError="this.onerror=null;this.src='/img/file.png';">
+                                            @else
+                                            Belum Ada
+                                            @endif
                                     
                                         <div class="card-body">
-                                            Detail Lainnya
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_dll2!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll2}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                             
                                         </div>
                                     </div>
@@ -551,8 +576,76 @@
                 </div>
             </div>
         </div>
-        </div>
+        <div class="card">
+                <div class="card-header">Form Pengajuan Produksi</div>
 
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if(count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                            @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                            @endforeach
+                            </ul>
+                            </div>
+                        @endif
+
+                        @if(\Session::has('success'))
+                            <div class="alert alert-success">
+                                <p>{{\Session::get('success')}}</p>
+                            </div>
+                        @endif
+
+                        @if(\Session::has('Forbidden'))
+                            <div class="alert alert-danger">
+                                <p>{{\Session::get('Forbidden')}}</p>
+                            </div>
+                        @endif
+                    <form method="post" action="{{route('saveeditsampkat')}}" enctype='multipart/form-data'>
+                        @csrf
+                        <input type="hidden" class="form-control" name="id" value="{{$sampling->id}}">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-2" for="nik">Slot</label>
+                        <div class="col-sm-10">
+                        <select class="custom-select" name="slot_id" disabled>
+                   
+                            <option value="">{{DB::table('slot')->where('id', $sampling->slot_id)->value('title')}} Pembuatan Dimulai: {{DB::table('slot')->where('id', $sampling->slot_id)->value('mulai')}}</option>
+
+                        </select>
+                        </div>
+                    </div>
+                    @if($detail->public==0)
+                    <div class="row col-sm-12">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Permintaan <br>
+                                    <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Deskripsi Lebih Lanjut" 
+                                    data-content="Berisi warna atau permintaan lainya dari katalog.">
+                                        <i class="fa fa-info-circle text-info"></i>
+                                    </a>
+                                </span>
+                                
+                            </div>
+                            <textarea class="form-control" aria-label="With textarea" name="permintn">{{$sampling->permintn}}</textarea>
+                        </div>
+                    </div>
+                    @endif	
+                    @if($sampling->status==0)
+                    <button type="submit" class="btn btn-danger mt-2" class="text-right" style="float: right;">Save</button>
+                    @endif
+                    </form>
+                </div>
+                
+        </div>
+        </div>
+        
+            
+        
 @endif
 
     </div>

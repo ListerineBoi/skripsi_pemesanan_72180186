@@ -57,99 +57,98 @@
                     
                     </div>
                     <div class="col-md-12 mt-5">
-            <div class="card">
-                <div class="card-header"></div>
-
-                <div class="card-body">
-                <div class="single-table">
-                        <div class="table-responsive">
-                            <table class="table table-hover progress-table text-center">
-                                <thead class="text-uppercase">
-                                    <tr>
-                                        <th scope="col">Customer</th>
-                                        <th scope="col">Jenis</th>
-                                        <th scope="col">Tgl/jam</th>
-                                        <th scope="col">action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach( $jadwal as $jdwl)
-                                    <tr>
-                                        <td>
-                                            @if($jdwl->jasa_id != null)
-                                            {{DB::table('users')->where('id', DB::table('jasa')->where('id', $jdwl->jasa_id)->value('cus_id'))->value('name')}}
-                                            @else
-                                            Belum Ada
-                                            @endif
-                                        </td>
-                                        <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
-                                        <td>{{$jdwl->tgl}}/{{$jdwl->mulai}}</td>
-                                        <td>
-                                            @if($jdwl->tgl<date("Y-m-d") OR $jdwl->jasa_id==null )
-                                            <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#del{{$loop->iteration}}">
-                                            Delete
-                                            </button>
-                                            <div class="modal fade" id="del{{$loop->iteration}}">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Apakah Anda Yakin Akan Menghapus Data Ini?.
-                                                        
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                                                            <a type="button" class="btn btn-danger" href="/admin/setjadwal/delete/{{$jdwl->id}}">Delete</a>
-                                                        
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            @endif
-                                            @if($jdwl->jenis!=0)
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalnota{{$loop->iteration}}">Set link</button>
-                                            @endif
-                                        </td>
-                                        <div class="modal fade" id="modalnota{{$loop->iteration}}">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Link</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    <form method="post" action="{{route('addlink')}}" enctype='multipart/form-data'>
-                                                    @csrf
-                                                    <input type="hidden" name="id" value="{{$jdwl->id}}">
-                                                    <div class="form-group">
-                                                        <label for="example-time-input" class="col-form-label">Link Google Meet</label>
-                                                        <input class="form-control" type="text" value="{{$jdwl->link}}" name="link">
-                                                    </div>
-                                                    
-                                                    
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Kirim</button>
-                                                    </form>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="card">
+                            <div class="card-header"></div>
+                                <div class="card-body">
+                                    <div class="single-table">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover progress-table text-center">
+                                                <thead class="text-uppercase">
+                                                    <tr>
+                                                        <th scope="col">Customer</th>
+                                                        <th scope="col">Jenis</th>
+                                                        <th scope="col">Tgl/jam</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach( $jadwal as $jdwl)
+                                                    <tr>
+                                                        <td>
+                                                            @if($jdwl->jasa_id != null)
+                                                            {{DB::table('users')->where('id', DB::table('jasa')->where('id', $jdwl->jasa_id)->value('cus_id'))->value('name')}}
+                                                            @else
+                                                            Belum Ada
+                                                            @endif
+                                                        </td>
+                                                        <td>@if($jdwl->jenis==0) Tatap Muka @else Online @endif</td>
+                                                        <td>{{$jdwl->tgl}}/{{$jdwl->mulai}}</td>
+                                                        <td>
+                                                            @if($jdwl->tgl<date("Y-m-d") OR $jdwl->jasa_id==null )
+                                                            <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#del{{$loop->iteration}}">
+                                                            Delete
+                                                            </button>
+                                                            <div class="modal fade" id="del{{$loop->iteration}}">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Apakah Anda Yakin Akan Menghapus Data Ini?.
+                                                                        
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                                            <a type="button" class="btn btn-danger" href="/admin/setjadwal/delete/{{$jdwl->id}}">Delete</a>
+                                                                        
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            @endif
+                                                            @if($jdwl->jenis!=0)
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalnota{{$loop->iteration}}">Set link</button>
+                                                            @endif
+                                                        </td>
+                                                        <div class="modal fade" id="modalnota{{$loop->iteration}}">
+                                                                <div class="modal-dialog modal-lg">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Link</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                    <form method="post" action="{{route('addlink')}}" enctype='multipart/form-data'>
+                                                                    @csrf
+                                                                    <input type="hidden" name="id" value="{{$jdwl->id}}">
+                                                                    <div class="form-group">
+                                                                        <label for="example-time-input" class="col-form-label">Link Google Meet</label>
+                                                                        <input class="form-control" type="text" value="{{$jdwl->link}}" name="link">
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Kirim</button>
+                                                                    </form>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
                         </div>
                     </div>
-                    </div>  
-                </div>
-            </div>
-        </div>
                 
             
         

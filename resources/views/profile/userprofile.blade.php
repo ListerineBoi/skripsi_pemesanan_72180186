@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
             <div class="col-12 mt-3">
-            <div class="card">
+                <div class="card">
                     <div class="card-body">
 
                         @if (session('status'))
@@ -13,12 +13,12 @@
                             </div>
                         @endif
                         @if(count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
-                            @endforeach
-                            </ul>
+                            <div class="alert alert-danger">
+                                <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                @endforeach
+                                </ul>
                             </div>
                         @endif
 
@@ -62,20 +62,9 @@
                             
                             <button type="submit" class="btn btn-success" class="text-right" style="float: right;">Ubah</button>
                         </form>
-                    </div>
-                        
-                    
-                </div>
+                    </div>  
                 </div>
             </div>
-
-
-    
-
-    
-            
-        </div>
-        </div>
+        </div>       
     </div>
-</div>
 @endsection

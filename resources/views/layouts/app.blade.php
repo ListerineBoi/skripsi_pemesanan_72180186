@@ -73,19 +73,19 @@
         <![endif]-->
     <!-- preloader area start -->
     <div id="preloader">
-        <div class="loader"></div>
+    <div class="lds-facebook"><div></div><div></div><div></div></div>
     </div>
     <!-- preloader area end -->
     <!-- page container area start -->
     <div class="page-container">
         <!-- sidebar menu area start -->
         <div class="sidebar-menu">
-            <div class="sidebar-header">
+            <div class="sidebar-header" style="background-color:#9A7563;" >
                 <div class="logo">
-                    <a href="{{route('home')}}"><img src="{{ asset('img/logo.jpeg') }}" alt="logo"></a>
+                    <a href="{{route('home')}}"><img src="{{ asset('img/logoinverted.jpg') }}" alt="logo"></a>
                 </div>
             </div>
-            <div class="main-menu">
+            <div class="main-menu" style="background-color:#63889A;">
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
@@ -115,7 +115,7 @@
         <!-- main content area start -->
         <div class="main-content">
             <!-- header area start -->
-            <div class="header-area">
+            <div class="header-area" style="background-color:#9A7563;">
                 
                     <!-- nav and search button -->
                     
@@ -123,9 +123,9 @@
                     <div class="row justify-content-center">
                         <!-- nav and search button -->
                         <div class="row justify-content-center">
-                            <div class="col-md-12 col-sm-12 clearfix center-block">
+                            <div class="col-md-12 col-sm-12 clearfix center-block" >
                                 <div class="logo">
-                                    <a href="{{route('home')}}"><img src="{{ asset('images/logo_1.png') }}" alt="logo"></a>
+                                    <a href="{{route('home')}}"><img src="{{ asset('img/logoinverted.jpg') }}" alt="logo"></a>
                                 </div>
                             </div>   
                         </div>
@@ -175,7 +175,7 @@
         <!-- main content area end -->
         <!-- footer area start-->
         <footer>
-            <div class="footer-area">
+            <div class="footer-area" style="background-color:#9A7563;">
                 
             </div>
         </footer>

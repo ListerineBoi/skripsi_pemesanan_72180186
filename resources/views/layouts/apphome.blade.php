@@ -43,13 +43,13 @@
         <!-- main content area start -->
         <div class="main-content">
             <!-- header area start -->
-            <div class="header-area">
+            <div class="header-area" style="background-color:#9A7563;">
                 <div class="row justify-content-center">
                     <!-- nav and search button -->
                     <div class="row justify-content-center">
                         <div class="col-md-12 col-sm-12 clearfix center-block">
                             <div class="logo">
-                                <a href="/"><img src="{{ asset('images/logo_1.png') }}" alt="logo"></a>
+                                <a href="/"><img src="{{ asset('img/logoinverted.jpg') }}" alt="logo"></a>
                             </div>
                         </div>   
                     </div>

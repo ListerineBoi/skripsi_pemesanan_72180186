@@ -125,7 +125,7 @@
 }
 
 .main-menu {
-    height: calc(100% - 100px);
+    height: calc(100%);
     overflow: hidden;
     padding: 20px 10px 0 0;
     -webkit-transition: all 0.3s ease 0s;
@@ -161,7 +161,7 @@
 .metismenu li a {
     position: relative;
     display: block;
-    color: #9A7563;
+    color: #fff;
     font-size: 15px;
     text-transform: capitalize;
     padding: 15px 15px;
@@ -170,7 +170,7 @@
 }
 
 .metismenu li a i {
-    color: #9A7563;
+    color: #fff;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
 }
@@ -181,7 +181,7 @@
     font-family: fontawesome;
     right: 15px;
     top: 12px;
-    color: #9A7563;
+    color: #fff;
     font-size: 20px;
 }
 
@@ -2322,7 +2322,7 @@ table.dataTable thead td {
 
 .login-form-head {
     text-align: center;
-    background: #8655FC;
+    background: #9A7563;
     padding: 50px;
 }
 
@@ -2360,7 +2360,7 @@ table.dataTable thead td {
 
 .form-gp.focused label {
     top: -15px;
-    color: #7e74ff;
+    color: #9A7563;
 }
 
 .form-gp input {
@@ -2389,7 +2389,7 @@ table.dataTable thead td {
 .form-gp i {
     position: absolute;
     right: 5px;
-    color: #7e74ff;
+    color: #9A7563;
     font-size: 16px;
 }
 

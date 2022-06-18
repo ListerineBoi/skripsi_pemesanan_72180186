@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-12 mt-5">
             <div class="card">
                 <div class="card-header">Form Set Slot</div>
 
@@ -109,5 +109,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

@@ -359,7 +359,7 @@
                             </div>
                             <div class="row col-sm-12">
                                 <div class="form-group col-sm-6">
-                                    <label for="example-text-input" class="col-form-label">Lingkar Pinggang celana rok</label>
+                                    <label for="example-text-input" class="col-form-label">Lingkar Pinggang Celana/Rok</label>
                                     <input class="form-control" type="text" maxlength='5' value="" name="ling_pinggang" placeholder="Ukuran Dalam Cm">
                                 </div>
                                 <div class="form-group col-sm-6">

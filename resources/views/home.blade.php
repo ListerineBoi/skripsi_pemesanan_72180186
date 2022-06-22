@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Pilihan Katalog
-                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sampling Aktif" 
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Pilihan Katalog" 
                                 data-content="Katalog yang tersedia di Amoora Couture,jika katalog kurang sesuai customer dapat melakukan pesanan custom dengan login/register terlebih dahulu.">
                                     <i class="fa fa-info-circle text-info"></i>
                             </a>

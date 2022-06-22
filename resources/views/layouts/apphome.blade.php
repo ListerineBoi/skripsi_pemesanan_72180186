@@ -35,7 +35,7 @@
         <![endif]-->
     <!-- preloader area start -->
     <div id="preloader">
-        <div class="loader"></div>
+    <div class="lds-facebook"><div></div><div></div><div></div></div>
     </div>
     <!-- preloader area end -->
     <!-- page container area start -->

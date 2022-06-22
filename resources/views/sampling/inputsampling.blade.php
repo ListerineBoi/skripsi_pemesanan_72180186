@@ -129,6 +129,12 @@
                         <input type="hidden" class="form-control" name="detail_id" value="{{$detail->id}}">
                         <div class="form-group row">
                             <label class="control-label col-md-1" for="nik">Slot</label>
+                            <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Slot/Batch Pembuatan" 
+                                data-content="Slot/Batch adalah kelompok pesanan yang akan dibuat pada tanggal tertentu,pilih Slot/Batch dengan tanggal pembuatan yang anda inginkan,
+                                 pendaftaran slot akan ditutup paling lambat 1 minggu sebelum tanggal pembuatan yang tertera. 
+                                 Satu minggu sebelum tanggal pembuatan ditujukan sebagai waktu konsultasi desain/harga dll.">
+                                    <i class="fa fa-info-circle text-info"></i>
+                                </a>
                             <div class="col-md-10">
                                 <select class="custom-select" name="slot_id">
                                 @foreach($slot as $row)

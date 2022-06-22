@@ -59,7 +59,7 @@
                         </div>
                         <div class="form-gp row">
                             <label for="exampleInputEmail1">No Telp</label>
-                            <input id="no_telp" type="nama"  maxlength="15" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="no_telp" autofocus>
+                            <input id="no_telp" type="nama"  maxlength="14" onkeypress="return event.charCode >= 48 && event.charCode <=57" class="form-control @error('no_telp') is-invalid @enderror" name="no_telp" value="{{ old('no_telp') }}" required autocomplete="no_telp" autofocus>
                             <i class="ti-mobile"></i>
                             <div class="text-danger"></div>
                         </div>

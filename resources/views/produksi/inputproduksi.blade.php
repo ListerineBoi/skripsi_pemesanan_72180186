@@ -14,7 +14,7 @@
             <div class="row g-0">
                 <div class="col-md-12">
                 <div class="card-body">
-                    <h3 class="card-title">Detail Yang Dipakai {{$detail->public}}</h3>
+                    <h3 class="card-title">Detail Yang Dipakai</h3>
                     <h6>
                         @if($detail->jenis==0)
                             <h5 > {{$detail->nama_atasan}} + {{$detail->nama_bawahan}} </h5>

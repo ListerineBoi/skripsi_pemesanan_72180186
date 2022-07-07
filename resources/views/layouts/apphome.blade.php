@@ -43,7 +43,7 @@
         <!-- main content area start -->
         <div class="main-content">
             <!-- header area start -->
-            <div class="header-area" style="background-color:#9A7563;">
+            <div class="header-area">
                 <div class="row justify-content-center">
                     <!-- nav and search button -->
                     <div class="row justify-content-center">

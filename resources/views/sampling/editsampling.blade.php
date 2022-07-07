@@ -74,6 +74,10 @@
                                         </div>
                                     </div> 
                                 @endforeach
+                                
+                            </div>
+                            <div class="mb-3">
+                                {{ $fileimg->withQueryString()->links() }}
                             </div>
                             <div class="input-group mb-3">
                             @if($sampling->status==0)
@@ -517,12 +521,13 @@
                                         Belum Ada
                                         @endif
                                 
-                                    <div class="card-body">
-                                        Detail Lainnya
-                                        <div class="row col-12">
-                                            @if($fileimg[0]->img_dll1!=null)
-                                            <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll1}}">Lihat File</a>
-                                            @endif
+                                        <div class="card-body">
+                                            Detail Lainnya
+                                            <div class="row col-12">
+                                                @if($fileimg[0]->img_dll1!=null)
+                                                <a type="button" class="btn btn-primary mr-1 mb-2" target="_blank" href="{{url('/')}}/storage/katalog/{{$fileimg[0]->img_dll1}}">Lihat File</a>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -577,7 +582,7 @@
             </div>
         </div>
         <div class="card">
-                <div class="card-header">Form Pengajuan Produksi</div>
+                <div class="card-header">Form Pengajuan Sampling</div>
 
                 <div class="card-body">
                     @if (session('status'))

@@ -33,7 +33,7 @@
                                         
                                         <h5 class="title">Harga: 
                                         </h5>
-                                        <textarea class="form-control" aria-label="With textarea" style="background-color: #fff;" name="desc" readonly>{{$row->harga}}</textarea>
+                                        <textarea class="form-control" aria-label="With textarea" style="background-color: #fff; height: 200px;" name="desc" readonly>{{$row->harga}}</textarea>
                                         <div class="row mt-3 ml-2">
                                             <a href="{{route('viewdetailkatalog',['id' => $row->id])}}" class="btn btn-primary mr-1">Detail Pakaian</a>
                                         </div>

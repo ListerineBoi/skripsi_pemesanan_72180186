@@ -60,6 +60,7 @@
                                         <h5 > {{DB::table('detail_pakaian')->where('id',  $row->detail_id)->value('nama_atasan')}} </h5>
                                     @endif
                                     <h5 class="title">Pembuatan dimulai {{DB::table('slot')->where('id', $row->slot_id)->value('mulai')}} 
+                                    Perkiraan jadi: {{$row->tgl_jadi}} <br>
                                         @if($row->status == 0)
                                         <a href="#" class="badge badge-secondary">Konsultasi</a>
                                         <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Konsultasi" 

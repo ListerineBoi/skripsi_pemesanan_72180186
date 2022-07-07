@@ -141,6 +141,10 @@
                                     </div>
                                 </div> 
                             @endforeach
+                            </div> 
+                            <div class="mb-3">
+                                {{ $fileimg->withQueryString()->links() }}
+                            </div>
                         @else
                             @if($fileimg[0]->img_depan!=null)
                                 <div class="col-lg-4 col-md-6 mt-3">
@@ -226,8 +230,9 @@
                                     </div>
                                 </div>
                                 @endif
+                                </div>
                         @endif
-                    </div>
+                    
                     @if($produksi->status==0 AND $detail->public==1)
                     <div class="input-group mb-3">
                         <div class="row col-12">

@@ -71,7 +71,7 @@
                 <div class="card-body my-5">
                 <div class="col-md-12 text-center">
                     <h3 class="mb-3" >Produksi dengan Detail Pakaian Baru
-                    <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Sampling Selesai" 
+                    <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Detail Pakaian Baru" 
                         data-content="Klik Tombol di bawah jika anda ingin melakukan pemesanan produksi dengan detail pakaian baru tanpa melakukan sampling terlebih dahulu.">
                         <i class="fa fa-info-circle text-info"></i>
                     </a>
@@ -109,6 +109,7 @@
                                         <h5 > {{DB::table('detail_pakaian')->where('id',  $row2->detail_id)->value('nama_atasan')}} </h5>
                                     @endif
                                 <h5 class="card-title">Pembuatan dimulai {{DB::table('slot')->where('id', $row2->slot_id)->value('mulai')}} 
+                                Perkiraan jadi: {{$row2->tgl_jadi}} <br>
                                         @if($row2->status == 0)
                                         <a href="#" class="badge badge-secondary">Konsultasi</a>
                                         <a tabindex="0" class="ml-1" data-toggle="popover" data-trigger="focus" title="Konsultasi" 

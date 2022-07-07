@@ -13,7 +13,6 @@
                                     <tr>
                                         <th scope="col">No Nota</th>
                                         <th scope="col">Bukti Bayar</th>
-                                        <th scope="col">Jenis Pembayaran</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -53,8 +52,10 @@
                                                                             <td>
                                                                                 @if($nota->jenis_pembayaran==1)
                                                                                 Deposit
-                                                                                @else
+                                                                                @elseif($nota->jenis_pembayaran==0)
                                                                                 Full
+                                                                                @else
+                                                                                -
                                                                                 @endif
                                                                             </td>
                                                                             <td><a href="{{url('/')}}/storage/buktibayar/{{$nota->img_bukti}}" target="_blank" class="btn btn-primary">{{$nota->img_bukti}}</a></td>
@@ -83,7 +84,6 @@
                                         <p>Belum Ada</p>
                                         @endif
                                         </td>
-                                        <td>{{$row->jenis_pembayaran}}</td>
                                         
                                         <td>@if($row->status==0) Belum Lunas @elseif($row->status==1) Menunggu @elseif($row->status==2) Lunas @elseif($row->status==3) Deposit @endif</td>
                                         <td>
@@ -129,7 +129,6 @@
                                     </tr>
                                     @endforeach
                                     <tr>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

@@ -325,7 +325,15 @@
                         </div>
                         
                         <input type="hidden" name="id" value="{{$katalog->id}}">
-                        <textarea class="form-control" aria-label="With textarea" name="desc">{{$katalog->desc}}</textarea>
+                        <textarea rows="7" class="form-control" aria-label="With textarea" name="desc">{{$katalog->desc}}</textarea>
+                        
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Harga
+                            </span>
+                        </div>
+                        <textarea rows="7" class="form-control" aria-label="With textarea" name="harga">{{$katalog->harga}}</textarea>
                     </div>
                     <div class="form-check form-switch mb-2">
                         <input class="form-check-input" type="checkbox" role="switch" name='aktif' id="flexSwitchCheckChecked" @if($katalog->aktif==1) checked @endif>

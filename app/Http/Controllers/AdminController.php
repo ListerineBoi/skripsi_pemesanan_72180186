@@ -64,7 +64,7 @@ class AdminController extends Controller
             'title' => $request->title,
             'desc' => $request->desc,
             'harga' => $request->harga,
-            'aktif' => '1',
+            'aktif' => '0',
         ]);
         $Katalog->save();
         return redirect()->back();
@@ -94,6 +94,7 @@ class AdminController extends Controller
         }
         Katalog::where('id', $request->id)->update([
             'desc' => $request->desc,
+            'harga' => $request->harga,
             'aktif' => $aktif,
         ]);
         return redirect()->back();

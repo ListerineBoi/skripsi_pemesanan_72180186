@@ -38,7 +38,7 @@
                                     
                                     <h5 class="title">Harga: 
                                     </h5>
-                                    <textarea class="form-control" aria-label="With textarea" style="background-color: #fff;" name="desc" readonly>{{$row->harga}}</textarea>
+                                    <textarea class="form-control" aria-label="With textarea" style="background-color: #fff; height: 200px;" name="desc" readonly>{{$row->harga}}</textarea>
                                     <div class="row mt-1">
                                         <a href="{{route('viewadmindetailkatalog',['id' => $row->id])}}" class="btn btn-primary mr-1">Detail</a>
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del{{$loop->iteration}}">

@@ -108,12 +108,8 @@
                         <div class="tab-pane fade" id="pills-m" role="tabpanel" aria-labelledby="pills-m-tab">
                             @if($detailm !=null)
                             <div class="row ml-1 my-2">
-                                <a href="" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
-                                <form action="{{route('delkatalog')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" value="" name="id">
-                                    <a href="{{route('viewinputproduksi',['id' => $detailm->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
-                                </form>
+                                <a href="{{route('viewinputsampling',['id' => $detailm->id])}}" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
+                                <a href="{{route('viewinputproduksi',['id' => $detailm->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
                             </div>
                             <table class="table table-bordered text-center">
                                 <tbody>
@@ -182,12 +178,8 @@
                         <div class="tab-pane fade" id="pills-l" role="tabpanel" aria-labelledby="pills-l-tab">
                             @if($detaill !=null)
                             <div class="row ml-1 my-2">
-                                <a href="" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
-                                <form action="{{route('delkatalog')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" value="" name="id">
-                                    <a href="{{route('viewinputproduksi',['id' => $detaill->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
-                                </form>
+                                <a href="{{route('viewinputsampling',['id' => $detaill->id])}}" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
+                                <a href="{{route('viewinputproduksi',['id' => $detaill->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
                             </div>
                             <table class="table table-bordered text-center">
                                 <tbody>
@@ -256,12 +248,8 @@
                         <div class="tab-pane fade" id="pills-xl" role="tabpanel" aria-labelledby="pills-xl-tab">
                             @if($detailxl !=null)
                             <div class="row ml-1 my-2">
-                                <a href="" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
-                                <form action="{{route('delkatalog')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" value="" name="id">
-                                    <a href="{{route('viewinputproduksi',['id' => $detailxl->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
-                                </form>
+                                <a href="{{route('viewinputsampling',['id' => $detailxl->id])}}" class="btn btn-primary mr-1">Pesan Sample Pakaian Ini</a>
+                                <a href="{{route('viewinputproduksi',['id' => $detailxl->id])}}" class="btn btn-success ">Pesan Produksi Pakaian ini</a>
                             </div>
                             <table class="table table-bordered text-center">
                                 <tbody>

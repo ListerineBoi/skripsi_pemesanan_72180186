@@ -79,17 +79,17 @@
     <div class="page-container">
         <!-- sidebar menu area start -->
         <div class="sidebar-menu">
-            <div class="sidebar-header" style="background-color:#9A7563;">
+            <div class="sidebar-header">
                 <div class="logo">
                 <a href="{{route('homeadmin')}}"><img src="{{ asset('img/logoinverted.jpg') }}" alt="logo"></a>
                 </div>
             </div>
-            <div class="main-menu" style="background-color:#63889A;">
+            <div class="main-menu">
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
                             <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>Amoora E-commerce</span></a>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-th-large"></i> <span>Amoora E-commerce</span></a>
                                 <ul class="collapse">
                                     <li><a href="{{route('homeadmin')}}">Katalog</a></li>
                                     <li><a href="#" aria-expanded="true">Sampling</a>
@@ -125,7 +125,7 @@
         <!-- main content area start -->
         <div class="main-content">
             <!-- header area start -->
-            <div class="header-area" style="background-color:#9A7563;">
+            <div class="header-area">
                 
                     <!-- nav and search button -->
                     

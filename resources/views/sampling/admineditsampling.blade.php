@@ -58,6 +58,9 @@
                                     </div> 
                                 @endforeach
                             </div>
+                            <div class="mb-3">
+                                {{ $fileimg->withQueryString()->links() }}
+                            </div>
                             <div class="input-group mb-3">
                                 <div class="row col-12">
                                     <h4 class="header-title">File/Gambar Design</h4>

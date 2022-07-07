@@ -130,6 +130,7 @@
     padding: 20px 10px 0 0;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
+    background-color: #63889A;
 }
 
 .menu-inner {
@@ -144,7 +145,7 @@
 
 .sidebar-header {
     padding: 19px 32px 20px;
-    background: #ffffff;
+    background: #9A7563;
     border-bottom: 1px solid #343e50;
 }
 .sidebar-menu .logo{
@@ -401,7 +402,7 @@
 
 .header-area {
     padding: 15px 30px;
-    background: #fff;
+    background: #9A7563;
     border-bottom: 1px solid #d8e3e7;
 }
 

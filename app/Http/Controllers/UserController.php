@@ -166,7 +166,7 @@ class UserController extends Controller
             ['id','=', $sampling->detail_id],
         ])->first();
         if($detail->public==1){
-            $fileimg=DetailFile::where('detail_id','=', $sampling->detail_id)->get();
+            $fileimg=DetailFile::where('detail_id','=', $sampling->detail_id)->paginate(6);
         }else{
             $file=detail_pakaian::where([
                 ['id','=', $sampling->detail_id],
@@ -612,7 +612,7 @@ class UserController extends Controller
             ['id','=', $produksi->detail_id],
         ])->first();
         if($detail->public==1){
-            $fileimg=DetailFile::where('detail_id','=', $detail->id)->get();
+            $fileimg=DetailFile::where('detail_id','=', $detail->id)->paginate(6);
         }else{
             $file=detail_pakaian::where([
                 ['id','=', $produksi->detail_id],
@@ -794,7 +794,10 @@ class UserController extends Controller
             ['id',$id],
             ['cus_id',$UsId],
             ])->firstorfail();
-        $jadwal = Konsul::where('status','0')->get();
+        $jadwal = Konsul::where([
+            ['status','0'],
+            ['tgl','>=', date("Y-m-d")],
+            ])->get();
         $jadwal1 = Konsul::where([
             ['status','1'],
             ['jasa_id',$id]

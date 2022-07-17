@@ -50,11 +50,12 @@ src="{{'images/logo_1.png'}}"></span></p>
 
 <p class=MsoNormal style='margin-left:276.45pt'>No Telp                      :{{$dataD->no_telp}}</p>
 <p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
-white'><span style='font-size:13.0pt;font-family:Roboto;color:#212529'>082123488998
+white'><span style='margin-left:1pt;font-size:13.0pt;font-family:Roboto;color:#212529'>082123488998
 @amoora.couture                               </span><span style='color:black'>Tgl.
 Masuk                 :{{$jasa->created_at}}</span></p>
 
-<p class=MsoNormal style='margin-left:276.45pt'>Tgl. Selesai               :{{$jasa->tgl_jadi}}</p>
+<p class=MsoNormal style='margin-left:-16pt'>Jl. Kaliurang KM 8,3 Sinduharjo, Ngaglik, Sleman                
+Tgl. Selesai               :{{$jasa->tgl_jadi}}</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -108,14 +109,14 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:175.95pt'>
   @foreach($invoice as $row)
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$row->harga}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($row->harga)</p>
   @endforeach
   </td>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:175.95pt'>
   @foreach($invoice as $row)
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$row->total}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($row->total)</p>
   @endforeach
   </td>
  </tr>
@@ -138,7 +139,7 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($sum)</p>
   </td>
  </tr>
  @if($nota->terbayar!=null)
@@ -161,7 +162,7 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$nota->terbayar}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($nota->terbayar)</p>
   </td>
  </tr>
  <tr>
@@ -183,7 +184,7 @@ Masuk                 :{{$jasa->created_at}}</span></p>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal'>{{$sum - $nota->terbayar}}</p>
+  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($sum - $nota->terbayar)</p>
   </td>
  </tr>
  @endif

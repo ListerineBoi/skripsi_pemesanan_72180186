@@ -5588,9 +5588,9 @@ var app = new Vue({
           message: e.message.message,
           user: e.user
         });
-
-        _this.fetchRoom();
       }
+
+      _this.fetchRoom();
     });
   },
   methods: {
@@ -5624,8 +5624,7 @@ var app = new Vue({
       //Pushes it to the messages array
       this.messages.push(message); //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
 
-      axios.post('/messages', message).then(function (response) {
-        console.log(response.data);
+      axios.post('/messages', message).then(function (response) {//console.log(response.data);
       });
       this.fetchRoom();
     },
@@ -5634,16 +5633,14 @@ var app = new Vue({
       this.fetchMessages();
     },
     createroom: function createroom(jenis, tipejasa, jasa_id) {
-      axios.get('/createroom/' + jenis.jenis + '/' + jenis.tipejasa + '/' + jenis.jasa_id).then(function (response) {
-        //Save the response in the messages array to display on the chat view
-        console.log(response.data);
+      axios.get('/createroom/' + jenis.jenis + '/' + jenis.tipejasa + '/' + jenis.jasa_id).then(function (response) {//Save the response in the messages array to display on the chat view
+        //console.log(response.data);
       });
       this.fetchRoom(); //console.log(this.$userId)
       //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
     },
     delroom: function delroom(rm_id) {
-      axios.get('room/del/' + rm_id.rm_id).then(function (response) {
-        console.log(response.data);
+      axios.get('room/del/' + rm_id.rm_id).then(function (response) {//console.log(response.data);
       });
       this.fetchRoom(); //console.log('/createroom/'+this.$userId+'/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id);
     }

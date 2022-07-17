@@ -20,6 +20,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function compro()
+    {
+        return view('compro');
+    }
     public function index()
     {
         $Katalog=Katalog::where('aktif', 1)->paginate(6);

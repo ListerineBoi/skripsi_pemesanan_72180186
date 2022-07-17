@@ -52,8 +52,10 @@ const app = new Vue({
                     message: e.message.message,
                     user: e.user
                 });
-                this.fetchRoom();
+
+                
             }
+            this.fetchRoom();
         });
         
     },
@@ -86,7 +88,7 @@ const app = new Vue({
             this.messages.push(message);
             //POST request to the messages route with the message data in order for our Laravel server to broadcast it.
             axios.post('/messages', message).then(response => {
-                console.log(response.data);
+                //console.log(response.data);
             });
             this.fetchRoom();
         },
@@ -98,7 +100,7 @@ const app = new Vue({
         createroom(jenis,tipejasa,jasa_id) {
             axios.get('/createroom/'+jenis.jenis+'/'+jenis.tipejasa+'/'+jenis.jasa_id).then(response => {
                 //Save the response in the messages array to display on the chat view
-                console.log(response.data);
+                //console.log(response.data);
                 
             });
             this.fetchRoom();
@@ -107,7 +109,7 @@ const app = new Vue({
         },
         delroom(rm_id) {
             axios.get('room/del/'+rm_id.rm_id).then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 
             });
             this.fetchRoom();

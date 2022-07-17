@@ -29,9 +29,14 @@ class ChatsController extends Controller
     public function fetchRoom($id)
     {
         if(Auth::guard('admin')->check()){
-            return Room::with('jasa.detp')->with('messageslatest')->get(); 
+           // return Room::with('jasa.detp')->with('messageslatest')->orderby('messageslatest.created_at','asc')->get(); 
+            $room =Room::with('jasa.detp')->with('messageslatest')->get(); 
+            $sorted = $room->sortByDesc('messageslatest.created_at')->sortByDesc('messageslatest.user_id');
+            return $sorted->values()->all();
         }else{
-            return Room::where('user_id',$id)->with('jasa.detp')->with('messageslatest')->get();
+            $room =Room::where('user_id',$id)->with('jasa.detp')->with('messageslatest')->get();
+            $sorted = $room->sortByDesc('messageslatest.admin_id')->sortByDesc('messageslatest.created_at');
+            return $sorted->values()->all();
         }
     }
     public function fetchMessages($id)

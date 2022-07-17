@@ -4,9 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-12 mt-5">
-            @if(\Session::has('success'))
-                <input type="hidden" id='popupif' value='1'>
-            @endif
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title">Pilihan Katalog

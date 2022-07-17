@@ -61,7 +61,7 @@
                 <div class="row align-items-center py-3">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">KATALOG</h4>
+                            <h4 class="page-title pull-left"></h4>
                             
                         </div>
                     </div>

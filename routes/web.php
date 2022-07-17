@@ -24,7 +24,8 @@ Route::get('createroom/{jenis}/{tipejasa}/{jasa_id}', [App\Http\Controllers\Chat
 Route::get('public/katalog/detail/{id}', [App\Http\Controllers\HomeController::class, 'viewdetailkatalogpublic'])->name('viewdetailkatalogpublic');
 
 Auth::routes();
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home1');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'compro'])->name('compro');
+Route::get('/katalog', [App\Http\Controllers\HomeController::class, 'index'])->name('home1');
 Route::get('/home', [App\Http\Controllers\UserController::class, 'index'])->name('home');
 Route::get('/admin/login', [App\Http\Controllers\Auth\AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [App\Http\Controllers\Auth\AdminAuthController::class, 'login'])->name('admin.login');

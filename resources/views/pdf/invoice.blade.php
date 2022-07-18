@@ -109,14 +109,16 @@ Tgl. Selesai               :{{$jasa->tgl_jadi}}</p>
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:175.95pt'>
   @foreach($invoice as $row)
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($row->harga)</p>
+  <span style="position-left:769px">Rp</span><p class=MsoNormal style='margin-bottom:0in;line-height:normal;float:right'> @php echo number_format($row->harga, 0, ',', '.');@endphp</p><br>
   @endforeach
   </td>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt;height:175.95pt'>
   @foreach($invoice as $row)
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($row->total)</p>
+  <span style="position-left:769px">Rp</span><p class=MsoNormal style='margin-bottom:0in;line-height:normal;float:right'> @php echo number_format($row->total, 0, ',', '.');@endphp</p><br>
+  
+  
   @endforeach
   </td>
  </tr>
@@ -139,7 +141,7 @@ Tgl. Selesai               :{{$jasa->tgl_jadi}}</p>
   <td width=125 valign=top style='width:93.5pt;border-top:none;border-left:
   none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0in;line-height:normal;text-align:right;'>@currency($sum)</p>
+  <span style="position-left:769px">Rp</span><p class=MsoNormal style='margin-bottom:0in;line-height:normal;float:right'> @php echo number_format($sum, 0, ',', '.');@endphp</p><br>
   </td>
  </tr>
  @if($nota->terbayar!=null)
